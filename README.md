@@ -2,7 +2,7 @@
 
 ## Group members
 
-Laila El Khattabi El Hassnaoui 
+Laila El Khattabi El Hassnaoui | l.elkhattabi.2020@alumnos.urjc.es
 
 Carlos Hermán Andrés Andrés
 
