@@ -44,7 +44,7 @@ Elena Ceinos Abeijón | e.ceinos@alumnos.urjc.es| elenacabe
 ### Graphics
 
 - Reservations
--Revenue by month
+-  Revenue by month
 - Date
 
 ### Complementary technologies
