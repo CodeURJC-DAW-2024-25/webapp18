@@ -11,18 +11,18 @@ Elena Ceinos Abeijón | e.ceinos@alumnos.urjc.es| elenacabe
 
 ### Entities
 
-  -Apartments
-  -Users
-  -Review
-  -Reservation
+  - Apartments
+  - Users
+  - Review
+  - Reservation
 
 ![MODELO_ER](https://github.com/user-attachments/assets/cdc8275c-1128-4db2-9e09-90a0099b6db6)
 
 ### User types
 
-  -Registered client
-  -Unregistered client
-  -Administrator
+  - Registered client
+  - Unregistered client
+  - Administrator
 
 ### Permissions
 
