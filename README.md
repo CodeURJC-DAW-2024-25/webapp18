@@ -11,7 +11,10 @@ Elena Ceinos Abeijón | e.ceinos@alumnos.urjc.es| elenacabe
 
 ### Entities
 
-Apartments, users, review, reservation.
+  Apartments
+  Users
+  Review
+  Reservation
 
 ![MODELO_ER](https://github.com/user-attachments/assets/cdc8275c-1128-4db2-9e09-90a0099b6db6)
 
