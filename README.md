@@ -2,17 +2,19 @@
 
 ## Group members
 
-Laila El Khattabi El Hassnaoui
+Laila El Khattabi El Hassnaoui 
 
 Carlos Hermán Andrés Andrés
 
-Elena 
+Elena Ceinos Abeijón
 
 ## Functionalities
 
 ### Entities
 
 Apartments, users, review, reservation.
+
+![MODELO_ER](https://github.com/user-attachments/assets/cdc8275c-1128-4db2-9e09-90a0099b6db6)
 
 ### User types
 
