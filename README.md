@@ -16,7 +16,8 @@ Elena Ceinos Abeijón | e.ceinos@alumnos.urjc.es| elenacabe
   - Review
   - Reservation
 
-![MODELO_ER](https://github.com/user-attachments/assets/cdc8275c-1128-4db2-9e09-90a0099b6db6)
+
+![DiagramaER](https://github.com/user-attachments/assets/9bd76667-efb8-4383-ab47-d68b4f5a9af7)
 
 ### User types
 
