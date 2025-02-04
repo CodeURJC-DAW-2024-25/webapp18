@@ -23,6 +23,7 @@ Elena Ceinos Abeijón | e.ceinos@alumnos.urjc.es| elenacabe
   - Registered client
   - Unregistered client
   - Administrator
+  - Apartment Manager
 
 ### Permissions
 
