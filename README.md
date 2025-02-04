@@ -26,15 +26,16 @@ Elena Ceinos Abeijón | e.ceinos@alumnos.urjc.es| elenacabe
 
 ### Permissions
 
-| Activities | Registered client | Unregistered client | Administrator |
-|--------------|--------------|--------------| --------------|
-| Search / filter apartments | ✔      | ✔       | ✔       |
-| Write reviews       | ✔  | ❌   | ❌  |
-| Modify the apartments DB       | ❌  | ❌   | ✔  |
-| Personal profile       | ✔  | ❌   | ✔  |
-| Make reservations      |  ✔ | ❌   | ✔  |
-| Modify reservations       | ✔  | ❌  | ✔  |
-| View reservations history       | ✔  | ❌  | ✔  |
+| Activities | Registered client | Unregistered client | Administrator | Apartment manager |
+|--|--|--| -- |-- |
+| Search / filter apartments | ✔      | ✔       | ✔       | ✔ |
+| Write reviews       | ✔  | ❌   | ❌  | ✔ |
+| Modify the apartments DB       | ❌  | ❌   | ✔  | ❌  |
+| Personal profile       | ✔  | ❌   | ✔  | ✔ |
+| Make reservations      |  ✔ | ❌   | ✔  | ✔ |
+| Modify reservations       | ✔  | ❌  | ✔  | ✔ |
+| View reservations history       | ✔  | ❌  | ✔ | ✔ |
+| Create / edit / delete apartment | ❌ | ❌ | ✔ | ✔ |
 
 ### Images
 
