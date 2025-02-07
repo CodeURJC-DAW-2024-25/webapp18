@@ -6,6 +6,7 @@
 Laila El Khattabi El Hassnaoui | l.elkhattabi.2020@alumnos.urjc.es |lailaelkhattabielhas
 Carlos Hermán Andrés Andrés | ch.andres.2020@alumnos.urjc.es|Carlos-Herman
 Elena Ceinos Abeijón | e.ceinos@alumnos.urjc.es| elenacabe
+Daniel Gómez López | d.gomez.l.2021@alumnos.urjc.es | daniel-gomez487
 
 ## Functionalities
 
