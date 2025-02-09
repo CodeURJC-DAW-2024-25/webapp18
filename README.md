@@ -1,5 +1,7 @@
 # 🏚🏝 dreamLife 
 
+## Phase 1
+
 ## Group members
 | Names |Email |Github user| 
 |--------------|--------------|--------------|
@@ -59,4 +61,14 @@ Daniel Gómez López | d.gomezl.2021@alumnos.urjc.es | daniel-gomez487
 ### Advanced query
 - Recommendation algorithm
 
+
+## Phase 2
+
+### Screenshots
+
+
+### Navegation diagram
+![image](https://github.com/user-attachments/assets/ac5577f3-5074-43ff-a12d-198d7e2eda97)
+
+![image](https://github.com/user-attachments/assets/b86b2450-1f01-4775-9375-c6b5d460b9db)
 
