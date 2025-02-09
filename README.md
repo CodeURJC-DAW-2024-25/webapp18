@@ -70,6 +70,21 @@ Daniel Gómez López | d.gomezl.2021@alumnos.urjc.es | daniel-gomez487
 ### Navegation diagram
 ![image](https://github.com/user-attachments/assets/ac5577f3-5074-43ff-a12d-198d7e2eda97)
 
+Navigation diagram of the SideBar with buttons for:
+
+- **Personal Data**
+- **My Reservations**
+- **My Apartments**
+- **Apartment Management**
+  - View Managers
+  - Validate New Apartments
+- **Statistics**
+  - User Charts
+  - Apartment Charts
+- **Main Page**
+  - Return to Main Page
+
+
 - From the main page, you can browse the "about us", "profile", "contact", "login", "apartmentInformation" and "apartmentReviews". It's the center point and can access pretty much any other business related page.
 ![image](https://github.com/user-attachments/assets/b86b2450-1f01-4775-9375-c6b5d460b9db)
 
