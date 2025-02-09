@@ -66,8 +66,8 @@ Daniel Gómez López | d.gomezl.2021@alumnos.urjc.es | daniel-gomez487
 
 ### Screenshots
 
-- **apartmentInformation** -> This page displays the description of the apartment, as well as pictures and the categories it belongs to. It has some reviews as well.
-![image](https://github.com/user-attachments/assets/66c7fee9-168b-4146-a9b0-0bc46062c011)
+- **apartmentInformation** -> This page displays the description of the apartment, as well as pictures and the categories it belongs to. It has some reviews as well.![image](https://github.com/user-attachments/assets/68061cea-1e36-48bb-97bd-e3b7d4f798b9)
+
 
 - **apartmentValidation** -> In this page, the admin can accept or deny the inclusion of new apartments to the app. It also shows some info about the apartments.
   ![image](https://github.com/user-attachments/assets/774caa74-0485-47c0-b066-4301c38fb245)
