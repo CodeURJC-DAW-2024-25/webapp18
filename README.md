@@ -65,6 +65,8 @@ Daniel Gómez López | d.gomezl.2021@alumnos.urjc.es | daniel-gomez487
 ## Phase 2
 
 ### Screenshots
+### Screenshots2
+![image](https://github.com/user-attachments/assets/215f1dbe-f7f1-437e-88fc-c33f87f7e8ad)
 
 
 ### Navegation diagram
