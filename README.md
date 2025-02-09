@@ -81,7 +81,7 @@ Daniel Gómez López | d.gomezl.2021@alumnos.urjc.es | daniel-gomez487
 - **index.html** -> Main page of the web application. Here you can select your preferred hotel, search for others, access your profile, log in, contact us...
 ![image](https://github.com/user-attachments/assets/9f3e2c9f-9e84-42aa-866c-dbb8c187c8ac)
 
--**managerList** -> Shows all managers included in the database. Can make certain actions with them, and show their current apartments.
+- **managerList** -> Shows all managers included in the database. Can make certain actions with them, and show their current apartments.
 ![image](https://github.com/user-attachments/assets/1f398434-9260-4115-8fe8-2b7fc0315f92)
 
 - **profile** -> Shows personal data about the user and a picture.
@@ -108,11 +108,11 @@ Daniel Gómez López | d.gomezl.2021@alumnos.urjc.es | daniel-gomez487
 - **Edit profile** -> In this page, you can edit your profile's info and view some details.
 ![image](https://github.com/user-attachments/assets/7a912d3d-0a76-48b1-a258-ad90918bd2a1)
 
-  - **Login page** -> In this page, you can login if you have a user or, otherwise, navigate to the register page.
+- **Login page** -> In this page, you can login if you have a user or, otherwise, navigate to the register page.
 ![image](https://github.com/user-attachments/assets/57f1fee3-2258-4c29-aaf8-3e723724ec11)
 
 
--  **Register page** -> In this page, you enter some info about yourself to create an account
+- **Register page** -> In this page, you enter some info about yourself to create an account
   ![image](https://github.com/user-attachments/assets/732e9e69-47c9-4ad4-8dc5-5f1338638db1)
 
 
