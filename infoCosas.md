@@ -16,3 +16,10 @@ Crear modelos /service / repositorios de las entidades ...
 Crear controladores
 
 Enlazar BBDD con el proyecto
+
+
+
+>>>>>>>>>>>>>>>>>>>>>> PREGUNTAS PARA LOS PROFES <<<<<<<<<<<<<<<<<<<<<
+No tenemos las fotos en Static/images, pasa algo?
+
+Cómo insertar una plantilla de sidebar con mustache. ¿Es igual que un header/footer?
