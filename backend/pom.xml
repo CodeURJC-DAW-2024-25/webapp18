@@ -11,7 +11,7 @@
         <relativePath/> <!-- Importante para evitar errores -->
     </parent>
 
-    <groupId>com.codeurjc</groupId>
+    <groupId>es.codeurjc</groupId>
     <artifactId>backend</artifactId>
     <version>1.0-SNAPSHOT</version>
 
