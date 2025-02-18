@@ -1,6 +1,6 @@
 package es.codeurjc.repository;
 
-public 
+public class UserRepository
  {
     
 }

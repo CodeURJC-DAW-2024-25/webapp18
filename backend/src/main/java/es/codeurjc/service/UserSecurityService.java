@@ -1,6 +1,6 @@
 package es.codeurjc.service;
 
-public 
+public class UserSecurityService
 
 {
     
