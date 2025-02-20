@@ -71,12 +71,12 @@ public class Room {
         this.reservations = reservations;
     }
 
-    public Apartment getHotel() {
+    public Apartment getApartment() {
         return apartment;
     }
 
-    public void setHotel(Apartment hotel) {
-        this.apartment = hotel;
+    public void setApartment(Apartment apartment) {
+        this.apartment = apartment;
     }
 
     public boolean available(LocalDate checkIn, LocalDate checkOut) {

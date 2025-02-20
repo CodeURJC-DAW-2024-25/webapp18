@@ -43,7 +43,7 @@ public class ReviewService implements GeneralService<Review> {
     }
 
     public List<Review> findByApartment_Name(String name){
-        return reviewRepository.findByHotel_Name(name);
+        return reviewRepository.findByApartment_Name(name);
     }
 
     public List<Review> findByDate(Date date){
@@ -55,11 +55,11 @@ public class ReviewService implements GeneralService<Review> {
     }
 
     public List<Review> findByApartment(Apartment apartment){
-        return reviewRepository.findByHotel(apartment);
+        return reviewRepository.findByApartment(apartment);
     }
 
-    public List<Review> findByScoreAndHotel(int score, Apartment apartment){
-        return reviewRepository.findByScoreAndHotel(score, apartment);
+    public List<Review> findByScoreAndApartment(int score, Apartment apartment){
+        return reviewRepository.findByScoreAndApartment(score, apartment);
     }
 
     @Override

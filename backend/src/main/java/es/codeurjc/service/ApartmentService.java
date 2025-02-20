@@ -1,23 +1,30 @@
 package es.codeurjc.service;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+
 import java.util.Optional;
 import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
 import es.codeurjc.model.Apartment;
 import es.codeurjc.model.Reservation;
 import es.codeurjc.model.Room;
 import es.codeurjc.model.UserE;
 import es.codeurjc.repository.ApartmentRepository;
 
-@Service
-public class ApartmentService implements GeneralService<Apartment> {
+@Service 
+public class ApartmentService implements GeneralService<Apartment>{
 
+    
     @Autowired
     ApartmentRepository apartmentRepository;
+    
+
 
     @Override
     public void save(Apartment apartment) {
