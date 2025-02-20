@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import es.codeurjc.backend.model.Apartment;
-import es.codeurjc.backend.model.UserE;
+import es.codeurjc.model.Apartment;
+import es.codeurjc.model.UserE;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserE, Long> {

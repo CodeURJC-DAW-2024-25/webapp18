@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import es.codeurjc.backend.model.Review;
-import es.codeurjc.backend.model.Apartment;
+import es.codeurjc.model.Review;
+import es.codeurjc.model.Apartment;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
