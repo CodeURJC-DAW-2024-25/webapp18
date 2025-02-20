@@ -39,7 +39,7 @@ public class ReservationService implements GeneralService<Reservation> {
     }
 
     public List<Reservation> findByHotel_Name(String name){
-        return reservationRepository.findByHotel_Name(name);
+        return reservationRepository.findByApartment_Name(name);
     } 
 
     @Override

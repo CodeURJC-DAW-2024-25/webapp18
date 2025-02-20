@@ -88,8 +88,8 @@ public class UserService implements GeneralService<UserE> {
         return userRepository.findLocationByName(name);
     }
 
-    public List<UserE> findByHotelInReservations(@Param("apartment") Apartment apartment){
-        return userRepository.findByHotelInReservations(apartment);
+    public List<UserE> findByApartmentInReservations(@Param("apartment") Apartment apartment){
+        return userRepository.findByApartmentInReservations(apartment);
     }
 
     
@@ -99,29 +99,29 @@ public class UserService implements GeneralService<UserE> {
         return user.isPresent();
     }
 
-    public List<Apartment> findRecomendedHotels(int numHotels, List<Reservation> userReservations, UserE targetUser) {
+    public List<Apartment> findRecomendedApartments(int numApartments, List<Reservation> userReservations, UserE targetUser) {
         List<UserE> recomendedUsers = new ArrayList<>();
-        List<Apartment> recomendedHotels = new ArrayList<>();
+        List<Apartment> recomendedApartments = new ArrayList<>();
 
         for (Reservation reservation : userReservations) {
-            Apartment reservedHotel = reservation.getApartment();
-            recomendedUsers = userRepository.findByHotelInReservations(reservedHotel);
+            Apartment reservedApartment = reservation.getApartment();
+            recomendedUsers = userRepository.findByApartmentInReservations(reservedApartment);
             if (recomendedUsers.contains(targetUser)) // removes self from recommendations
                 recomendedUsers.remove(targetUser);
             for (UserE recommendedUser : recomendedUsers) {
                 for (Reservation recommendedUserReservation : recommendedUser.getReservations()) {
-                    Apartment recommendedHotel = recommendedUserReservation.getApartment();
-                    Boolean validHotel = recommendedHotel.getManager().getvalidated();
+                    Apartment recommendedApartment = recommendedUserReservation.getApartment();
+                    Boolean validApartment = recommendedApartment.getManager().getvalidated();
 
-                    if ((!recomendedHotels.contains(recommendedHotel)) && validHotel) {
-                        recomendedHotels.add(recommendedHotel);
-                        if (recomendedHotels.size() == (numHotels))
-                            return recomendedHotels;
+                    if ((!recomendedApartments.contains(recommendedApartment)) && validApartment) {
+                        recomendedApartments.add(recommendedApartment);
+                        if (recomendedApartments.size() == (numApartments))
+                            return recomendedApartments;
                     }
                 }
             }
         }
-        return recomendedHotels;
+        return recomendedApartments;
     }
 
 }

@@ -29,6 +29,6 @@ public interface UserRepository extends JpaRepository<UserE, Long> {
     List<UserE> findLocationByName(String name);
 
     @Query("SELECT DISTINCT u FROM UserE u JOIN u.reservations r WHERE r.apartment = :apartment")
-    List<UserE> findByHotelInReservations(@Param("apartment") Apartment apartment);
+    List<UserE> findByApartmentInReservations(@Param("apartment") Apartment apartment);
 
 }

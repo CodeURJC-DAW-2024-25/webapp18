@@ -71,11 +71,11 @@ public class Review {
         this.date = date;
     }
 
-    public Apartment getHotel() {
+    public Apartment getApartment() {
         return apartment;
     }
 
-    public void setHotel(Apartment apartment) {
+    public void setApartment(Apartment apartment) {
         this.apartment = apartment;
     }
 

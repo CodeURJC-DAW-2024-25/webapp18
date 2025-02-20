@@ -45,7 +45,7 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // Mostrar la página de inicio de sesión
+/*     // Mostrar la página de inicio de sesión
     @GetMapping("/login")
     public String login() {
         return "login"; // Nombre del archivo login.html dentro de templates
@@ -62,8 +62,8 @@ public class UserController {
     public String showRegister() {
         return "register"; // Nombre del archivo register.html en /templates
     }
-
-    // Procesar el formulario de registro
+ */
+/*     // Procesar el formulario de registro
     @PostMapping("/register")
     public String register(String name, String lastname, String email, String password, String repeatPassword,
             Model model) {
@@ -81,6 +81,7 @@ public class UserController {
             return "register";
         }
     }
+ */
 
     // PUBLIC CONTROLLERS
 

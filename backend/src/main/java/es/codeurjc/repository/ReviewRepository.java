@@ -14,14 +14,14 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     
     List<Review> findByUser_Name(String name);
 
-    List<Review> findByHotel_Name(String name);
+    List<Review> findByApartment_Name(String name);
 
     List<Review> findByDate(Date date);
 
     List<Review> findByScore(int score);
 
-    List<Review> findByHotel(Apartment apartment);
+    List<Review> findByApartment(Apartment apartment);
 
-    List<Review> findByScoreAndHotel(int score, Apartment apartment);
+    List<Review> findByScoreAndApartment(int score, Apartment apartment);
 
 }

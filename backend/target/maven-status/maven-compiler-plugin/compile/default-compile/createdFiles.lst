@@ -5,16 +5,15 @@ es\codeurjc\service\UserSecurityService.class
 es\codeurjc\security\SecurityConfiguration.class
 es\codeurjc\repository\UserRepository.class
 es\codeurjc\model\Room.class
+es\codeurjc\controller\RoomController.class
 es\codeurjc\controller\ReviewController.class
 es\codeurjc\repository\ReviewRepository.class
 es\codeurjc\model\UserE.class
 es\codeurjc\service\UserService.class
 es\codeurjc\service\initDataBaseService.class
-es\codeurjc\repository\UserRepository$UserDTO.class
 es\codeurjc\repository\ApartmentRepository.class
 es\codeurjc\service\RoomService.class
 es\codeurjc\App.class
-es\codeurjc\service\ReviewReservation.class
 es\codeurjc\repository\RoomRepository.class
 es\codeurjc\controller\ApartmentController.class
 es\codeurjc\service\ReservationService.class
@@ -22,6 +21,6 @@ es\codeurjc\controller\UserController.class
 es\codeurjc\model\Apartment.class
 es\codeurjc\repository\ReservationRepository.class
 es\codeurjc\controller\ReservationController.class
-es\codeurjc\controller\RoomCntroller.class
 es\codeurjc\model\Review.class
+es\codeurjc\service\ReviewService.class
 es\codeurjc\service\ApartmentService.class
