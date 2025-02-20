@@ -10,6 +10,7 @@ es\codeurjc\repository\ReviewRepository.class
 es\codeurjc\model\UserE.class
 es\codeurjc\service\UserService.class
 es\codeurjc\service\initDataBaseService.class
+es\codeurjc\repository\UserRepository$UserDTO.class
 es\codeurjc\repository\ApartmentRepository.class
 es\codeurjc\service\RoomService.class
 es\codeurjc\App.class

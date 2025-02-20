@@ -1,35 +1,40 @@
 package es.codeurjc.service;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@Configuration
+import es.codeurjc.model.UserE;
+import es.codeurjc.repository.UserRepository;
+
+@Service
 public class UserService {
 
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserRepository userRepository;
 
-    // Inyecta PasswordEncoder a través del constructor
-    public UserService(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User.withUsername("user")
-                .password(passwordEncoder.encode("password"))
-                .roles("USER")
-                .build();
+    @Transactional
+    public UserE registerUser(String name, String lastname, String email, String password, String repeatPassword) {
+        if (userRepository.existsByEmail(email)) {
+            throw new IllegalArgumentException("El email ya está registrado");
+        }
 
-        UserDetails admin = User.withUsername("admin")
-                .password(passwordEncoder.encode("admin"))
-                .roles("ADMIN")
-                .build();
+        if (!password.equals(repeatPassword)) {
+            throw new IllegalArgumentException("Las contraseñas no coinciden");
+        }
 
-        return new InMemoryUserDetailsManager(user, admin);
+        String encodedPassword = passwordEncoder.encode(password);
+        UserRepository.UserDTO userDTO = new UserRepository.UserDTO(name, lastname, email, password, repeatPassword);
+
+        return userRepository.createUser(userDTO, encodedPassword);
     }
 }
+
+
+
+
+
