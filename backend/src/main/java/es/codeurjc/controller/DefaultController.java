@@ -1,26 +1,54 @@
 package es.codeurjc.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 
-@Controller
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ModelAttribute;
+
+import es.codeurjc.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+@ControllerAdvice
 public class DefaultController {
 
-    @GetMapping("/")
-    public String showIndex() {
-        return "index";  
-    }
+     @Autowired
+     UserRepository userRepository;
 
-    @GetMapping("/about")
-    public String showAbout() {
-        return "about";
-    }
+     @ModelAttribute("userType")
+     public String userType(HttpServletRequest request) {
+          if (request.isUserInRole("ADMIN"))
+               return "Admin";
+          else if (request.isUserInRole("CLIENT"))
+               return "Client";
+          else
+               return "Manager";
+     }
 
-    @GetMapping("/contact")
-    public String showContact() {
-        return "contact";
-    }
+     @ModelAttribute("isAdmin")
+     public Boolean isAdmin(HttpServletRequest request) {
+          return request.isUserInRole("ADMIN");
+     }
 
-   
-    
+     @ModelAttribute("isManager")
+     public Boolean isManager(HttpServletRequest request) {
+          return request.isUserInRole("MANAGER");
+     }
+
+     @ModelAttribute("isClient")
+     public Boolean isClient(HttpServletRequest request) {
+          return request.isUserInRole("CLIENT");
+     }
+
+     @ModelAttribute("isUser")
+     public Boolean isUser(HttpServletRequest request) {
+          return request.isUserInRole("USER");
+     }
+
+     @ModelAttribute("path")
+     public String getPath(HttpServletRequest request) {
+          return request.getServletPath();
+     }
+
 }
+
