@@ -35,4 +35,4 @@ la aplicación se lanza en un servidor springboot, por lo que hara falta crear u
 Estructurar el proyecto bien -> Mover todo lo estático a /static y corregir las rutas
 Decidir que hacer con las plantillas de la carpeta "plantillas" -> Algunas se pueden reutilizar, otras no
 
-Crear un footer, header y sidebar globales para poder incrustarlos en las páginas de forma genérica con mostachos
+Crear un footer, header y sidebar globales para poder incrustarlos en las páginas de forma genérica con mostachos 

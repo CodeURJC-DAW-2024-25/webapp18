@@ -1,58 +1,34 @@
 package es.codeurjc.repository;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-import es.codeurjc.model.UserE;
+import es.codeurjc.backend.model.Apartment;
+import es.codeurjc.backend.model.UserE;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserE, Long> {
 
-    // Buscar un usuario por su email
-    boolean existsByEmail(String email);
+    Optional<UserE> findByNick(String nick);
 
-    // Clase UserDTO interna
-    class UserDTO {
-        private String name;
-        private String lastname;
-        private String email;
-        private String password;
-        private String repeatPassword;
+    Optional<UserE> findFirstByName(String name);
 
-        // Constructor
-        public UserDTO(String name, String lastname, String email, String password, String repeatPassword) {
-            this.name = name;
-            this.lastname = lastname;
-            this.email = email;
-            this.password = password;
-            this.repeatPassword = repeatPassword;
-        }
+    Optional<UserE> findByName(String name);
 
-        // Getters y Setters
-        public String getName() { return name; }
-        public void setName(String name) { this.name = name; }
+    List<UserE> findByValidatedAndRejected(Boolean validated, Boolean rejected);
 
-        public String getLastname() { return lastname; }
-        public void setLastname(String lastname) { this.lastname = lastname; }
+    List<UserE> findByRejected(Boolean validated);
 
-        public String getEmail() { return email; }
-        public void setEmail(String email) { this.email = email; }
+    List<UserE> findByPhone(String phone);
 
-        public String getPassword() { return password; }
-        public void setPassword(String password) { this.password = password; }
+    List<UserE> findLocationByName(String name);
 
-        public String getRepeatPassword() { return repeatPassword; }
-        public void setRepeatPassword(String repeatPassword) { this.repeatPassword = repeatPassword; }
-    }
+    @Query("SELECT DISTINCT u FROM UserE u JOIN u.reservations r WHERE r.apartment = :apartment")
+    List<UserE> findByHotelInReservations(@Param("apartment") Apartment apartment);
 
-    // Crear un usuario a partir de UserDTO
-    default UserE createUser(UserDTO userDTO, String encodedPassword) {
-        UserE user = new UserE();
-        user.setName(userDTO.getName());
-        user.setLastname(userDTO.getLastname());
-        user.setEmail(userDTO.getEmail());
-        user.setPass(encodedPassword);  // Contraseña cifrada
-
-        return save(user); // Guardar el usuario en la base de datos
-    }
 }
