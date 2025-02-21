@@ -407,47 +407,53 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String registerClient(Model model, UserE user, Integer type) throws IOException {
-        if (!userService.existNick(user.getNick())) {
-            user.setPass(passwordEncoder.encode(user.getPass()));
-            List<String> rols = new ArrayList<>();
-            rols.add("USER");
+    public String registerClient(Model model, 
+        @RequestParam String name, 
+        @RequestParam String lastname, 
+        @RequestParam String email, 
+        @RequestParam("pass") String password,  
+        @RequestParam String repeatPassword, 
+        @RequestParam(required = false, defaultValue = "0") Integer type) throws IOException {
+    
+        if (!password.equals(repeatPassword)) {
+            model.addAttribute("error", "Passwords do not match");
+            return "register";
+        }
+    
+        if (!userService.existNick(email)) {
+            UserE user = new UserE();
+            user.setName(name);
+            user.setLastname(lastname);
+            user.setEmail(email);
+            user.setPass(passwordEncoder.encode(password));
+        
+            List<String> roles = new ArrayList<>();
+            roles.add("ROLE_USER");  // <- Cambiado aquí
             if (type == 0) {
-                rols.add("CLIENT");
+                roles.add("ROLE_CLIENT");  // <- Cambiado aquí
                 user.setvalidated(null);
                 user.setRejected(null);
             } else {
-                rols.add("MANAGER");
+                roles.add("ROLE_MANAGER");  // <- Cambiado aquí
                 user.setvalidated(false);
                 user.setRejected(false);
             }
-            user.setRols(rols);
-            List<Reservation> reservations = new ArrayList<>();
-            user.setReservations(reservations);
-            List<Apartment> apartments = new ArrayList<>();
-            user.setApartment(apartments);
-            List<Review> reviews = new ArrayList<>();
-            user.setReviews(reviews);
-
-            user.setLanguage("");
-            user.setLocation("");
-            user.setBio("");
-            user.setPhone("");
-            user.setOrganization("");
-
-            userService.save(user);
-
+            user.setRols(roles);
+        
             Resource image = new ClassPathResource("/static/images/default-apartment.jpg");
             user.setImageFile(BlobProxy.generateProxy(image.getInputStream(), image.contentLength()));
             user.setImage(true);
-
+        
             userService.save(user);
-
+        
             return "redirect:/login";
+        
+        
         } else {
             return "redirect:/nickTaken";
         }
     }
+    
 
     @GetMapping("/nickTaken")
     public String takenUserName(Model model, HttpServletRequest request) {
