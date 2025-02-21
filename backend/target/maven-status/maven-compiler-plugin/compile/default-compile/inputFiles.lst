@@ -15,6 +15,7 @@ C:\Users\carhe\Desktop\Uni\3o\DAW\webapp18\backend\src\main\java\es\codeurjc\rep
 C:\Users\carhe\Desktop\Uni\3o\DAW\webapp18\backend\src\main\java\es\codeurjc\repository\ReviewRepository.java
 C:\Users\carhe\Desktop\Uni\3o\DAW\webapp18\backend\src\main\java\es\codeurjc\repository\RoomRepository.java
 C:\Users\carhe\Desktop\Uni\3o\DAW\webapp18\backend\src\main\java\es\codeurjc\repository\UserRepository.java
+C:\Users\carhe\Desktop\Uni\3o\DAW\webapp18\backend\src\main\java\es\codeurjc\security\CSRFHandlerConfiguration.java
 C:\Users\carhe\Desktop\Uni\3o\DAW\webapp18\backend\src\main\java\es\codeurjc\security\SecurityConfiguration.java
 C:\Users\carhe\Desktop\Uni\3o\DAW\webapp18\backend\src\main\java\es\codeurjc\service\ApartmentService.java
 C:\Users\carhe\Desktop\Uni\3o\DAW\webapp18\backend\src\main\java\es\codeurjc\service\GeneralService.java

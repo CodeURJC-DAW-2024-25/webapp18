@@ -42,7 +42,7 @@ public class SecurityConfiguration {
 }
  */
 
- package es.codeurjc.security;
+package es.codeurjc.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -160,6 +160,9 @@ public class SecurityConfiguration {
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login")
                         .permitAll());
+                        
+        // Comentar la siguiente línea para deshabilitar CSRF
+        http.csrf(csrf -> csrf.disable());
 
         return http.build();
     }
