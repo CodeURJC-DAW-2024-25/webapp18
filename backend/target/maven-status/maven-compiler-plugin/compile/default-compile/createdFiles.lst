@@ -12,12 +12,14 @@ es\codeurjc\model\UserE.class
 es\codeurjc\service\UserService.class
 es\codeurjc\service\initDataBaseService.class
 es\codeurjc\repository\ApartmentRepository.class
+es\codeurjc\security\CSRFHandlerConfiguration.class
 es\codeurjc\service\RoomService.class
 es\codeurjc\App.class
 es\codeurjc\repository\RoomRepository.class
 es\codeurjc\controller\ApartmentController.class
 es\codeurjc\service\ReservationService.class
 es\codeurjc\controller\UserController.class
+es\codeurjc\security\CSRFHandlerInterceptor.class
 es\codeurjc\model\Apartment.class
 es\codeurjc\repository\ReservationRepository.class
 es\codeurjc\controller\ReservationController.class
