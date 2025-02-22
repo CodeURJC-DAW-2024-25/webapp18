@@ -44,6 +44,7 @@ public class initDataBaseService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+   
 
     @PostConstruct
     private void initDatabase() throws IOException {
@@ -52,18 +53,17 @@ public class initDataBaseService {
             return; // Evita duplicados si la base de datos ya tiene registros
         }
 
-        List<String> rolesUser = List.of("USER", "CLIENT");
-        List<String> rolesManager = List.of("USER", "MANAGER");
-        List<String> rolesAdmin = List.of("USER", "ADMIN");
+        List<String> rolesUser = List.of("ROLE_USER", "ROLE_CLIENT");
+        List<String> rolesManager = List.of("ROLE_USER", "ROLE_MANAGER");
+        List<String> rolesAdmin = List.of("ROLE_USER", "ROLE_ADMIN");
 
+        // Crear usuarios con los roles correctos
         UserE client1 = createUser("Jack1", "Wells1", "user1@mail.com", "user", "pass", rolesUser);
         UserE client2 = createUser("Jack2", "Wells2", "user2@mail.com", "user2", "pass2", rolesUser);
         UserE client3 = createUser("Jack3", "Wells3", "user3@mail.com", "user3", "pass3", rolesUser);
-
         UserE manager1 = createUser("Manager1", "WellsM1", "manager1@mail.com", "manager", "manager", rolesManager);
         UserE manager2 = createUser("Manager2", "WellsM2", "manager2@mail.com", "manager2", "manager2", rolesManager);
         UserE manager3 = createUser("Manager3", "WellsM3", "manager3@mail.com", "manager3", "manager3", rolesManager);
-
         UserE admin = createUser("Admin", "Adminson", "admin@mail.com", "admin", "admin", rolesAdmin);
 
         // Guardar usuarios
