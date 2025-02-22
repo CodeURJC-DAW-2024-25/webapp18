@@ -42,7 +42,7 @@ public class SecurityConfiguration {
 }
 */
 // SecurityConfiguration.java
-*/
+
 // SecurityConfiguration.java
 package es.codeurjc.security;
 
