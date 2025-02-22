@@ -83,6 +83,7 @@ public class UserController {
     }
  */
 
+
     // PUBLIC CONTROLLERS
 
     // ADVANCED RECOMMENDATION ALGORITHM
@@ -411,12 +412,12 @@ public class UserController {
         @RequestParam String name, 
         @RequestParam String lastname, 
         @RequestParam String email, 
-        @RequestParam("pass") String password,  
+        @RequestParam String pass,  // Cambiado para coincidir con el nombre en el formulario
         @RequestParam String repeatPassword, 
         @RequestParam(required = false, defaultValue = "0") Integer type) throws IOException {
     
-        if (!password.equals(repeatPassword)) {
-            model.addAttribute("error", "Passwords do not match");
+        if (!pass.equals(repeatPassword)) {
+            model.addAttribute("error", "Las contraseñas no coinciden");
             return "register";
         }
     
@@ -425,29 +426,33 @@ public class UserController {
             user.setName(name);
             user.setLastname(lastname);
             user.setEmail(email);
-            user.setPass(passwordEncoder.encode(password));
+            user.setNick(email); // Usar email como nick
+            user.setPass(passwordEncoder.encode(pass));
         
             List<String> roles = new ArrayList<>();
-            roles.add("ROLE_USER");  // <- Cambiado aquí
+            roles.add("ROLE_USER");
             if (type == 0) {
-                roles.add("ROLE_CLIENT");  // <- Cambiado aquí
-                user.setvalidated(null);
-                user.setRejected(null);
+                roles.add("ROLE_CLIENT");
+                user.setvalidated(true);
+                user.setRejected(false);
             } else {
-                roles.add("ROLE_MANAGER");  // <- Cambiado aquí
+                roles.add("ROLE_MANAGER");
                 user.setvalidated(false);
                 user.setRejected(false);
             }
             user.setRols(roles);
         
-            Resource image = new ClassPathResource("/static/images/default-apartment.jpg");
-            user.setImageFile(BlobProxy.generateProxy(image.getInputStream(), image.contentLength()));
-            user.setImage(true);
+            // Establecer imagen por defecto si existe
+            try {
+                Resource image = new ClassPathResource("/static/images/default-profile.jpg");
+                user.setImageFile(BlobProxy.generateProxy(image.getInputStream(), image.contentLength()));
+                user.setImage(true);
+            } catch (Exception e) {
+                user.setImage(false);
+            }
         
             userService.save(user);
-        
             return "redirect:/login";
-        
         
         } else {
             return "redirect:/nickTaken";
