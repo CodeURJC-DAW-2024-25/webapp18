@@ -42,6 +42,8 @@ public class SecurityConfiguration {
 }
 */
 // SecurityConfiguration.java
+*/
+// SecurityConfiguration.java
 package es.codeurjc.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
