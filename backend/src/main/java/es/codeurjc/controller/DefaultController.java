@@ -1,13 +1,12 @@
 package es.codeurjc.controller;
+// HACER ABOUT HACER CONTACT  ----->error?=nickTaken-----> mensaje de error y back 
 
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import es.codeurjc.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 @ControllerAdvice
 public class DefaultController {

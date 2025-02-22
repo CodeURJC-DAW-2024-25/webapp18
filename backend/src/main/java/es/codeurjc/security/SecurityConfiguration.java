@@ -81,7 +81,7 @@ public class SecurityConfiguration {
         http
             .authenticationProvider(authenticationProvider())
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/index", "/indexsearch", "/returnmainpage","/").permitAll()  // Index pública
+                .requestMatchers("/index", "/about","/").permitAll()  // Index pública
                 .requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/vendor/**").permitAll()
                 .requestMatchers("/login", "/loginerror", "/register", "/nickTaken", "/error").permitAll()
                 .requestMatchers("/profile/**").hasAnyRole("USER", "CLIENT", "MANAGER", "ADMIN")
