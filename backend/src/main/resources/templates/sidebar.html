@@ -24,21 +24,9 @@ rel="stylesheet">
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-        <!-- User-->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/profile">
-            <div class="sidebar-brand-text mx-3">User Profile</div>
-        </a>
-
-        <!-- Manager-->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/profile">
-            <div class="sidebar-brand-text mx-3">Manager Profile</div>
-        </a>
-
-        <!-- Admin-->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/profile">
-            <div class="sidebar-brand-text mx-3">Admin Profile</div>
-        </a>
-
+        <div class="sidebar-brand d-flex align-items-center justify-content-center">
+            <div class="sidebar-brand-text mx-3">{{userType}} Profile</div>
+        </div>
 
         <!-- Divider -->
         <hr class="sidebar-divider">
@@ -57,6 +45,7 @@ rel="stylesheet">
         </li>
 
 
+
         <!-- Divider -->
         <hr class="sidebar-divider">
 
@@ -64,34 +53,32 @@ rel="stylesheet">
         <div class="sidebar-heading">
             Administration
         </div>
-        <!--Cliente-->
+        
+        {{#isClient}}
         <li class="nav-item">
-            <a class="nav-link" href="/templates/clientReservation.html">
+            <a class="nav-link" href="/clientReservations">
                 <i class="fas fa-fw fa-chart-area"></i>
-                <span>My bookings</span></a>
+                <span>My reservations</span></a>
         </li>
-            
+        {{/isClient}}
         <!--Managers-->
+        {{#isManager}}
         <li class="nav-item">
-            <a class="nav-link" href="/templates/viewApartmentsManager.html">
+            <a class="nav-link" href="/viewApartmentsManager">
                 <i class="fas fa-fw fa-chart-area"></i>
-                <span>My apartments</span></a>
+                <span>My Apartments</span></a>
         </li>
+        {{/isManager}}
         <!--Admin-->
+        {{#isAdmin}}
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCharts"
-                    aria-expanded="true" aria-controls="collapsePages">
+            <a class="nav-link" href="/managerList">
                 <i class="fas fa-fw fa-chart-area"></i>
-                <span>Apartment management</span>
-            </a>
-            <div id="collapseCharts" class="collapse" aria-labelledby="headingCharts"
-                    data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="/templates/managerList.html">Managers list</a>
-                    <a class="collapse-item" href="/templates/apartmentValidation.html">Validate new apartments</a>
-                </div>
-            </div>
+                <span>View managers</span></a>
         </li>
+
+        <!--Admin-->
+        {{/isAdmin}}
         <!-- Divider -->
         <hr class="sidebar-divider">
             
@@ -100,18 +87,26 @@ rel="stylesheet">
         </div>
             
         <!-- Nav Item - Pages Collapse Menu -->
-        <!--Admin-->
+<!-- PENDIENTE -> Ver si se pueden meter así los mostachos en una ruta, o hacer que la
+ plantilla de charts se comporte de forma diferente según el usuario que entre
+ Alternativa
+ {{#isClient}}
+ href = /usercharts
+ {{^isClient}}
+
+ {{#isManager}}
+  href = /managercharts
+ {{^isManager}}
+
+ {{#isAdmin}}
+ href = /admincharts
+ {{^isAdmin}}
+
+ -->
         <li class="nav-item">
-            <a class="nav-link" href="/templates/chartsAdmin.html">
+            <a class="nav-link" href="/{{userType}}Charts">
                 <i class="fas fa-fw fa-chart-area"></i>
-                <span>Admin Charts</span>
-            </a>
-        </li>
-        <!--Manager-->
-        <li class="nav-item">
-            <a class="nav-link" href="/templates/chartsManager.html">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Apartment Charts</span>
+                <span>Your Charts</span>
             </a>
         </li>
         
