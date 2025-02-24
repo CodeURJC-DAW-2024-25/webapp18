@@ -184,8 +184,8 @@ public class ApartmentController {
 			return "redirect:/addApartmentPhoto/" + imgName;
 	}
 
-	@GetMapping("/apartmentinformation/{id}")
-	public String apartmentinformation(Model model, @PathVariable Long id) {
+	@GetMapping("/apartmentInformation/{id}")
+	public String apartmentInformation(Model model, @PathVariable Long id) {
 
 		UserE apartmentManager = apartmentService.findById(id).orElseThrow().getManager();
 
@@ -196,7 +196,7 @@ public class ApartmentController {
 			model.addAttribute("apartment", apartment);
 			model.addAttribute("numRooms", apartment.getNumRooms());
 
-			return "/apartmentinformation";
+			return "apartmentInformation";
 
 		} else
 			return "/error";

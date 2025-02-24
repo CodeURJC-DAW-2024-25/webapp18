@@ -1,6 +1,5 @@
 package es.codeurjc.model;
 
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -80,44 +79,51 @@ public class Room {
     }
 
     public boolean available(LocalDate checkIn, LocalDate checkOut) {
-        Boolean available = true;
-        int i = 0;
-        // Check if the room is available for the dates
-        while (i < this.reservations.size() && available) {
-            if (checkIn.isAfter(this.reservations.get(i).getCheckIn())
-                    && checkIn.isBefore(this.reservations.get(i).getCheckOut()))
-                available = false;
-            else if (checkOut.isAfter(this.reservations.get(i).getCheckIn())
-                    && checkOut.isBefore(this.reservations.get(i).getCheckOut()))
-                available = false;
-            else if (checkIn.isBefore(this.reservations.get(i).getCheckIn())
-                    && checkOut.isAfter(this.reservations.get(i).getCheckOut()))
-                available = false;
-            else if (checkIn.isEqual(this.reservations.get(i).getCheckIn())
-                    || checkOut.isEqual(this.reservations.get(i).getCheckOut()))
-                available = false;
-            else if (checkIn.isEqual(this.reservations.get(i).getCheckIn())
-                    && checkOut.isEqual(this.reservations.get(i).getCheckOut()))
-                available = false;
-            else if (checkIn.isAfter(this.reservations.get(i).getCheckIn())
-                    && checkOut.isBefore(this.reservations.get(i).getCheckOut()))
-                available = false;
-            else if (checkIn.isEqual(this.reservations.get(i).getCheckIn())
-                    && checkOut.isAfter(this.reservations.get(i).getCheckOut()))
-                available = false;
-            else if (checkIn.isBefore(this.reservations.get(i).getCheckIn())
-                    && checkOut.isEqual(this.reservations.get(i).getCheckOut()))
-                available = false;
-            else if (checkIn.isAfter(this.reservations.get(i).getCheckIn())
-                    && checkOut.isEqual(this.reservations.get(i).getCheckOut()))
-                available = false;
-            else if (checkIn.isEqual(this.reservations.get(i).getCheckIn())
-                    && checkOut.isBefore(this.reservations.get(i).getCheckOut()))
-                available = false;
-            else
-                i++;
-        }
-        return available;
+
+        return this.reservations.stream()
+                .noneMatch(reservation -> !checkOut.isBefore(reservation.getCheckIn())
+                        && !checkIn.isAfter(reservation.getCheckOut()));
+
+        /*
+         * Check if the room is available for the dates
+         * 
+         * Boolean available = true;
+         * int i = 0;
+         * while (i < this.reservations.size() && available) {
+         * if (checkIn.isAfter(this.reservations.get(i).getCheckIn())
+         * && checkIn.isBefore(this.reservations.get(i).getCheckOut()))
+         * available = false;
+         * else if (checkOut.isAfter(this.reservations.get(i).getCheckIn())
+         * && checkOut.isBefore(this.reservations.get(i).getCheckOut()))
+         * available = false;
+         * else if (checkIn.isBefore(this.reservations.get(i).getCheckIn())
+         * && checkOut.isAfter(this.reservations.get(i).getCheckOut()))
+         * available = false;
+         * else if (checkIn.isEqual(this.reservations.get(i).getCheckIn())
+         * || checkOut.isEqual(this.reservations.get(i).getCheckOut()))
+         * available = false;
+         * else if (checkIn.isEqual(this.reservations.get(i).getCheckIn())
+         * && checkOut.isEqual(this.reservations.get(i).getCheckOut()))
+         * available = false;
+         * else if (checkIn.isAfter(this.reservations.get(i).getCheckIn())
+         * && checkOut.isBefore(this.reservations.get(i).getCheckOut()))
+         * available = false;
+         * else if (checkIn.isEqual(this.reservations.get(i).getCheckIn())
+         * && checkOut.isAfter(this.reservations.get(i).getCheckOut()))
+         * available = false;
+         * else if (checkIn.isBefore(this.reservations.get(i).getCheckIn())
+         * && checkOut.isEqual(this.reservations.get(i).getCheckOut()))
+         * available = false;
+         * else if (checkIn.isAfter(this.reservations.get(i).getCheckIn())
+         * && checkOut.isEqual(this.reservations.get(i).getCheckOut()))
+         * available = false;
+         * else if (checkIn.isEqual(this.reservations.get(i).getCheckIn())
+         * && checkOut.isBefore(this.reservations.get(i).getCheckOut()))
+         * available = false;
+         * else
+         * i++;
+         * }
+         * return available;
+         */
     }
 }
-

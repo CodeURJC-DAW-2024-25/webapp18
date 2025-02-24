@@ -181,6 +181,11 @@ public class Apartment {
         }
     }
 
+    /**
+     * Returns the number of reviews with a score equal to the given score (it's measured in "stars")
+     * @param score
+     * @return
+     */
     public int getPercentageOfNScore(int score) {
 
         int numReviews = this.reviews.size();
