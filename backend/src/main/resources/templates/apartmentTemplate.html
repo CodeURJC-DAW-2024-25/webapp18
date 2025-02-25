@@ -1,0 +1,19 @@
+{{#apartments}}
+<div class="col-md-4 d-flex ftco-animate fadeInUp ftco-animated">
+  <div class="blog-entry align-self-stretch">
+    <img src="/index/{{id}}/images" id = "indexApartmentImg" class="block-20 rounded"
+    alt=""> 
+    <div class="text mt-3">
+      <h3 class="heading">{{name}}</h3>
+      <p>{{description}}</p>
+      {{#isClient}}
+      <a href="/apartmentInformation/{{id}}" class="btn btn-secondary rounded">Book now</a>
+      {{/isClient}}
+      {{^isClient}}
+      <a href="/apartmentInformation/{{id}}" class="btn btn-secondary rounded">View information</a>
+      {{/isClient}}
+      <a href="/apartmentReviews/{{id}}" class="btn btn-secondary rounded">Reviews</a>
+    </div>
+  </div>
+</div>
+{{/apartments}}
