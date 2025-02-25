@@ -402,66 +402,58 @@ public class UserController {
         return "loginError";
     }
 
-    @GetMapping("/register")
-    public String registerClient(Model model) {
-        return "register";
-    }
+	@GetMapping("/register")
+	public String registerClient(Model model) {
+		return "register";
+	}
 
-    @PostMapping("/register")
-    public String registerClient(Model model, 
-        @RequestParam String name, 
-        @RequestParam String lastname, 
-        @RequestParam String email, 
-        @RequestParam String pass,  // Cambiado para coincidir con el nombre en el formulario
-        @RequestParam String repeatPassword, 
-        @RequestParam(required = false, defaultValue = "0") Integer type) throws IOException {
-    
-        if (!pass.equals(repeatPassword)) {
-            model.addAttribute("error", "Las contraseñas no coinciden");
-            return "register";
-        }
-    
-        if (!userService.existNick(email)) {
-            UserE user = new UserE();
-            user.setName(name);
-            user.setLastname(lastname);
-            user.setEmail(email);
-            user.setNick(email); // Usar email como nick
-            user.setPass(passwordEncoder.encode(pass));
-        
-            List<String> roles = new ArrayList<>();
-            roles.add("ROLE_USER");
-            if (type == 0) {
-                roles.add("ROLE_CLIENT");
-                user.setvalidated(true);
-                user.setRejected(false);
-            } else {
-                roles.add("ROLE_MANAGER");
-                user.setvalidated(false);
-                user.setRejected(false);
-            }
-            user.setRols(roles);
-        
-            // Establecer imagen por defecto si existe
-            try {
-                Resource image = new ClassPathResource("/static/images/default-profile.jpg");
-                user.setImageFile(BlobProxy.generateProxy(image.getInputStream(), image.contentLength()));
-                user.setImage(true);
-            } catch (Exception e) {
-                user.setImage(false);
-            }
-        
-            userService.save(user);
-            return "redirect:/login";
-        
-        } else {
-            return "redirect:/nickTaken";
-        }
-    }
-    
+	@PostMapping("/register")
+	public String registerClient(Model model, UserE user, Integer type) throws IOException {
+		if (!userService.existNick(user.getNick())) {
+			user.setPass(passwordEncoder.encode(user.getPass()));
+			List<String> rols = new ArrayList<>();
+			rols.add("USER");
+			if (type == 0){
+				rols.add("CLIENT");
+				user.setvalidated(null);
+				user.setRejected(null);
+			}
+			else{
+				rols.add("MANAGER");
+				user.setvalidated(false);
+				user.setRejected(false);
+			}
+			user.setRols(rols);
+			List<Reservation> reservations= new ArrayList<>();
+			user.setReservations(reservations);
+			List<Apartment> apartments= new ArrayList<>();
+			user.setApartment(apartments);
+			List<Review> reviews= new ArrayList<>();
+			user.setReviews(reviews);
 
-    @GetMapping("/nickTaken")
-    public String takenUserName(Model model, HttpServletRequest request) {
-        return "nickTaken";
-    }
+			user.setLanguage("");
+			user.setLocation("");
+			user.setBio("");
+			user.setPhone("");
+			user.setOrganization("");
+
+			userService.save(user);
+
+			Resource image = new ClassPathResource("/static/images/default-hotel.jpg");
+        	user.setImageFile(BlobProxy.generateProxy(image.getInputStream(), image.contentLength()));
+        	user.setImage(true);
+
+			userService.save(user);
+
+			return "redirect:/login";
+		} else {
+			return "redirect:/nickTaken";
+		}
+	}
+
+	@GetMapping("/nickTaken")
+	public String takenUserName(Model model, HttpServletRequest request) {
+		return "nickTaken";
+	}
+
 }
