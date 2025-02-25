@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller; // Anotación @Controller
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping; // Anotación @GetMapping
 import org.springframework.web.bind.annotation.PostMapping; // Anotación @PostMapping
+import org.springframework.http.MediaType;
 
 import es.codeurjc.model.Apartment;
 import es.codeurjc.model.Reservation;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
 
 import org.springframework.core.io.Resource;
@@ -314,20 +316,27 @@ public class UserController {
     }
 
     @GetMapping("/profile/{id}/images")
-    public ResponseEntity<Object> downloadImage(HttpServletRequest request, @PathVariable Long id) throws SQLException {
+    public ResponseEntity<byte[]> downloadImage(@PathVariable Long id) throws SQLException, IOException {
+        UserE user = userService.findById(id).orElseThrow();
 
-        Optional<UserE> user = userService.findById(id);
-        if (user.isPresent() && user.get().getImageFile() != null) {
-
-            Resource file = new InputStreamResource(user.get().getImageFile().getBinaryStream());
-
-            return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpg")
-                    .contentLength(user.get().getImageFile().length()).body(file);
+        byte[] imageBytes;
+        if (user.getImageFile() != null) {
+            // Imagen del usuario
+            imageBytes = user.getImageFile().getBytes(1, (int) user.getImageFile().length());
         } else {
-            return ResponseEntity.notFound().build();
-            // return "/error";
+            // Imagen por defecto
+            InputStream defaultImageStream = getClass().getResourceAsStream("/static/images/default-profile.png");
+            if (defaultImageStream == null) {
+                return ResponseEntity.notFound().build(); // Si la imagen no se encuentra, devuelve 404
+            }
+            imageBytes = defaultImageStream.readAllBytes();
         }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_PNG)
+                .body(imageBytes);
     }
+
 
     @PostMapping("/editprofileimage/{id}")
     public String editImage(HttpServletRequest request, @RequestParam MultipartFile imageFile,
