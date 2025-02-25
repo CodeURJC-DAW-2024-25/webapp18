@@ -1,21 +1,26 @@
-// Se define la función globalmente para que Google ReCAPTCHA pueda invocarla
-function onLoadCallBack() {
-    grecaptcha.render('divRecaptcha', {
-        sitekey: '6LcYmIYpAAAAABssFnlPyL7CD1pRU0I0CxO_BVMK',
-        callback: successCallback,
-    });
-}
+document.addEventListener("DOMContentLoaded", function() {
+    function successCallback(token) {
+        var loginButton = document.getElementById("loginButton");
+        //Enables button once captcha gets a success call
+        if (loginButton) {
+            loginButton.disabled = false;
+        }
+    }
 
-function successCallback(token) {
+    //Call back function
+    function onLoadCallBack(){
+        grecaptcha.render('divRecaptcha', {
+            sitekey:'6LcYmIYpAAAAABssFnlPyL7CD1pRU0I0CxO_BVMK',
+            callback: successCallback,
+        });
+    }
+
+    // Disable login button by default
     var loginButton = document.getElementById("loginButton");
     if (loginButton) {
-        loginButton.disabled = false; // Habilita el botón tras pasar el captcha
+        loginButton.disabled = true;
     }
-}
 
-document.addEventListener("DOMContentLoaded", function () {
-    var loginButton = document.getElementById("loginButton");
-    if (loginButton) {
-        loginButton.disabled = true; // Deshabilita el botón al cargar la página
-    }
+    // Call onLoadCallBack to render reCAPTCHA
+    onLoadCallBack();
 });

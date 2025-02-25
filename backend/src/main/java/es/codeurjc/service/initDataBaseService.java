@@ -44,6 +44,7 @@ public class initDataBaseService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+   
 
     @PostConstruct
     private void initDatabase() throws IOException {
@@ -93,10 +94,7 @@ public class initDataBaseService {
         reservationRepository.saveAll(List.of(
             createReservation(client1, apartment1, room1, LocalDate.of(2024, 2, 27), LocalDate.of(2024, 2, 28)),
             createReservation(client1, apartment2, room2, LocalDate.of(2024, 3, 4), LocalDate.of(2024, 3, 6)),
-            createReservation(client2, apartment2, room2, LocalDate.of(2024, 6, 4), LocalDate.of(2024, 6, 6)),
-            createReservation(client3, apartment1, room1, LocalDate.of(2024, 7, 1), LocalDate.of(2024, 7, 5)),
-            createReservation(client3, apartment2, room2, LocalDate.of(2024, 8, 10), LocalDate.of(2024, 8, 15)),
-            createReservation(client3, apartment3, room3, LocalDate.of(2024, 9, 20), LocalDate.of(2024, 9, 25))
+            createReservation(client2, apartment2, room2, LocalDate.of(2024, 6, 4), LocalDate.of(2024, 6, 6))
         ));
 
         // Crear y guardar reseñas
