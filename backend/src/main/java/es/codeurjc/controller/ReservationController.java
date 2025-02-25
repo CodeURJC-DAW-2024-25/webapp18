@@ -1,7 +1,6 @@
 package es.codeurjc.controller;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,142 +26,104 @@ public class ReservationController {
     @Autowired
     private ReservationService reservationService;
 
+    @Autowired
+    private UserService userService;
 
     @Autowired
-	private UserService userService;
+    private ApartmentService apartmentService;
 
-
-	@Autowired
-	private ApartmentService apartmentService;
-
-
-	@Autowired
-	private RoomService roomService;
-
+    @Autowired
+    private RoomService roomService;
 
     @PostMapping("/addReservation/{id}")
-	public String addReservation(Model model, @PathVariable Long id, HttpServletRequest request, String checkIn,
-			String checkOut, Integer numPeople) {
+    public String addReservation(Model model, @PathVariable Long id, HttpServletRequest request, String checkIn,
+            String checkOut, Integer numPeople) {
 
-		LocalDate checkInDate = reservationService.toLocalDate(checkIn);
-		LocalDate checkOutDate = reservationService.toLocalDate(checkOut);
-		Room room = apartmentService.checkRooms(id, checkInDate, checkOutDate, numPeople);
-		if (room != null) {
-			UserE user = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
-			Apartment apartment = apartmentService.findById(id).orElseThrow();
-			Reservation newRe = new Reservation(checkInDate, checkOutDate, numPeople, apartment, room, user);
-			reservationService.save(newRe);
-			return "redirect:/clientreservations";
-		} else
-			return "redirect:/notRooms/{id}";
-	}
+        LocalDate checkInDate = reservationService.toLocalDate(checkIn);
+        LocalDate checkOutDate = reservationService.toLocalDate(checkOut);
+        Room room = apartmentService.checkRooms(id, checkInDate, checkOutDate, numPeople);
+        if (room != null) {
+            UserE user = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
+            Apartment apartment = apartmentService.findById(id).orElseThrow();
+            Reservation newReservation = new Reservation(checkInDate, checkOutDate, numPeople, apartment, room, user);
+            reservationService.save(newReservation);
+            return "redirect:/clientreservations";
+        } else
+            return "redirect:/notRooms/{id}";
+    }
 
-	@GetMapping("/notRooms/{id}")
-	public String notRooms(Model model, @PathVariable Long id) {
-		return "notRooms";
-	}
+    @GetMapping("/notRooms/{id}")
+    public String notRooms(Model model, @PathVariable Long id) {
+        return "notRooms";
+    }
 
-	/**
-	 * Redirects the users to the page of reservations, where they can check their
-	 * reservations
-	 * 
-	 * @param model
-	 * @param request
-	 * @return
-	 */
 	@GetMapping("/clientreservations")
-	public String clientreservation(Model model, HttpServletRequest request) {
-		UserE currentClient = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
+    public String clientReservation(Model model, HttpServletRequest request) {
+        UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
+        List<Reservation> bookings = currentUser.getReservations();
 
-		List<Reservation> bookings = currentClient.getReservations();
+        model.addAttribute("reservations", bookings);
+        model.addAttribute("user", currentUser);
 
-		if (bookings.size() < 6) {
-			model.addAttribute("reservations", bookings);
+        return "ClientReservation"; 
+    }
 
-		} else {
 
-			List<Reservation> auxBookings = new ArrayList<>();
-			for (int i = 0; i < 6; i++) {
-				auxBookings.add(bookings.get(i));
-			}
-
-			model.addAttribute("reservations", auxBookings);
-
-		}
-
-		model.addAttribute("user", currentClient);
-
-		return "clientReservation";
-
+	
+	@GetMapping("/clientReservations")
+	public String redirectToClientReservations() {
+		return "redirect:/clientreservations";
 	}
+	
 
-	/**
-	 * Loads up to 6 more reservations
-	 */
-	@GetMapping("/loadMoreReservations/{start}/{end}")
-	public String loadMoreReservations(
-			Model model,
-			HttpServletRequest request,
-			@PathVariable int start,
-			@PathVariable int end) {
 
-		UserE currentClient = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
+    @GetMapping("/loadMoreReservations/{start}/{end}")
+    public String loadMoreReservations(Model model, HttpServletRequest request, @PathVariable int start,
+            @PathVariable int end) {
 
-		List<Reservation> bookings = currentClient.getReservations();
-		List<Reservation> auxBookings = new ArrayList<>();
+        UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
+        List<Reservation> bookings = currentUser.getReservations();
 
-		if (start <= bookings.size()) {
+        if (start <= bookings.size()) {
+            model.addAttribute("reservations", bookings.subList(start - 1, Math.min(end, bookings.size())));
+        }
 
-			for (int i = start; i < end && i <= bookings.size(); i++) {
-				auxBookings.add(bookings.get(i - 1));
-			}
+        return "reservationTemplate";
+    }
 
-			model.addAttribute("reservations", auxBookings);
-		}
+    @GetMapping("/reservationInfo/{id}")
+    public String reservationInfo(Model model, HttpServletRequest request, @PathVariable Long id) {
+        UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
+        UserE reservationUser = reservationService.findById(id).orElseThrow().getUser();
 
-		return "reservationTemplate";
+        if (currentUser.equals(reservationUser)) {
+            model.addAttribute("reservation", reservationService.findById(id).orElseThrow());
+            return "reservationInfo";
+        } else
+            return "/error";
+    }
 
-	}
+    @GetMapping("/cancelReservation/{id}")
+    public String deleteReservation(HttpServletRequest request, @PathVariable Long id) {
 
-	@GetMapping("/reservationInfo/{id}")
-	public String clientreservation(Model model, HttpServletRequest request, @PathVariable Long id) {
-		UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
-		UserE foundUser = reservationService.findById(id).orElseThrow().getUser();
+        UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
+        UserE reservationUser = reservationService.findById(id).orElseThrow().getUser();
 
-		if (currentUser.equals(foundUser)) {
-			model.addAttribute("reservation", reservationService.findById(id).orElseThrow());
-			return "reservationInfo";
-		} else
-			return "/error";
+        if (currentUser.equals(reservationUser)) {
+            Reservation reservation = reservationService.findById(id).orElseThrow();
+            if (reservation != null) {
+                reservation.getUser().getReservations().remove(reservation);
+                reservation.getApartment().getReservations().remove(reservation);
+                reservation.getRooms().getReservations().remove(reservation);
 
-	}
+                userService.save(reservation.getUser());
+                apartmentService.save(reservation.getApartment());
+                roomService.save(reservation.getRooms());
 
-	@GetMapping("/cancelReservation/{id}") // this should be a post
-	public String deleteReservation(HttpServletRequest request, @PathVariable Long id) {
-
-		UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
-		UserE foundUser = reservationService.findById(id).orElseThrow().getUser();
-
-		if (currentUser.equals(foundUser)) {
-			Reservation reservation = reservationService.findById(id).orElseThrow();
-			if (reservation != null) {
-				UserE user = reservation.getUser();
-				user.getReservations().remove(reservation);
-				userService.save(user);
-
-				Apartment apartment = reservation.getApartment();
-				apartment.getReservations().remove(reservation);
-				apartmentService.save(apartment);
-
-				Room room = reservation.getRooms();
-				room.getReservations().remove(reservation);
-				roomService.save(room);
-
-				reservationService.deleteById(id);
-			}
-			return "redirect:/clientreservations";
-		} else
-			return "/error";
-	}
-
+                reservationService.deleteById(id);
+            }
+            return "redirect:/clientreservations";
+        } else
+            return "/error";
+    }
 }
