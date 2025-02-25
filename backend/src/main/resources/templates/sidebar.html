@@ -90,17 +90,17 @@ rel="stylesheet">
 <!-- PENDIENTE -> Ver si se pueden meter así los mostachos en una ruta, o hacer que la
  plantilla de charts se comporte de forma diferente según el usuario que entre
  Alternativa
- {{#isClient}}
+ #isClient
  href = /usercharts
- {{^isClient}}
+ ^isClient
 
- {{#isManager}}
+ #isManager
   href = /managercharts
- {{^isManager}}
+ ^isManager
 
- {{#isAdmin}}
+ #isAdmin
  href = /admincharts
- {{^isAdmin}}
+ ^isAdmin
 
  -->
         <li class="nav-item">

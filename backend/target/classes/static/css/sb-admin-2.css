@@ -11322,3 +11322,25 @@ footer.sticky-footer .copyright {
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
+
+#logout{
+  background-color: #be2617;
+  border-color: #be2617;
+}
+
+#apply{
+  background-color: #20c9a6;
+  border-color: #20c9a6;
+}
+
+
+.text-validated{
+  color: #1cc88a;
+}
+
+.content-border{
+  border-style:solid;
+  border-color: #000;
+  border-radius: 1px;
+}
+

@@ -1,49 +1,3 @@
-/* package es.codeurjc.security;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
-
-@Configuration
-public class SecurityConfiguration {
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf(csrf -> csrf.disable()) // Deshabilitar CSRF para pruebas
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/register", "/register/**", "/login", "/logout", "/static/**", "/css/**", "/js/**", "/images/**").permitAll() // Permitir acceso público
-                .requestMatchers("/profile").authenticated() // El perfil requiere autenticación
-                .anyRequest().authenticated() // Cualquier otra solicitud requiere autenticación
-            )
-            .formLogin(form -> form
-                .loginPage("/login").permitAll()         // Página de inicio de sesión
-                .loginProcessingUrl("/login")            // URL donde se procesa el formulario de login
-                .usernameParameter("username")           // Nombre del parámetro para el email (por defecto: "username")
-                .passwordParameter("password")           // Nombre del parámetro para la contraseña
-                .defaultSuccessUrl("/profile", true)     // Redirige al perfil tras un login exitoso
-                .failureUrl("/login?error=true")         // Redirige a /login si hay error
-            )
-            .logout(logout -> logout
-                .logoutUrl("/logout")                    // URL para cerrar sesión
-                .logoutSuccessUrl("/login?logout").permitAll() // Redirige tras cerrar sesión
-            );
-
-        return http.build();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder(); // Codificador de contraseñas
-    }
-}
-*/
-// SecurityConfiguration.java
-
-// SecurityConfiguration.java
 package es.codeurjc.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,32 +34,90 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .authenticationProvider(authenticationProvider())
-            .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/index", "/about","/").permitAll()  // Index pública
-                .requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/vendor/**").permitAll()
-                .requestMatchers("/login", "/loginerror", "/register", "/nickTaken", "/error").permitAll()
-                .requestMatchers("/profile/**").hasAnyRole("USER", "CLIENT", "MANAGER", "ADMIN")
-                .requestMatchers("/viewapartmentsmanager/**").hasRole("MANAGER")
-                .requestMatchers("/chartsadmin/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
-            )
-            .formLogin(formLogin -> formLogin
-                .loginPage("/login")
-                .failureUrl("/loginerror")
-                .defaultSuccessUrl("/profile")
-                .usernameParameter("username")
-                .passwordParameter("password")
-                .permitAll()
-            )
-            .logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login")
-                .permitAll()
-            );
+        http.authenticationProvider(authenticationProvider());
+        http.csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(authorize -> authorize
+                        // public pages
+                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/loginerror").permitAll()
+                        .requestMatchers("/css/**").permitAll()
+                        .requestMatchers("/js/**").permitAll()
+                        .requestMatchers("/fonts/**").permitAll()
+                        .requestMatchers("/images/**").permitAll()
+                        .requestMatchers("/img/**").permitAll()
+                        .requestMatchers("/index").permitAll()
+                        .requestMatchers("/register").permitAll()
+                        .requestMatchers("/nickTaken").permitAll()
+                        .requestMatchers("/error").permitAll()
+                        .requestMatchers("/notfounderror/**").permitAll()
+                        .requestMatchers("/hotelReviews/**").permitAll()
+                        .requestMatchers("/hotelinformation/**").permitAll()
+                        .requestMatchers("indexsearch").permitAll()
+                        .requestMatchers("/notRooms/**").permitAll()
+                        .requestMatchers("/indexsearch").permitAll()
+                        .requestMatchers("/returnmainpage").permitAll()
+                        .requestMatchers("/captcha").permitAll()
+                        .requestMatchers("/loadMoreHotels/**").permitAll()
+                        .requestMatchers("/loadMoreReviews/**").permitAll()
+                        .requestMatchers("/profile/*/images/").permitAll()
+                        .requestMatchers("/static/images/**").permitAll()
+                        .requestMatchers("/index/*/images/**").permitAll()
 
-        http.csrf(csrf -> csrf.disable());
+                        // User pages
+                        .requestMatchers("/profile/**").hasAnyRole("USER")
+                        .requestMatchers("/editprofile/**").hasAnyRole("USER")
+                        .requestMatchers("/editprofile/*/images").hasAnyRole("USER")
+                        .requestMatchers("/editprofileimage/**").hasAnyRole("USER")
+                        .requestMatchers("/posthotelReviews/**").hasAnyRole("USER")
+                        .requestMatchers("/replace/**").hasAnyRole("USER")
+
+                        // Client pages
+                        .requestMatchers("/clientreservations/**").hasAnyRole("CLIENT")
+                        .requestMatchers("/reservationInfo/**").hasAnyRole("CLIENT")
+                        .requestMatchers("/addReservation/**").hasAnyRole("CLIENT")
+                        .requestMatchers("/cancelReservation/**").hasAnyRole("CLIENT")
+                        .requestMatchers("/posthotelReviews/**").hasAnyRole("CLIENT")
+                        .requestMatchers("/loadMoreReservations/**").hasAnyRole("CLIENT")
+
+                        // Manager pages
+                        .requestMatchers("/edithotel/**").hasAnyRole("MANAGER")
+                        .requestMatchers("/viewhotelsmanager").hasAnyRole("MANAGER")
+                        .requestMatchers("/deleteHotel/**").hasAnyRole("MANAGER")
+                        .requestMatchers("/clientlist/**").hasAnyRole("MANAGER")
+                        .requestMatchers("/chartsmanager").hasAnyRole("MANAGER")
+                        .requestMatchers("/addHotel/**").hasAnyRole("MANAGER")
+                        .requestMatchers("/testChart/**").hasAnyRole("MANAGER")
+                        .requestMatchers("/application/**").hasAnyRole("MANAGER")
+                        .requestMatchers("/index/*/images/**").hasAnyRole("MANAGER")
+                        .requestMatchers("/edithotelimage/**").hasAnyRole("MANAGER")
+                        .requestMatchers("/addHotelPhoto/**").hasAnyRole("MANAGER")
+                        .requestMatchers("/selecthotelimage/**").hasAnyRole("MANAGER")
+                        .requestMatchers("/createHotel/**").hasAnyRole("MANAGER")
+                        .requestMatchers("/chartsManager").hasAnyRole("MANAGER")
+                        .requestMatchers("/addHotel").hasAnyRole("MANAGER")
+                        .requestMatchers("/index/*/images/**").hasAnyRole("MANAGER")
+                        .requestMatchers("/edithotelimage/**").hasAnyRole("MANAGER")
+                        .requestMatchers("/loadMoreHotelsManagerView/**").hasAnyRole("MANAGER")
+
+                        // Admin pages
+                        .requestMatchers("/managerlist").hasAnyRole("ADMIN")
+                        .requestMatchers("/chartsadmin").hasAnyRole("ADMIN")
+                        .requestMatchers("/managervalidation").hasAnyRole("ADMIN")
+                        .requestMatchers("/acceptance/**").hasAnyRole("ADMIN")
+                        .requestMatchers("/rejection/**").hasAnyRole("ADMIN")
+
+                )
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/")
+                        .failureUrl("/loginerror")
+                        .defaultSuccessUrl("/")
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login")
+                        .permitAll());
+
         return http.build();
     }
+
 }
