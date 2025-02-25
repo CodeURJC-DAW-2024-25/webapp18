@@ -47,6 +47,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/favicon.ico").permitAll() // Añadir esta línea
                         .requestMatchers("/images/**").permitAll()
                         .requestMatchers("/img/**").permitAll()
+                        .requestMatchers("/").permitAll()
                         .requestMatchers("/index").permitAll()
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/register").permitAll()
@@ -60,7 +61,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/indexsearch").permitAll()
                         .requestMatchers("/returnmainpage").permitAll()
                         .requestMatchers("/captcha").permitAll()
-                        .requestMatchers("/loadMoreHotels/**").permitAll()
+                        .requestMatchers("/loadMoreApartments/**").permitAll()
                         .requestMatchers("/loadMoreReviews/**").permitAll()
                         .requestMatchers("/profile/*/images/").permitAll()
                         .requestMatchers("/static/images/**").permitAll()

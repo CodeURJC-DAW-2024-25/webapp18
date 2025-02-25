@@ -1,6 +1,6 @@
 const NUM_RESULTS = 6;
 
-let timesRequested = 0; // it's 1 because the first 6 hotels are loaded with the /index
+let timesRequested = 1; // it's 1 because the first 6 hotels are loaded with the /index
 
 async function loadMoreApartments(){
 

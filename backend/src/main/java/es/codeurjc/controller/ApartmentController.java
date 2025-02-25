@@ -284,36 +284,6 @@ public class ApartmentController {
 	}
 
 	/**
-	 * Loads the next 6 apartments
-	 */
-	/*
-	 * @GetMapping("/loadMoreApartments/{start}/{end}")
-	 * public String loadMoreApartments(
-	 * Model model,
-	 * 
-	 * @PathVariable Long start,
-	 * 
-	 * @PathVariable Long end) {
-	 * 
-	 * var apartmentsQuantity = apartmentService.count();
-	 * 
-	 * if (start <= apartmentsQuantity) {
-	 * 
-	 * var apartments = new ArrayList<>();
-	 * 
-	 * // we get the next 6 apartments or the remaining ones
-	 * for (Long index = start; index < end && index < apartmentsQuantity; index++) {
-	 * apartments.add(apartmentService.findById(index));
-	 * }
-	 * 
-	 * model.addAttribute("apartments", apartments);
-	 * }
-	 * 
-	 * return "/apartmentTemplate";
-	 * }
-	 */
-
-	/**
 	 * Using AJAX, loads the next 6 apartments in the page, or none if all are loaded
 	 * 
 	 * @param model
@@ -332,13 +302,13 @@ public class ApartmentController {
 
 			var apartments = new ArrayList<>();
 
-			// We obtain the apartments IDs for the actual page
+			// We obtain the hotels IDs for the actual page
 			List<Long> apartmentIds = new ArrayList<>();
 			for (long index = start; index < end && index <= apartmentsQuantity; index++) {
 				apartmentIds.add(index);
 			}
 
-			// We look for the Apartment objects related to the IDs
+			// We look for the Hotel objects related to the IDs
 			for (Long apartmentId : apartmentIds) {
 				Apartment apartment = apartmentService.findById(apartmentId).orElse(null);
 				if (apartment != null) {
