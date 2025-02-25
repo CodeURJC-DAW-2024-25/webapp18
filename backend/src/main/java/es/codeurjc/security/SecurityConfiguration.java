@@ -38,10 +38,6 @@ public class SecurityConfiguration {
         http
                 .authorizeHttpRequests(authorize -> authorize
                         // public pages
-                        .requestMatchers("/profile/*/images").permitAll()
-                        .requestMatchers("/webfonts/**").permitAll()
-
-
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/loginerror").permitAll()
                         .requestMatchers("/css/**").permitAll()
