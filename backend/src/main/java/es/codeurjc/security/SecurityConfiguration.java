@@ -43,6 +43,8 @@ public class SecurityConfiguration {
                         .requestMatchers("/css/**").permitAll()
                         .requestMatchers("/js/**").permitAll()
                         .requestMatchers("/fonts/**").permitAll()
+                        .requestMatchers("/vendor/fontawesome-free/webfonts/**").permitAll() // Añadir esta línea
+                        .requestMatchers("/favicon.ico").permitAll() // Añadir esta línea
                         .requestMatchers("/images/**").permitAll()
                         .requestMatchers("/img/**").permitAll()
                         .requestMatchers("/index").permitAll()
@@ -108,9 +110,9 @@ public class SecurityConfiguration {
 
                 )
                 .formLogin(formLogin -> formLogin
-                        .loginPage("/")
+                        .loginPage("/login")
                         .failureUrl("/loginerror")
-                        .defaultSuccessUrl("/")
+                        .defaultSuccessUrl("/profile")
                         .permitAll())
                 .logout(logout -> logout
                         .logoutUrl("/logout")
