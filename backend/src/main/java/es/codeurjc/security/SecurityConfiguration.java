@@ -75,7 +75,8 @@ public class SecurityConfiguration {
                         .requestMatchers("/replace/**").hasAnyRole("USER")
 
                         // Client pages
-                        .requestMatchers("/clientreservations/**").hasAnyRole("CLIENT")
+                        .requestMatchers("/clientreservations/**").hasAnyRole("CLIENT") //dupe por barra lateral
+                        .requestMatchers("/clientReservations/**").hasAnyRole("CLIENT")
                         .requestMatchers("/reservationInfo/**").hasAnyRole("CLIENT")
                         .requestMatchers("/addReservation/**").hasAnyRole("CLIENT")
                         .requestMatchers("/cancelReservation/**").hasAnyRole("CLIENT")
