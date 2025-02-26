@@ -200,7 +200,7 @@ public class UserController {
             manager.setvalidated(false);
             userService.save(manager);
         }
-        return "redirect:/managervalidation";
+        return "redirect:/managerValidation";
 
     }
 
@@ -213,7 +213,7 @@ public class UserController {
             manager.setvalidated(true);
             userService.save(manager);
         }
-        return "redirect:/managervalidation";
+        return "redirect:/managerValidation";
 
     }
 

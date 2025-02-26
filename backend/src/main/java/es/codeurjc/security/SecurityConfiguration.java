@@ -38,6 +38,7 @@ public class SecurityConfiguration {
         http
                 .authorizeHttpRequests(authorize -> authorize
                         // public pages
+                        .requestMatchers("/apartmentInformation/**").permitAll()
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/loginerror").permitAll()
                         .requestMatchers("/css/**").permitAll()
@@ -55,8 +56,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/notfounderror/**").permitAll()
                         .requestMatchers("/hotelReviews/**").permitAll()
-                        .requestMatchers("/hotelinformation/**").permitAll()
-                        .requestMatchers("indexsearch").permitAll()
+                        .requestMatchers("/indexsearch").permitAll()
                         .requestMatchers("/notRooms/**").permitAll()
                         .requestMatchers("/indexsearch").permitAll()
                         .requestMatchers("/returnmainpage").permitAll()
