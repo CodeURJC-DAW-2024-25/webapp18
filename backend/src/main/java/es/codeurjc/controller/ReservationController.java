@@ -1,6 +1,7 @@
 package es.codeurjc.controller;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,38 +59,55 @@ public class ReservationController {
     }
 
 	@GetMapping("/clientreservations")
-    public String clientReservation(Model model, HttpServletRequest request) {
-        UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
-        List<Reservation> bookings = currentUser.getReservations();
+	public String clientreservation(Model model, HttpServletRequest request) {
+		UserE currentClient = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
 
-        model.addAttribute("reservations", bookings);
-        model.addAttribute("user", currentUser);
+		List<Reservation> bookings = currentClient.getReservations();
 
-        return "ClientReservation"; 
-    }
+		if (bookings.size() < 6) {
+			model.addAttribute("reservations", bookings);
 
+		} else {
 
-	
-	@GetMapping("/clientReservations")
-	public String redirectToClientReservations() {
-		return "redirect:/clientreservations";
+			List<Reservation> auxBookings = new ArrayList<>();
+			for (int i = 0; i < 6; i++) {
+				auxBookings.add(bookings.get(i));
+			}
+
+			model.addAttribute("reservations", auxBookings);
+
+		}
+
+		model.addAttribute("user", currentClient);
+
+		return "clientReservation";
+
 	}
 	
 
+	@GetMapping("/loadMoreReservations/{start}/{end}")
+	public String loadMoreReservations(
+			Model model,
+			HttpServletRequest request,
+			@PathVariable int start,
+			@PathVariable int end) {
 
-    @GetMapping("/loadMoreReservations/{start}/{end}")
-    public String loadMoreReservations(Model model, HttpServletRequest request, @PathVariable int start,
-            @PathVariable int end) {
+		UserE currentClient = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
 
-        UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
-        List<Reservation> bookings = currentUser.getReservations();
+		List<Reservation> bookings = currentClient.getReservations();
+		List<Reservation> auxBookings = new ArrayList<>();
 
-        if (start <= bookings.size()) {
-            model.addAttribute("reservations", bookings.subList(start - 1, Math.min(end, bookings.size())));
-        }
+		if (start <= bookings.size()) {
 
-        return "reservationTemplate";
-    }
+			for (int i = start; i < end && i <= bookings.size(); i++) {
+				auxBookings.add(bookings.get(i - 1));
+			}
+
+			model.addAttribute("reservations", auxBookings);
+		}
+		return "reservationTemplate";
+
+	}
 
     @GetMapping("/reservationInfo/{id}")
     public String reservationInfo(Model model, HttpServletRequest request, @PathVariable Long id) {

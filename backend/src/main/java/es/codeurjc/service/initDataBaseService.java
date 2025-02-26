@@ -345,7 +345,7 @@ public class initDataBaseService {
                 Reservation reservation1 = new Reservation(LocalDate.of(2024, 2, 27), LocalDate.of(2024, 2, 28), 2,
                                 apartment1, room1, client1);
                 Reservation reservation2 = new Reservation(LocalDate.of(2024, 3, 4), LocalDate.of(2024, 3, 6), 2,
-                                apartment2, room2, client1);
+                                apartment2, room2, client3);
                 Reservation reservation3 = new Reservation(LocalDate.of(2024, 6, 4), LocalDate.of(2024, 6, 6), 2,
                                 apartment2, room2, client2);
                 Reservation reservation4 = new Reservation(LocalDate.of(2012, 6, 4), LocalDate.of(2013, 6, 6), 2,
