@@ -196,10 +196,10 @@ public class ApartmentController {
 			model.addAttribute("apartment", apartment);
 			model.addAttribute("numRooms", apartment.getNumRooms());
 
-			return "apartmentInformation";
+			return "/apartmentInformation";
 
 		} else
-			return "/error";
+			{return "/error";} 
 
 	}
 

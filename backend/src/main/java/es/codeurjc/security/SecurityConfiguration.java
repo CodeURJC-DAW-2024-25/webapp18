@@ -55,7 +55,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/notfounderror/**").permitAll()
                         .requestMatchers("/hotelReviews/**").permitAll()
-                        .requestMatchers("/hotelinformation/**").permitAll()
+                        .requestMatchers("/apartmentInformation/**").permitAll()
                         .requestMatchers("indexsearch").permitAll()
                         .requestMatchers("/notRooms/**").permitAll()
                         .requestMatchers("/indexsearch").permitAll()
@@ -102,6 +102,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/index/*/images/**").hasAnyRole("MANAGER")
                         .requestMatchers("/edithotelimage/**").hasAnyRole("MANAGER")
                         .requestMatchers("/loadMoreHotelsManagerView/**").hasAnyRole("MANAGER")
+                        
 
                         // Admin pages
                         .requestMatchers("/managerlist").hasAnyRole("ADMIN")
@@ -109,6 +110,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/managervalidation").hasAnyRole("ADMIN")
                         .requestMatchers("/acceptance/**").hasAnyRole("ADMIN")
                         .requestMatchers("/rejection/**").hasAnyRole("ADMIN")
+                        
 
                 )
                 .formLogin(formLogin -> formLogin
