@@ -1,32 +1,11 @@
-
-<!-- Custom styles sidebar-->
-<link href="css/all.css" rel="stylesheet" type="text/css">
-<link
-    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-    rel="stylesheet">   
-<link href="css/sb-admin-2.css" rel="stylesheet">
-
-<!-- Custom styles-->
-<link rel='stylesheet' href="css/clientListManagerStyles.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
-<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css'>
-<script src='https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js'></script>
-
-<!-- Custom fonts-->
-<link
-href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-rel="stylesheet">
-
-
-<!--COPIA ESTO JUSTO DEBAJO DEL BODY, Y CIERRA EL DIV DEL WRAPPER JUSTO ANTES QUE EL BODY (TENDRAS QUE CAMBIARLO). EL WRAPPER ABARCA HASTA EL FIN DEL BODY-->
-<!-- Page Wrapper -->
 <div id="wrapper">
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-        <div class="sidebar-brand d-flex align-items-center justify-content-center">
+        <!-- User-->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/profile">
             <div class="sidebar-brand-text mx-3">{{userType}} Profile</div>
-        </div>
+        </a>
 
         <!-- Divider -->
         <hr class="sidebar-divider">
@@ -45,7 +24,6 @@ rel="stylesheet">
         </li>
 
 
-
         <!-- Divider -->
         <hr class="sidebar-divider">
 
@@ -53,7 +31,7 @@ rel="stylesheet">
         <div class="sidebar-heading">
             Administration
         </div>
-        
+        <!--Cliente-->
         {{#isClient}}
         <li class="nav-item">
             <a class="nav-link" href="/clientreservations">
@@ -64,86 +42,42 @@ rel="stylesheet">
         <!--Managers-->
         {{#isManager}}
         <li class="nav-item">
-            <a class="nav-link" href="/viewApartmentsManager">
+            <a class="nav-link" href="/viewhotelsmanager">
                 <i class="fas fa-fw fa-chart-area"></i>
-                <span>My Apartments</span></a>
+                <span>My Hotels</span></a>
         </li>
         {{/isManager}}
         <!--Admin-->
         {{#isAdmin}}
         <li class="nav-item">
-            <a class="nav-link" href="/managerList">
+            <a class="nav-link" href="/managervalidation">
                 <i class="fas fa-fw fa-chart-area"></i>
-                <span>View managers</span></a>
+                <span>Validate new managers</span></a>
         </li>
 
         <!--Admin-->
         {{/isAdmin}}
+
         <!-- Divider -->
         <hr class="sidebar-divider">
-            
+
         <div class="sidebar-heading">
-            Statistics
+            Main page
         </div>
-            
-        <!-- Nav Item - Pages Collapse Menu -->
-<!-- PENDIENTE -> Ver si se pueden meter así los mostachos en una ruta, o hacer que la
- plantilla de charts se comporte de forma diferente según el usuario que entre
- Alternativa
- #isClient
- href = /usercharts
- ^isClient
 
- #isManager
-  href = /managercharts
- ^isManager
-
- #isAdmin
- href = /admincharts
- ^isAdmin
-
- -->
         <li class="nav-item">
-            <a class="nav-link" href="/{{userType}}Charts">
+            <a class="nav-link" href="/">
                 <i class="fas fa-fw fa-chart-area"></i>
-                <span>Your Charts</span>
+                <span>Return to main page</span>
             </a>
         </li>
-        
-         <!-- Divider -->
-         <hr class="sidebar-divider">
-
-         <div class="sidebar-heading">
-             Main page
-           </div>
- 
-         <li class="nav-item">
-             <a class="nav-link" href="/">
-                 <i class="fas fa-fw fa-chart-area"></i>
-                 <span>Return to main page</span>
-             </a>
-         </li>
 
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
-            
+
         <!-- Sidebar Toggler (Sidebar) -->
         <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
         </div>
-    <!-- End of Sidebar -->
+        <!-- End of Sidebar -->
     </ul>
-</div>
-
-
-<!--COPIA ESTO JUSTO DEBAJO DEL BODY.PUEDE QUE TENGAS QUE CAMBIAR EL DIRECTORIO.PUEDE QUE NO HAYA QUE PONERLO, PERO POR SI ACASO-->
-
-<!-- Bootstrap core JavaScript-->
-<script src="js/jquery.js"></script>
-<script src="js/bootstrap.bundle.js"></script>
-
-<!-- Core plugin JavaScript-->
-<script src="js/jquery.easing.js"></script>
-
-<!-- Custom scripts for all pages-->
-<script src="js/sb-admin-2.js"></script>
