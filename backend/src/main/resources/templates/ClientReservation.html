@@ -50,21 +50,10 @@
                         </tr>
                     </thead>
                     <tbody id="reservationList">
-                        {{#reservations}}
+                        
                         <tr>
-                            <td>{{apartment.name}}</td>
-                            <td>{{apartment.location}}</td>
-                            <td>{{checkIn}}</td>
-                            <td>{{checkOut}}</td>
-                            <td>{{numPeople}}</td>
-                            <td>
-                                <div class="btn-group">
-                                    <a href="/reservationInfo/{{id}}" class="btn btn-primary btn-sm">View</a>
-                                    <a href="/cancelReservation/{{id}}" class="btn btn-danger btn-sm">Cancel</a>
-                                </div>
-                            </td>
-                        </tr>
-                        {{/reservations}}
+                            {{>reservationTemplate}}
+                        
                     </tbody>
                 </table>
             </div>

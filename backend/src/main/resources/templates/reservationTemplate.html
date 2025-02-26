@@ -6,9 +6,12 @@
   <td class="text-nowrap align-middle"><span>{{checkOut}}</span></td>
   <td class="text-nowrap align-middle">{{numPeople}}</td>
   <td class="text-center align-middle">
-     <div class="btn-group align-top">
-        <a href="/reservationInfo/{{id}}" class="btn btn-sm btn-outline-secondary badge" type="button">More info</a>
-     </div>
+    <td>
+      <div class="btn-group">
+          <a href="/reservationInfo/{{id}}" class="btn btn-primary btn-sm">View</a>
+          <a href="/cancelReservation/{{id}}" class="btn btn-danger btn-sm">Cancel</a>
+      </div>
+  </td>
   </td>
 </tr>
 {{/reservations}}
