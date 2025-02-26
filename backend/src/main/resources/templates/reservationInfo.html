@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Reservation Information</title>
+
+    <!-- Estilos y Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/clientReservations.css">
+
+    <!-- jQuery (debe cargarse antes que Bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap y otros scripts -->
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/sb-admin-2.js"></script>
+
+</head>
+
+<body>
+
+    {{>header}}
+
+    <div class="hero-wrap" style="background-image: url('/images/bg_3.jpg')">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text d-flex align-itemd-center justify-content-center">
+                <div class="col-md-9 ftco-animate text-center d-flex align-items-end justify-content-center">
+                    <div class="text">
+                        <h1 class="mb-4 bread">Reservation Details</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="row">
+                        <div class="col-md-12 ftco-animate">
+                            <h3>Your reservation info</h3>
+
+                            {{#reservation}}
+                            <div class="d-md-flex mt-5 mb-5">
+                                <ul class="list">
+                                    <li>Name: {{#apartment}}{{name}}{{/apartment}}{{^apartment}}Not Available{{/apartment}}</li>
+                                    <li><span>Location: </span>{{#apartment}}{{location}}{{/apartment}}{{^apartment}}Not Available{{/apartment}}</li>
+                                    <li><span>Price: </span>{{#room}}{{cost}}{{/room}}{{^room}}Not Available{{/room}}</li>
+                                </ul>
+                                <ul class="list ml-md-5">
+                                    <li><span>Number of people: </span>{{numPeople}}</li>
+                                    <li><span>Check-In:</span>{{checkIn}}</li>
+                                    <li><span>Check-Out:</span>{{checkOut}}</li>
+                                </ul>
+                            </div>
+                            {{/reservation}}
+
+                            {{^reservation}}
+                            <div class="alert alert-danger">Reservation details not found.</div>
+                            {{/reservation}}
+
+                        </div>
+                    </div>
+                </div> <!-- .col-md-8 -->
+
+                <div class="col-lg-4 sidebar ftco-animate pl-md-5">
+                    <div class="mt-4">
+                        <a href="/clientreservations">
+                            <button class="btn btn-primary" type="button">Go back</button>
+                        </a>
+                        {{#reservation}}
+                        <a href="/cancelReservation/{{id}}">
+                            <button class="btn btn-danger" type="button">Cancel Reservation</button>
+                        </a>
+                        {{/reservation}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> <!-- .section -->
+
+    {{>footer}}
+
+</body>
+
+</html>

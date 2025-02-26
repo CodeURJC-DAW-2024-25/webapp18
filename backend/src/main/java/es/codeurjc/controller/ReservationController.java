@@ -64,13 +64,13 @@ public class ReservationController {
 
 		List<Reservation> bookings = currentClient.getReservations();
 
-		if (bookings.size() < 6) {
+		if (bookings.size() < 3) {
 			model.addAttribute("reservations", bookings);
 
 		} else {
 
 			List<Reservation> auxBookings = new ArrayList<>();
-			for (int i = 0; i < 6; i++) {
+			for (int i = 0; i < 3; i++) {
 				auxBookings.add(bookings.get(i));
 			}
 
@@ -86,28 +86,34 @@ public class ReservationController {
 	
 
 	@GetMapping("/loadMoreReservations/{start}/{end}")
-	public String loadMoreReservations(
-			Model model,
-			HttpServletRequest request,
-			@PathVariable int start,
-			@PathVariable int end) {
+public String loadMoreReservations(
+        Model model,
+        HttpServletRequest request,
+        @PathVariable int start,
+        @PathVariable int end) {
+    
+    try {
+        UserE currentClient = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
+        List<Reservation> bookings = currentClient.getReservations();
+        List<Reservation> auxBookings = new ArrayList<>();
 
-		UserE currentClient = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
+        if (start < bookings.size()) {  
+            for (int i = start; i < end && i < bookings.size(); i++) {  
+                auxBookings.add(bookings.get(i));
+            }
+        }
 
-		List<Reservation> bookings = currentClient.getReservations();
-		List<Reservation> auxBookings = new ArrayList<>();
+        model.addAttribute("reservations", auxBookings);
+        return "reservationTemplate";  
 
-		if (start <= bookings.size()) {
+    } catch (Exception e) {
+        return "error";  
+    }
+}
 
-			for (int i = start; i < end && i <= bookings.size(); i++) {
-				auxBookings.add(bookings.get(i - 1));
-			}
 
-			model.addAttribute("reservations", auxBookings);
-		}
-		return "reservationTemplate";
 
-	}
+
 
     @GetMapping("/reservationInfo/{id}")
     public String reservationInfo(Model model, HttpServletRequest request, @PathVariable Long id) {
