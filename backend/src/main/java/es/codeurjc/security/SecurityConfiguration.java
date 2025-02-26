@@ -76,7 +76,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/replace/**").hasAnyRole("USER")
 
                         // Client pages
-                        .requestMatchers("/clientreservations/**").hasAnyRole("CLIENT")
+                        .requestMatchers("/clientReservations/**").hasAnyRole("CLIENT")
                         .requestMatchers("/reservationInfo/**").hasAnyRole("CLIENT")
                         .requestMatchers("/addReservation/**").hasAnyRole("CLIENT")
                         .requestMatchers("/cancelReservation/**").hasAnyRole("CLIENT")
@@ -107,7 +107,7 @@ public class SecurityConfiguration {
                         // Admin pages
                         .requestMatchers("/managerlist").hasAnyRole("ADMIN")
                         .requestMatchers("/chartsadmin").hasAnyRole("ADMIN")
-                        .requestMatchers("/managervalidation").hasAnyRole("ADMIN")
+                        .requestMatchers("/managerValidation").hasAnyRole("ADMIN")
                         .requestMatchers("/acceptance/**").hasAnyRole("ADMIN")
                         .requestMatchers("/rejection/**").hasAnyRole("ADMIN")
                         

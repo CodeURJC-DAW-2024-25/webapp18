@@ -48,7 +48,7 @@ public class ReservationController {
             Apartment apartment = apartmentService.findById(id).orElseThrow();
             Reservation newReservation = new Reservation(checkInDate, checkOutDate, numPeople, apartment, room, user);
             reservationService.save(newReservation);
-            return "redirect:/clientreservations";
+            return "redirect:/clientReservations";
         } else
             return "redirect:/notRooms/{id}";
     }
@@ -58,7 +58,7 @@ public class ReservationController {
         return "notRooms";
     }
 
-	@GetMapping("/clientreservations")
+	@GetMapping("/clientReservations")
 	public String clientreservation(Model model, HttpServletRequest request) {
 		UserE currentClient = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
 
@@ -146,7 +146,7 @@ public String loadMoreReservations(
 
                 reservationService.deleteById(id);
             }
-            return "redirect:/clientreservations";
+            return "redirect:/clientReservations";
         } else
             return "/error";
     }
