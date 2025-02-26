@@ -102,6 +102,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/index/*/images/**").hasAnyRole("MANAGER")
                         .requestMatchers("/edithotelimage/**").hasAnyRole("MANAGER")
                         .requestMatchers("/loadMoreHotelsManagerView/**").hasAnyRole("MANAGER")
+                        
 
                         // Admin pages
                         .requestMatchers("/managerlist").hasAnyRole("ADMIN")
@@ -109,6 +110,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/managerValidation").hasAnyRole("ADMIN")
                         .requestMatchers("/acceptance/**").hasAnyRole("ADMIN")
                         .requestMatchers("/rejection/**").hasAnyRole("ADMIN")
+                        
 
                 )
                 .formLogin(formLogin -> formLogin
