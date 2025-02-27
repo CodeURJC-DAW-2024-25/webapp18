@@ -55,8 +55,14 @@ public class SecurityConfiguration {
                         .requestMatchers("/nickTaken").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/notfounderror/**").permitAll()
+<<<<<<< Updated upstream
                         .requestMatchers("/hotelReviews/**").permitAll()
                         .requestMatchers("/indexsearch").permitAll()
+=======
+                        .requestMatchers("/apartmentReviews/**").permitAll()
+                        .requestMatchers("/apartmentinformation/**").permitAll()
+                        .requestMatchers("indexsearch").permitAll()
+>>>>>>> Stashed changes
                         .requestMatchers("/notRooms/**").permitAll()
                         .requestMatchers("/indexsearch").permitAll()
                         .requestMatchers("/returnmainpage").permitAll()
@@ -72,7 +78,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/editprofile/**").hasAnyRole("USER")
                         .requestMatchers("/editprofile/*/images").hasAnyRole("USER")
                         .requestMatchers("/editprofileimage/**").hasAnyRole("USER")
-                        .requestMatchers("/posthotelReviews/**").hasAnyRole("USER")
+                        .requestMatchers("/postapartmentReviews/**").hasAnyRole("USER")
                         .requestMatchers("/replace/**").hasAnyRole("USER")
 
                         // Client pages
@@ -80,7 +86,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/reservationInfo/**").hasAnyRole("CLIENT")
                         .requestMatchers("/addReservation/**").hasAnyRole("CLIENT")
                         .requestMatchers("/cancelReservation/**").hasAnyRole("CLIENT")
-                        .requestMatchers("/posthotelReviews/**").hasAnyRole("CLIENT")
+                        .requestMatchers("/postapartmentReviews/**").hasAnyRole("CLIENT")
                         .requestMatchers("/loadMoreReservations/**").hasAnyRole("CLIENT")
 
                         // Manager pages
