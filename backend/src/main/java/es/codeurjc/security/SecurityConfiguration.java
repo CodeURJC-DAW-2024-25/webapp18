@@ -39,23 +39,22 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         // public pages
                         .requestMatchers("/apartmentInformation/**").permitAll()
+                        .requestMatchers("/apartmentReviews/**").permitAll()
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/loginerror").permitAll()
                         .requestMatchers("/css/**").permitAll()
                         .requestMatchers("/js/**").permitAll()
                         .requestMatchers("/fonts/**").permitAll()
-                        .requestMatchers("/vendor/fontawesome-free/webfonts/**").permitAll() // Añadir esta línea
-                        .requestMatchers("/favicon.ico").permitAll() // Añadir esta línea
+                        .requestMatchers("/vendor/**").permitAll()
+                        .requestMatchers("/favicon.ico").permitAll() 
                         .requestMatchers("/images/**").permitAll()
                         .requestMatchers("/img/**").permitAll()
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/index").permitAll()
-                        .requestMatchers("/").permitAll()
                         .requestMatchers("/register").permitAll()
                         .requestMatchers("/nickTaken").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/notfounderror/**").permitAll()
-                        .requestMatchers("/hotelReviews/**").permitAll()
                         .requestMatchers("/indexsearch").permitAll()
                         .requestMatchers("/notRooms/**").permitAll()
                         .requestMatchers("/indexsearch").permitAll()

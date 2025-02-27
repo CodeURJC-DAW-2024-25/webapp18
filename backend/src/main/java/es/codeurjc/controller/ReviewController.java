@@ -103,7 +103,7 @@ public class ReviewController {
 
 				model.addAttribute("percentageReview" + i, percentageOfIScoreReview);
 			}
-			return "apartmentReviews";
+			return "/apartmentReviews";
 
 		} else {
 			return "/error";
