@@ -55,14 +55,8 @@ public class SecurityConfiguration {
                         .requestMatchers("/nickTaken").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/notfounderror/**").permitAll()
-<<<<<<< Updated upstream
                         .requestMatchers("/hotelReviews/**").permitAll()
                         .requestMatchers("/indexsearch").permitAll()
-=======
-                        .requestMatchers("/apartmentReviews/**").permitAll()
-                        .requestMatchers("/apartmentinformation/**").permitAll()
-                        .requestMatchers("indexsearch").permitAll()
->>>>>>> Stashed changes
                         .requestMatchers("/notRooms/**").permitAll()
                         .requestMatchers("/indexsearch").permitAll()
                         .requestMatchers("/returnmainpage").permitAll()
