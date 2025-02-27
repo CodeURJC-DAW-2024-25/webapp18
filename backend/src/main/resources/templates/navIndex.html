@@ -1,20 +1,30 @@
 <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-    <div class="container">
-      <a class="navbar-brand" href="/index">dream<span>Life</span></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="oi oi-menu"></span> Menu
-      </button>
-
+  <div class="container">
+    <a class="navbar-brand" href="/">dream<span>Life</span></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+      aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="oi oi-menu"></span> Menu
+    </button>
+    <ul class="navbar-nav ml-auto">
+      <!--Search bar-->
       <div class="collapse navbar-collapse" id="ftco-nav">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item"><a href="/index" class="nav-link">Home</a></li>
-        {{^isUser}}
-        <li class="nav-item"><a href="/login" class="nav-link">Log In</a></li>
-        {{/isUser}}
-        {{#isUser}}
-        <li class="nav-item"><a href="/profile" class="nav-link">Profile</a></li>
-        {{/isUser}}
-        </ul>
+        <div class="sidebar-box mt-3">
+          <form method="get" action="/indexsearch" class="search-form">
+            <div class="form-group">
+              <input type="search" class="form-control" placeholder="Type..." name="searchValue">
+              <button class="icon ion-ios-search" type="submit">
+                <input type="hidden" name="_csrf" value="{{token}}" />
+            </div>
+          </form>
+        </div>a
       </div>
-    </div>
-  </nav>
+      <li class="nav-item active"><a href="/" class="nav-link font-size-20">Home</a></li>
+      {{^isUser}}
+      <li class="nav-item"><a href="/login" class="nav-link font-size-20">Log In</a></li>
+      {{/isUser}}
+      {{#isUser}}
+      <li class="nav-item"><a href="/profile" class="nav-link font-size-15">Profile</a></li>
+      {{/isUser}}
+    </ul>
+  </div>
+</nav>
