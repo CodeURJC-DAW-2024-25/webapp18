@@ -68,6 +68,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/index/*/images/**").permitAll()
 
                         // User pages
+                        .requestMatchers("/addReservation/**").hasAnyRole("USER")
                         .requestMatchers("/profile/**").hasAnyRole("USER")
                         .requestMatchers("/editprofile/**").hasAnyRole("USER")
                         .requestMatchers("/editprofile/*/images").hasAnyRole("USER")
@@ -76,6 +77,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/replace/**").hasAnyRole("USER")
 
                         // Client pages
+                        .requestMatchers("/addReservation/**").hasAnyRole("CLIENT")
                         .requestMatchers("/clientReservations/**").hasAnyRole("CLIENT")
                         .requestMatchers("/reservationInfo/**").hasAnyRole("CLIENT")
                         .requestMatchers("/addReservation/**").hasAnyRole("CLIENT")

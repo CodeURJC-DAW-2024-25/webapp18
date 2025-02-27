@@ -35,28 +35,30 @@ public class ReservationController {
 
     @Autowired
     private RoomService roomService;
+    
+    @GetMapping("/addReservation/{id}")
+    public String showAddReservationForm(@PathVariable Long id, Model model) {
+        // Either show a form or redirect to apartment information
+        return "redirect:/apartmentInformation/" + id;
+    }
 
     @PostMapping("/addReservation/{id}")
-    public String addReservation(Model model, @PathVariable Long id, HttpServletRequest request, String checkIn,
-            String checkOut, Integer numPeople) {
+public String addReservation(Model model, @PathVariable Long id, HttpServletRequest request, String checkIn,
+        String checkOut, Integer numPeople) {
 
-        LocalDate checkInDate = reservationService.toLocalDate(checkIn);
-        LocalDate checkOutDate = reservationService.toLocalDate(checkOut);
-        Room room = apartmentService.checkRooms(id, checkInDate, checkOutDate, numPeople);
-        if (room != null) {
-            UserE user = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
-            Apartment apartment = apartmentService.findById(id).orElseThrow();
-            Reservation newReservation = new Reservation(checkInDate, checkOutDate, numPeople, apartment, room, user);
-            reservationService.save(newReservation);
-            return "redirect:/clientReservations";
-        } else
-            return "redirect:/notRooms/{id}";
-    }
-
-    @GetMapping("/notRooms/{id}")
-    public String notRooms(Model model, @PathVariable Long id) {
-        return "notRooms";
-    }
+    LocalDate checkInDate = reservationService.toLocalDate(checkIn);
+    LocalDate checkOutDate = reservationService.toLocalDate(checkOut);
+    Room room = apartmentService.checkRooms(id, checkInDate, checkOutDate, numPeople);
+    if (room != null) {
+        UserE user = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
+        Apartment apartment = apartmentService.findById(id).orElseThrow();
+        Reservation newRe = new Reservation(checkInDate, checkOutDate, numPeople, apartment, room, user);
+        reservationService.save(newRe);
+        return "redirect:/clientReservations";
+    } else
+        // Fix: Use string concatenation instead of path variable syntax in redirect URL
+        return "redirect:/notRooms/" + id;
+}
 
 	@GetMapping("/clientReservations")
 	public String clientreservation(Model model, HttpServletRequest request) {

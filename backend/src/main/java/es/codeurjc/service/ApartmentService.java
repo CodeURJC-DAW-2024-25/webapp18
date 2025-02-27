@@ -101,19 +101,22 @@ public class ApartmentService implements GeneralService<Apartment>{
         Apartment apartment = this.findById(id).orElseThrow();
         Integer i = 0;
         List<Room> rooms = apartment.getRooms();
-        Boolean roomLocated = false;
-        Room room = null;
-        while ((i < apartment.getNumRooms()) && !(roomLocated)) {
-            if (rooms.get(i).getMaxClients() == numPeople) {
-                if (rooms.get(i).available(checkIn, checkOut)) {
-                    room = rooms.get(i);
-                    roomLocated = true;
-                } else
-                    i++;
-            } else
-                i++;
+        
+        // First try to find a room with exact capacity
+        for (Room room : rooms) {
+            if (room.getMaxClients() == numPeople && room.available(checkIn, checkOut)) {
+                return room;
+            }
         }
-        return room;
+        
+        // If exact match not found, try to find a room that can accommodate at least that many
+        for (Room room : rooms) {
+            if (room.getMaxClients() >= numPeople && room.available(checkIn, checkOut)) {
+                return room;
+            }
+        }
+        
+        return null; // No suitable room found
     }
 
     public void deleteById(Long id){

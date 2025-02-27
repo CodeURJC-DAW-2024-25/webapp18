@@ -23,7 +23,47 @@
           <div class="row no-gutters">
             <div class="col-lg-12">
               {{#isClient}}
-                {{>addApartment}}
+              <form method="post" action="/addReservation/{{apartment.id}}" class="form booking-form aside-stretch">
+                <div class="row">
+                    <div class="col-md d-flex py-md-4">
+                        <div class="form-group align-self-stretch d-flex align-items-end">
+                            <div class="wrap align-self-stretch py-3 px-4">
+                                <label for="checkIn">Check-in Date</label>
+                                <input type="date" class="form-control" name="checkIn" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md d-flex py-md-4">
+                        <div class="form-group align-self-stretch d-flex align-items-end">
+                            <div class="wrap align-self-stretch py-3 px-4">
+                                <label for="checkOut">Check-out Date</label>
+                                <input type="date" class="form-control" name="checkOut" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md d-flex py-md-4">
+                        <div class="form-group align-self-stretch d-flex align-items-end">
+                            <div class="wrap align-self-stretch py-3 px-4">
+                                <label for="numPeople">Guests</label>
+                                <select name="numPeople" class="form-control" required>
+                                    <option value=1>1 Adult</option>
+                                    <option value=2>2 Adults</option>
+                                    <option value=3>3 Adults</option>
+                                    <option value=4>4 Adults</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md d-flex">
+                        <div class="form-group d-flex align-self-stretch">
+                            <button class="btn btn-primary py-5 py-md-3 px-4 align-self-stretch d-block" type="submit">
+                                Book this room
+                            </button>
+                            <input type="hidden" name="_csrf" value="{{token}}"/>
+                        </div>
+                    </div>
+                </div>
+              </form>
               {{/isClient}}
             </div>
           </div>

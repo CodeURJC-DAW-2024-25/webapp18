@@ -70,12 +70,15 @@ public class ReservationService implements GeneralService<Reservation> {
     }
 
     public LocalDate toLocalDate(String date) {
-        String[] list;
-        list = date.split("/");
-
-        LocalDate localdate = LocalDate.of(Integer.parseInt(list[2]), Integer.parseInt(list[0]),
-                Integer.parseInt(list[1]));
-        return localdate;
+        // Check if the date is in YYYY-MM-DD format
+        if (date.contains("-")) {
+            return LocalDate.parse(date); // This handles YYYY-MM-DD format directly
+        } else {
+            // Original code for MM/DD/YYYY format
+            String[] list = date.split("/");
+            return LocalDate.of(Integer.parseInt(list[2]), Integer.parseInt(list[0]),
+                   Integer.parseInt(list[1]));
+        }
     }
 
 }
