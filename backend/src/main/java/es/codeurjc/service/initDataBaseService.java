@@ -210,8 +210,8 @@ public class initDataBaseService {
         rolesAdmin.add("USER");
         rolesAdmin.add("ADMIN");
 
-        // updates database if its already
-        if (userRepository.findByNick("admin") == null) {
+        // updates database if its already loaded
+        if (!userRepository.findByNick("admin").isPresent()) {
 
             UserE client1 = new UserE("Jack1", "Wells1", "Bio", "loc", "lan", "phone",
                     "mail", "org", null, "user", passwordEncoder.encode("pass"), null, null, rolesUser,
