@@ -59,6 +59,7 @@ public class SecurityConfiguration {
                                 "/hotelReviews/**",
                                 "/indexsearch",
                                 "/notRooms/**",
+                                "/notRooms**",
                                 "/indexsearch",
                                 "/returnmainpage",
                                 "/captcha",
@@ -80,6 +81,7 @@ public class SecurityConfiguration {
 
                         // Client pages
                         .requestMatchers("/addReservation/**").hasAnyRole("CLIENT")
+                        .requestMatchers("/clientReservations").hasAnyRole("CLIENT")
                         .requestMatchers("/clientReservations/**").hasAnyRole("CLIENT")
                         .requestMatchers("/reservationInfo/**").hasAnyRole("CLIENT")
                         .requestMatchers("/addReservation/**").hasAnyRole("CLIENT")

@@ -43,25 +43,27 @@ public class ReservationController {
     }
 
     @PostMapping("/addReservation/{id}")
-public String addReservation(Model model, @PathVariable Long id, HttpServletRequest request, String checkIn,
-        String checkOut, Integer numPeople) {
+    public String addReservation(Model model, @PathVariable Long id, HttpServletRequest request, String checkIn,
+            String checkOut, Integer numPeople) {
 
-    LocalDate checkInDate = reservationService.toLocalDate(checkIn);
-    LocalDate checkOutDate = reservationService.toLocalDate(checkOut);
-    Room room = apartmentService.checkRooms(id, checkInDate, checkOutDate, numPeople);
-    if (room != null) {
-        UserE user = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
-        Apartment apartment = apartmentService.findById(id).orElseThrow();
-        Reservation newRe = new Reservation(checkInDate, checkOutDate, numPeople, apartment, room, user);
-        reservationService.save(newRe);
-        return "redirect:/clientReservations";
-    } else
-        // Fix: Use string concatenation instead of path variable syntax in redirect URL
-        return "redirect:/notRooms/" + id;
-}
+        LocalDate checkInDate = reservationService.toLocalDate(checkIn);
+        LocalDate checkOutDate = reservationService.toLocalDate(checkOut);
+        Room room = apartmentService.checkRooms(id, checkInDate, checkOutDate, numPeople);
+        if (room != null) {
+            UserE user = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
+            Apartment apartment = apartmentService.findById(id).orElseThrow();
+            Reservation newRe = new Reservation(checkInDate, checkOutDate, numPeople, apartment, room, user);
+            reservationService.save(newRe);
+            return "redirect:/clientReservations";
+        } else
+            // Fix: Use string concatenation instead of path variable syntax in redirect URL
+            return "notRooms";
+    }
 
+
+    
 	@GetMapping("/clientReservations")
-	public String clientreservation(Model model, HttpServletRequest request) {
+	public String clientReservation(Model model, HttpServletRequest request) {
 		UserE currentClient = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
 
 		List<Reservation> bookings = currentClient.getReservations();
@@ -82,7 +84,7 @@ public String addReservation(Model model, @PathVariable Long id, HttpServletRequ
 
 		model.addAttribute("user", currentClient);
 
-		return "clientReservation";
+		return "clientReservations";
 
 	}
 	
