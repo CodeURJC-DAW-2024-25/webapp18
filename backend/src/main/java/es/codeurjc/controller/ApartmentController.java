@@ -1,14 +1,10 @@
 package es.codeurjc.controller;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import javax.sql.rowset.serial.SerialBlob;
 
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -171,131 +167,170 @@ public class ApartmentController {
 
 
 
-
 	@GetMapping("/editApartment/{id}")
-	public String editApartment(HttpServletRequest request, Model model, @PathVariable Long id) {
-
-		UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
-		UserE foundUser = apartmentService.findById(id).orElseThrow().getManager();
-
-		if (currentUser.equals(foundUser)) {
-			Apartment apartment = apartmentService.findById(id).orElseThrow();
+	public String editApartment(@PathVariable Long id, Model model) {
+		Optional<Apartment> apartmentOpt = apartmentService.findById(id);
+		
+		if (apartmentOpt.isPresent()) {
+			Apartment apartment = apartmentOpt.get();
 			model.addAttribute("apartment", apartment);
+			model.addAttribute("id", id);
+			
+			// Contar habitaciones por número máximo de clientes y obtener sus precios
+			int[] roomCounts = new int[5]; // Índice 0 no se usa, 1-4 para maxClients
+			float[] roomCosts = new float[5]; // Precios correspondientes
+			
+			// Inicializar con valores predeterminados
+			for (int i = 1; i <= 4; i++) {
+				roomCounts[i] = 0;
+				roomCosts[i] = 0;
+			}
+			
+			// Contar habitaciones por maxClients y obtener costos
+			for (Room room : apartment.getRooms()) {
+				int maxClients = room.getMaxClients();
+				if (maxClients >= 1 && maxClients <= 4) {
+					roomCounts[maxClients]++;
+					// Si es la primera habitación de este tipo, guarda su costo
+					if (roomCounts[maxClients] == 1) {
+						roomCosts[maxClients] = room.getcost(); // Nota: 'c' minúscula en getcost()
+					}
+				}
+			}
+			
+			// Añadir conteos y costos de habitaciones al modelo
+			for (int i = 1; i <= 4; i++) {
+				model.addAttribute("room" + i, roomCounts[i]);
+				model.addAttribute("cost" + i, (int)roomCosts[i]); // Convertir a int si es necesario para el formulario
+			}
+			
+			System.out.println("Editando apartamento ID: " + id + ", Nombre: " + apartment.getName());
+			
 			return "editApartment";
-
-		} else
-			return "/error";
-	}
-
-	@PostMapping("/editApartment/{id}")
-	public String editApartment(Model model, HttpServletRequest request, Apartment newApartment, Integer room1,
-			Integer cost1,
-			Integer room2,
-			Integer cost2, Integer room3, Integer cost3, Integer room4, Integer cost4, @PathVariable Long id)
-			throws IOException {
-
-		UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
-		UserE foundUser = apartmentService.findById(id).orElseThrow().getManager();
-
-		if (currentUser.equals(foundUser)) {
-			Apartment apartment = apartmentService.findById(id).orElseThrow();
-
-			apartment.setName(newApartment.getName());
-			apartment.setLocation(newApartment.getLocation());
-			apartment.setDescription(newApartment.getDescription());
-
-			if (room1 != null)
-				for (int i = 0; i < room1; i++) {
-					Room room = new Room(1, cost1, new ArrayList<>(), newApartment);
-					apartment.getRooms().add(room);
-					roomService.save(room);
-				}
-
-			if (room2 != null)
-				for (int i = 0; i < room2; i++) {
-					Room room = new Room(2, cost2, new ArrayList<>(), newApartment);
-					apartment.getRooms().add(room);
-					roomService.save(room);
-				}
-
-			if (room3 != null)
-				for (int i = 0; i < room3; i++) {
-					Room room = new Room(3, cost3, new ArrayList<>(), newApartment);
-					apartment.getRooms().add(room);
-					roomService.save(room);
-				}
-
-			if (room4 != null)
-				for (int i = 0; i < room4; i++) {
-					Room room = new Room(4, cost4, new ArrayList<>(), newApartment);
-					apartment.getRooms().add(room);
-					roomService.save(room);
-				}
-
-			apartmentService.save(apartment);
-
-			model.addAttribute("apartment", apartment);
-
+		} else {
+			System.out.println("No se encontró apartamento con ID: " + id);
 			return "redirect:/viewApartmentsManager";
-
-		} else
-			return "/error";
-
+		}
+	}
+	
+	@PostMapping("/updateApartment/{id}")
+	public String updateApartment(HttpServletRequest request,
+			@PathVariable Long id,
+			@ModelAttribute("apartment") Apartment updatedApartment,
+			Integer room1, Integer cost1,
+			Integer room2, Integer cost2,
+			Integer room3, Integer cost3,
+			Integer room4, Integer cost4,
+			@RequestParam(value = "imageFileUpload", required = false) MultipartFile imageFile,
+			Model model) {
+		
+		try {
+			Optional<Apartment> existingApartmentOpt = apartmentService.findById(id);
+			if (!existingApartmentOpt.isPresent()) {
+				model.addAttribute("error", "Apartamento no encontrado");
+				return "editApartment";
+			}
+			
+			Apartment existingApartment = existingApartmentOpt.get();
+			
+			existingApartment.setName(updatedApartment.getName());
+			existingApartment.setLocation(updatedApartment.getLocation());
+			existingApartment.setDescription(updatedApartment.getDescription());
+			
+			if (imageFile != null && !imageFile.isEmpty()) {
+				existingApartment.setImageFile(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
+				existingApartment.setImage(true);
+			}
+			
+			existingApartment.getRooms().clear();
+			
+			if (room1 != null && room1 > 0 && cost1 != null && cost1 > 0) {
+				for (int i = 0; i < room1; i++) {
+					existingApartment.getRooms().add(new Room(1, cost1, new ArrayList<>(), existingApartment));
+				}
+			}
+			
+			if (room2 != null && room2 > 0 && cost2 != null && cost2 > 0) {
+				for (int i = 0; i < room2; i++) {
+					existingApartment.getRooms().add(new Room(2, cost2, new ArrayList<>(), existingApartment));
+				}
+			}
+			
+			if (room3 != null && room3 > 0 && cost3 != null && cost3 > 0) {
+				for (int i = 0; i < room3; i++) {
+					existingApartment.getRooms().add(new Room(3, cost3, new ArrayList<>(), existingApartment));
+				}
+			}
+			
+			if (room4 != null && room4 > 0 && cost4 != null && cost4 > 0) {
+				for (int i = 0; i < room4; i++) {
+					existingApartment.getRooms().add(new Room(4, cost4, new ArrayList<>(), existingApartment));
+				}
+			}
+			
+			apartmentService.save(existingApartment);
+			
+			return "redirect:/viewApartmentsManager";
+			
+		} catch (Exception e) {
+			model.addAttribute("error", "Error al actualizar el apartamento: " + e.getMessage());
+			return "editApartment";
+		}
 	}
 
-	@GetMapping("/deleteApartment/{id}")
-	public String deleteApartment(HttpServletRequest request, Model model, @PathVariable Long id) {
+		@GetMapping("/deleteApartment/{id}")
+		public String deleteApartment(HttpServletRequest request, Model model, @PathVariable Long id) {
 
-		UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
-		UserE foundUser = apartmentService.findById(id).orElseThrow().getManager();
+			UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
+			UserE foundUser = apartmentService.findById(id).orElseThrow().getManager();
 
-		if (currentUser.equals(foundUser)) {
+			if (currentUser.equals(foundUser)) {
+				Optional<Apartment> apartment = apartmentService.findById(id);
+				if (apartment.isPresent()) {
+					apartmentService.deleteById(id);
+				}
+
+				return "redirect:/viewApartmentsManager";
+
+			} else
+				return "/error";
+		}
+
+		@GetMapping("/index/{id}/images")
+		public ResponseEntity<Object> downloadImage(HttpServletRequest request, @PathVariable Long id) throws SQLException {
+
 			Optional<Apartment> apartment = apartmentService.findById(id);
-			if (apartment.isPresent()) {
-				apartmentService.deleteById(id);
+			if (apartment.isPresent() && apartment.get().getImageFile() != null) {
+
+				Resource file = new InputStreamResource(apartment.get().getImageFile().getBinaryStream());
+				return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpg")
+						.contentLength(apartment.get().getImageFile().length()).body(file);
+
+			} else {
+				return ResponseEntity.notFound().build();
+				// return "/error";
+			}
+		}
+
+		@GetMapping("/apartmentInformation/{id}")
+		public String apartmentInformation(Model model, @PathVariable Long id) {
+
+			UserE apartmentManager = apartmentService.findById(id).orElseThrow().getManager();
+
+			if (apartmentManager.getvalidated()) {
+				Apartment apartment = apartmentService.findById(id).orElseThrow();
+				if (apartment.getManager().getvalidated() == false)
+					return "redirect:/error";
+				model.addAttribute("apartment", apartment);
+				model.addAttribute("numRooms", apartment.getNumRooms());
+
+				return "/apartmentInformation";
+
+			} else {
+				return "/error";
 			}
 
-			return "redirect:/viewApartmentsManager";
-
-		} else
-			return "/error";
-	}
-
-	@GetMapping("/index/{id}/images")
-	public ResponseEntity<Object> downloadImage(HttpServletRequest request, @PathVariable Long id) throws SQLException {
-
-		Optional<Apartment> apartment = apartmentService.findById(id);
-		if (apartment.isPresent() && apartment.get().getImageFile() != null) {
-
-			Resource file = new InputStreamResource(apartment.get().getImageFile().getBinaryStream());
-			return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpg")
-					.contentLength(apartment.get().getImageFile().length()).body(file);
-
-		} else {
-			return ResponseEntity.notFound().build();
-			// return "/error";
 		}
-	}
-
-	@GetMapping("/apartmentInformation/{id}")
-	public String apartmentInformation(Model model, @PathVariable Long id) {
-
-		UserE apartmentManager = apartmentService.findById(id).orElseThrow().getManager();
-
-		if (apartmentManager.getvalidated()) {
-			Apartment apartment = apartmentService.findById(id).orElseThrow();
-			if (apartment.getManager().getvalidated() == false)
-				return "redirect:/error";
-			model.addAttribute("apartment", apartment);
-			model.addAttribute("numRooms", apartment.getNumRooms());
-
-			return "/apartmentInformation";
-
-		} else {
-			return "/error";
-		}
-
-	}
 
 	@GetMapping("/clientlist/{id}")
 	public String clientlist(Model model, HttpServletRequest request, @PathVariable Long id) {
