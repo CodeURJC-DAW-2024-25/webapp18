@@ -86,24 +86,25 @@ public class SecurityConfiguration {
                         .requestMatchers("/loadMoreReservations/**").hasAnyRole("CLIENT")
 
                         // Manager pages
-                        .requestMatchers("/edithotel/**").hasAnyRole("MANAGER")
-                        .requestMatchers("/viewhotelsmanager").hasAnyRole("MANAGER")
-                        .requestMatchers("/deleteHotel/**").hasAnyRole("MANAGER")
+                        // Manager pages
+                        .requestMatchers("/editApartment/**").hasAnyRole("MANAGER")
+                        .requestMatchers("/viewApartmentsmanager").hasAnyRole("MANAGER")
+                        .requestMatchers("/deleteApartment/**").hasAnyRole("MANAGER")
                         .requestMatchers("/clientlist/**").hasAnyRole("MANAGER")
                         .requestMatchers("/chartsmanager").hasAnyRole("MANAGER")
-                        .requestMatchers("/addHotel/**").hasAnyRole("MANAGER")
+                        .requestMatchers("/addApartment").hasAnyRole("MANAGER")
+                        .requestMatchers("/addApartment/**").hasAnyRole("MANAGER")
                         .requestMatchers("/testChart/**").hasAnyRole("MANAGER")
                         .requestMatchers("/application/**").hasAnyRole("MANAGER")
                         .requestMatchers("/index/*/images/**").hasAnyRole("MANAGER")
-                        .requestMatchers("/edithotelimage/**").hasAnyRole("MANAGER")
-                        .requestMatchers("/addHotelPhoto/**").hasAnyRole("MANAGER")
-                        .requestMatchers("/selecthotelimage/**").hasAnyRole("MANAGER")
-                        .requestMatchers("/createHotel/**").hasAnyRole("MANAGER")
+                        .requestMatchers("/editApartmentimage/**").hasAnyRole("MANAGER")
+                        .requestMatchers("/addApartmentPhoto/**").hasAnyRole("MANAGER")
+                        .requestMatchers("/selectApartmentimage/**").hasAnyRole("MANAGER")
+                        .requestMatchers("/createApartment/**").hasAnyRole("MANAGER")
+                        .requestMatchers("/createApartment").hasAnyRole("MANAGER")
                         .requestMatchers("/chartsManager").hasAnyRole("MANAGER")
-                        .requestMatchers("/addHotel").hasAnyRole("MANAGER")
-                        .requestMatchers("/index/*/images/**").hasAnyRole("MANAGER")
-                        .requestMatchers("/edithotelimage/**").hasAnyRole("MANAGER")
-                        .requestMatchers("/loadMoreHotelsManagerView/**").hasAnyRole("MANAGER")
+                        .requestMatchers("/addApartment").hasAnyRole("MANAGER")
+                        .requestMatchers("/loadMoreApartmentsManagerView/**").hasAnyRole("MANAGER")
                         
 
                         // Admin pages

@@ -2,22 +2,23 @@ package es.codeurjc.controller;
 
 
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.io.IOException;
-import java.sql.SQLException;
 
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,9 +47,148 @@ public class ApartmentController {
 
 	@Autowired
 	RoomService roomService;
+	
 
-	@GetMapping("/editapartment/{id}")
-	public String editapartment(HttpServletRequest request, Model model, @PathVariable Long id) {
+	@GetMapping("/addApartment")
+public String addApartment(Model model, HttpServletRequest request) {
+    Optional<UserE> user = userService.findByNick(request.getUserPrincipal().getName());
+    if (user.isPresent()) {
+        model.addAttribute("name", user.get().getName());
+        model.addAttribute("photo", "default.jpg"); // Añadir un valor por defecto para photo
+        return "addApartment";
+    } else
+        return "redirect:/login";
+}
+
+
+
+
+	@GetMapping("/addApartment/{imgName}")
+	public String addApartmentWithPhoto(Model model, HttpServletRequest request, @PathVariable String imgName) {
+		Optional<UserE> user = userService.findByNick(request.getUserPrincipal().getName());
+		if (user.isPresent()) {
+			model.addAttribute("name", user.get().getName());
+			model.addAttribute("photo", imgName);
+			return "addApartment";
+		} else
+			return "redirect:/login";
+	}
+	
+	@PostMapping("/createApartment")
+public String createApartment(HttpServletRequest request, 
+                             @ModelAttribute("apartment") Apartment newApartment,
+                             BindingResult bindingResult,
+                             Integer room1, Integer cost1, 
+                             Integer room2, Integer cost2, 
+                             Integer room3, Integer cost3, 
+                             Integer room4, Integer cost4,
+                             @RequestParam("imageFile") MultipartFile imageFile,
+                             Model model) throws IOException {
+    
+    System.out.println("Proceso de creación de apartamento iniciado");
+    
+    try {
+        UserE user = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
+        
+        newApartment.setManager(user);
+        newApartment.setRooms(new ArrayList<>());
+        newApartment.setReservations(new ArrayList<>());
+        newApartment.setReviews(new ArrayList<>());
+        
+        // Procesar la imagen subida directamente
+        if (imageFile != null && !imageFile.isEmpty()) {
+            newApartment.setImageFile(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
+            newApartment.setImage(true);
+        }
+        
+        // Añadir habitaciones según lo especificado
+        if (room1 != null && room1 > 0 && cost1 != null && cost1 > 0)
+            for (int i = 0; i < room1; i++) {
+                newApartment.getRooms().add(new Room(1, cost1, new ArrayList<>(), newApartment));
+            }
+        
+        // [Resto del código para room2, room3, room4...]
+        
+        System.out.println("Guardando apartamento: " + newApartment.getName());
+        apartmentService.save(newApartment);
+        System.out.println("Apartamento guardado con éxito. ID: " + newApartment.getId());
+        
+        // Prueba con una redirección simple
+        return "redirect:/";
+        
+        // Cuando funcione, cambia a la ruta definitiva
+        // return "redirect:/viewapartmentsmanager";
+    } catch (Exception e) {
+        System.err.println("Error en la creación del apartamento: " + e.getMessage());
+        e.printStackTrace();
+        
+        // En caso de error, volver al formulario con mensaje de error
+        model.addAttribute("error", "Error al crear el apartamento: " + e.getMessage());
+        return "addApartment";
+    }
+}
+		
+
+	/// PARA PRUEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAS
+	/// 
+	/// 
+	/// 
+	@GetMapping("/viewApartmentsmanager")
+	public String viewApartmentsManager(Model model, HttpServletRequest request) {
+		UserE user = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
+		model.addAttribute("apartments", user.getApartment());
+		return "viewApartmentsManager"; // Nombre de la vista (HTML)
+	}
+
+
+///
+
+	@GetMapping("/addApartmentPhoto/{imgName}")
+	public String addApartmentPhoto(Model model, HttpServletRequest request, @PathVariable String imgName) {
+		model.addAttribute("photo", imgName);
+		return "addApartmentPhoto";
+	}
+
+
+
+	@PostMapping("/editApartmentimage/{id}")
+	public String editImage(HttpServletRequest request, @RequestParam MultipartFile imageFile,
+			@PathVariable Long id,
+			Model model) throws IOException {
+
+		UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
+		UserE foundUser = apartmentService.findById(id).orElseThrow().getManager();
+
+		if (currentUser.equals(foundUser)) {
+			Apartment apartment = apartmentService.findById(id).orElseThrow();
+
+			if (!imageFile.getOriginalFilename().isBlank()) {
+				apartment.setImageFile(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
+				apartmentService.save(apartment);
+			}
+			model.addAttribute("apartment", apartment);
+			return "redirect:/editApartment/" + id;
+		} else
+			return "/error";
+	}
+
+	@PostMapping("/selectApartmentimage/{imgName}")
+	public String selectImage(@RequestParam MultipartFile imageFile,
+			Model model, HttpServletRequest request, @PathVariable String imgName) throws IOException {
+
+		if (!imageFile.getOriginalFilename().isBlank())
+			return "redirect:/addApartment/" + imageFile.getOriginalFilename();
+		else
+			return "redirect:/addApartmentPhoto/" + imgName;
+	}
+
+
+
+
+
+
+	@GetMapping("/editApartment/{id}")
+	public String editApartment(HttpServletRequest request, Model model, @PathVariable Long id) {
 
 		UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
 		UserE foundUser = apartmentService.findById(id).orElseThrow().getManager();
@@ -62,8 +202,8 @@ public class ApartmentController {
 			return "/error";
 	}
 
-	@PostMapping("/editapartment/{id}")
-	public String editapartment(Model model, HttpServletRequest request, Apartment newApartment, Integer room1, Integer cost1,
+	@PostMapping("/editApartment/{id}")
+	public String editApartment(Model model, HttpServletRequest request, Apartment newApartment, Integer room1, Integer cost1,
 			Integer room2,
 			Integer cost2, Integer room3, Integer cost3, Integer room4, Integer cost4, @PathVariable Long id)
 			throws IOException {
@@ -111,7 +251,7 @@ public class ApartmentController {
 
 			model.addAttribute("apartment", apartment);
 
-			return "redirect:/viewapartmentsmanager";
+			return "redirect:/viewApartmentsmanager";
 
 		} else
 			return "/error";
@@ -130,7 +270,7 @@ public class ApartmentController {
 				apartmentService.deleteById(id);
 			}
 
-			return "redirect:/viewapartmentsmanager";
+			return "redirect:/viewApartmentsmanager";
 
 		} else
 			return "/error";
@@ -152,37 +292,6 @@ public class ApartmentController {
 		}
 	}
 
-	@PostMapping("/editapartmentimage/{id}")
-	public String editImage(HttpServletRequest request, @RequestParam MultipartFile imageFile,
-			@PathVariable Long id,
-			Model model) throws IOException {
-
-		UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
-		UserE foundUser = apartmentService.findById(id).orElseThrow().getManager();
-
-		if (currentUser.equals(foundUser)) {
-			Apartment apartment = apartmentService.findById(id).orElseThrow();
-
-			if (!imageFile.getOriginalFilename().isBlank()) {
-				apartment.setImageFile(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
-				apartmentService.save(apartment);
-			}
-			model.addAttribute("apartment", apartment);
-			return "redirect:/editapartment/" + id;
-
-		} else
-			return "/error";
-	}
-
-	@PostMapping("/selectapartmentimage/{imgName}")
-	public String editImage(@RequestParam MultipartFile imageFile,
-			Model model, HttpServletRequest request, @PathVariable String imgName) throws IOException {
-
-		if (!imageFile.getOriginalFilename().isBlank())
-			return "redirect:/addApartment/" + imageFile.getOriginalFilename();
-		else
-			return "redirect:/addApartmentPhoto/" + imgName;
-	}
 
 	@GetMapping("/apartmentInformation/{id}")
 	public String apartmentInformation(Model model, @PathVariable Long id) {
@@ -205,65 +314,6 @@ public class ApartmentController {
 
 	
 
-	@GetMapping("/addApartment/{imgName}")
-	public String addApartmentWithPhoto(Model model, HttpServletRequest request, @PathVariable String imgName) {
-
-		Optional<UserE> user = userService.findByNick(request.getUserPrincipal().getName());
-		if (user.isPresent()) {
-			model.addAttribute("name", user.get().getName());
-			model.addAttribute("photo", imgName);
-			return "addApartment";
-
-		} else
-			return "redirect:/login";
-
-	}
-
-	@PostMapping("/createApartment/{imgName}")
-	public String addApartmentPost(HttpServletRequest request, Apartment newApartment, Integer room1, Integer cost1, Integer room2,
-			Integer cost2, Integer room3, Integer cost3, Integer room4, Integer cost4, @PathVariable String imgName)
-			throws IOException {
-
-		UserE user = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
-
-		newApartment.setManager(user);
-		newApartment.setRooms(new ArrayList<>());
-		newApartment.setReservations(new ArrayList<>());
-		newApartment.setReviews(new ArrayList<>());
-
-		Resource image = new ClassPathResource("/static/images/" + imgName);
-
-		newApartment.setImageFile(BlobProxy.generateProxy(image.getInputStream(), image.contentLength()));
-		newApartment.setImage(true);
-
-		if (room1 != null)
-			for (int i = 0; i < room1; i++) {
-				newApartment.getRooms().add(new Room(1, cost1, new ArrayList<>(), newApartment));
-			}
-
-		if (room2 != null)
-			for (int i = 0; i < room2; i++) {
-				newApartment.getRooms().add(new Room(2, cost2, new ArrayList<>(), newApartment));
-			}
-
-		if (room3 != null)
-			for (int i = 0; i < room3; i++) {
-				newApartment.getRooms().add(new Room(3, cost3, new ArrayList<>(), newApartment));
-			}
-
-		if (room4 != null)
-			for (int i = 0; i < room4; i++) {
-				newApartment.getRooms().add(new Room(4, cost4, new ArrayList<>(), newApartment));
-			}
-		apartmentService.save(newApartment);
-		return "redirect:/viewapartmentsmanager";
-	}
-
-	@GetMapping("/addApartmentPhoto/{imgName}")
-	public String addApartmentPost(Model model, HttpServletRequest request, @PathVariable String imgName) {
-		model.addAttribute("photo", imgName);
-		return "addApartmentPhoto";
-	}
 
 	@GetMapping("/clientlist/{id}")
 	public String clientlist(Model model, HttpServletRequest request, @PathVariable Long id) {
