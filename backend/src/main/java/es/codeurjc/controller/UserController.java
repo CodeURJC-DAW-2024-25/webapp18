@@ -99,7 +99,7 @@ public class UserController {
     /**
      * Loads the first 6 apartments of a manager
      */
-    @GetMapping("/viewapartmentsmanager")
+    @GetMapping("/viewApartmentsManager")
     public String viewApartmentsManager(Model model, HttpServletRequest request) {
 
         String managernick = request.getUserPrincipal().getName();
@@ -111,9 +111,10 @@ public class UserController {
             apartments = apartments.subList(0, 6);
         }
 
+		model.addAttribute("isValidated", userService.findByNick(managernick).orElseThrow().getvalidated());
         model.addAttribute("apartments", apartments);
 
-        return "viewapartmentsmanager";
+        return "viewApartmentsManager";
 
     }
 

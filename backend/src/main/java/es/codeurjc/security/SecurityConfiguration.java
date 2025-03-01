@@ -38,34 +38,36 @@ public class SecurityConfiguration {
         http
                 .authorizeHttpRequests(authorize -> authorize
                         // public pages
-                        .requestMatchers("/apartmentInformation/**").permitAll()
-                        .requestMatchers("/apartmentReviews/**").permitAll()
-                        .requestMatchers("/login").permitAll()
-                        .requestMatchers("/loginerror").permitAll()
-                        .requestMatchers("/css/**").permitAll()
-                        .requestMatchers("/js/**").permitAll()
-                        .requestMatchers("/fonts/**").permitAll()
-                        .requestMatchers("/vendor/**").permitAll()
-                        .requestMatchers("/favicon.ico").permitAll() 
-                        .requestMatchers("/images/**").permitAll()
-                        .requestMatchers("/img/**").permitAll()
-                        .requestMatchers("/").permitAll()
-                        .requestMatchers("/index").permitAll()
-                        .requestMatchers("/register").permitAll()
-                        .requestMatchers("/nickTaken").permitAll()
-                        .requestMatchers("/error").permitAll()
-                        .requestMatchers("/notfounderror/**").permitAll()
-                        .requestMatchers("/hotelReviews/**").permitAll()
-                        .requestMatchers("/indexsearch").permitAll()
-                        .requestMatchers("/notRooms/**").permitAll()
-                        .requestMatchers("/indexsearch").permitAll()
-                        .requestMatchers("/returnmainpage").permitAll()
-                        .requestMatchers("/captcha").permitAll()
-                        .requestMatchers("/loadMoreApartments/**").permitAll()
-                        .requestMatchers("/loadMoreReviews/**").permitAll()
-                        .requestMatchers("/profile/*/images/").permitAll()
-                        .requestMatchers("/static/images/**").permitAll()
-                        .requestMatchers("/index/*/images/**").permitAll()
+                        .requestMatchers(
+                                "/apartmentInformation/**",
+                                "/apartmentReviews/**",
+                                "/login",
+                                "/loginerror",
+                                "/css/**",
+                                "/js/**",
+                                "/fonts/**",
+                                "/vendor/**",
+                                "/favicon.ico",
+                                "/images/**",
+                                "/img/**",
+                                "/",
+                                "/index",
+                                "/register",
+                                "/nickTaken",
+                                "/error",
+                                "/notfounderror/**",
+                                "/hotelReviews/**",
+                                "/indexsearch",
+                                "/notRooms/**",
+                                "/indexsearch",
+                                "/returnmainpage",
+                                "/captcha",
+                                "/loadMoreApartments/**",
+                                "/loadMoreReviews/**",
+                                "/profile/*/images/",
+                                "/static/images/**",
+                                "/index/*/images/**")
+                        .permitAll()
 
                         // User pages
                         .requestMatchers("/addReservation/**").hasAnyRole("USER")
@@ -86,26 +88,25 @@ public class SecurityConfiguration {
                         .requestMatchers("/loadMoreReservations/**").hasAnyRole("CLIENT")
 
                         // Manager pages
-                        // Manager pages
-                        .requestMatchers("/editApartment/**").hasAnyRole("MANAGER")
-                        .requestMatchers("/viewApartmentsmanager").hasAnyRole("MANAGER")
-                        .requestMatchers("/deleteApartment/**").hasAnyRole("MANAGER")
-                        .requestMatchers("/clientlist/**").hasAnyRole("MANAGER")
-                        .requestMatchers("/chartsmanager").hasAnyRole("MANAGER")
-                        .requestMatchers("/addApartment").hasAnyRole("MANAGER")
-                        .requestMatchers("/addApartment/**").hasAnyRole("MANAGER")
-                        .requestMatchers("/testChart/**").hasAnyRole("MANAGER")
-                        .requestMatchers("/application/**").hasAnyRole("MANAGER")
-                        .requestMatchers("/index/*/images/**").hasAnyRole("MANAGER")
-                        .requestMatchers("/editApartmentimage/**").hasAnyRole("MANAGER")
-                        .requestMatchers("/addApartmentPhoto/**").hasAnyRole("MANAGER")
-                        .requestMatchers("/selectApartmentimage/**").hasAnyRole("MANAGER")
-                        .requestMatchers("/createApartment/**").hasAnyRole("MANAGER")
-                        .requestMatchers("/createApartment").hasAnyRole("MANAGER")
-                        .requestMatchers("/chartsManager").hasAnyRole("MANAGER")
-                        .requestMatchers("/addApartment").hasAnyRole("MANAGER")
-                        .requestMatchers("/loadMoreApartmentsManagerView/**").hasAnyRole("MANAGER")
-                        
+                        .requestMatchers(
+                                "/editApartment/**",
+                                "/viewApartmentsManager",
+                                "/deleteApartment/**",
+                                "/clientlist/**",
+                                "/chartsmanager",
+                                "/addApartment",
+                                "/addApartment/**",
+                                "/testChart/**",
+                                "/application/**",
+                                "/index/*/images/**",
+                                "/editApartmentimage/**",
+                                "/addApartmentPhoto/**",
+                                "/selectApartmentimage/**",
+                                "/createApartment/**",
+                                "/createApartment",
+                                "/chartsManager",
+                                "/loadMoreApartmentsManagerView/**")
+                        .hasAnyRole("MANAGER")
 
                         // Admin pages
                         .requestMatchers("/managerlist").hasAnyRole("ADMIN")
@@ -113,7 +114,6 @@ public class SecurityConfiguration {
                         .requestMatchers("/managerValidation").hasAnyRole("ADMIN")
                         .requestMatchers("/acceptance/**").hasAnyRole("ADMIN")
                         .requestMatchers("/rejection/**").hasAnyRole("ADMIN")
-                        
 
                 )
                 .formLogin(formLogin -> formLogin

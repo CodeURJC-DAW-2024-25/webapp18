@@ -62,7 +62,7 @@ public class initDataBaseService {
         rolesAdmin.add("ADMIN");
 
         // updates database if its already loaded
-        if (!userRepository.findByNick("admin").isPresent()) {
+/*         if (!userRepository.findByNick("admin").isPresent()) { */
 
             UserE client1 = new UserE("Jack1", "Wells1", "Bio", "loc", "lan", "phone",
                     "mail", "org", null, "user", passwordEncoder.encode("pass"), null, null, rolesUser,
@@ -378,7 +378,7 @@ public class initDataBaseService {
                 assignedApartment.getRooms().add(newRoom);
                 apartmentRepository.save(assignedApartment);
             }
-        }
+  /*       } */
     }
     
     // for user images
