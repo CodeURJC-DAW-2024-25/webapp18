@@ -168,6 +168,10 @@ public class ApartmentController {
 			return "redirect:/addApartmentPhoto/" + imgName;
 	}
 
+
+
+
+
 	@GetMapping("/editApartment/{id}")
 	public String editApartment(HttpServletRequest request, Model model, @PathVariable Long id) {
 
