@@ -54,7 +54,7 @@ public String addApartment(Model model, HttpServletRequest request) {
     Optional<UserE> user = userService.findByNick(request.getUserPrincipal().getName());
     if (user.isPresent()) {
         model.addAttribute("name", user.get().getName());
-        model.addAttribute("photo", "default.jpg"); // Añadir un valor por defecto para photo
+        model.addAttribute("photo", "default.jpg"); 
         return "addApartment";
     } else
         return "redirect:/login";
@@ -95,53 +95,34 @@ public String createApartment(HttpServletRequest request,
         newApartment.setReservations(new ArrayList<>());
         newApartment.setReviews(new ArrayList<>());
         
-        // Procesar la imagen subida directamente
+        
         if (imageFile != null && !imageFile.isEmpty()) {
             newApartment.setImageFile(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
             newApartment.setImage(true);
         }
         
-        // Añadir habitaciones según lo especificado
+        
         if (room1 != null && room1 > 0 && cost1 != null && cost1 > 0)
             for (int i = 0; i < room1; i++) {
                 newApartment.getRooms().add(new Room(1, cost1, new ArrayList<>(), newApartment));
             }
         
-        // [Resto del código para room2, room3, room4...]
-        
-        System.out.println("Guardando apartamento: " + newApartment.getName());
         apartmentService.save(newApartment);
-        System.out.println("Apartamento guardado con éxito. ID: " + newApartment.getId());
         
-        // Prueba con una redirección simple
+        
         return "redirect:/";
         
-        // Cuando funcione, cambia a la ruta definitiva
-        // return "redirect:/viewapartmentsmanager";
     } catch (Exception e) {
-        System.err.println("Error en la creación del apartamento: " + e.getMessage());
+        
         e.printStackTrace();
         
-        // En caso de error, volver al formulario con mensaje de error
         model.addAttribute("error", "Error al crear el apartamento: " + e.getMessage());
         return "addApartment";
     }
 }
 		
 
-	/// PARA PRUEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAS
-	/// 
-	/// 
-	/// 
-	@GetMapping("/viewApartmentsmanager")
-	public String viewApartmentsManager(Model model, HttpServletRequest request) {
-		UserE user = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
-		model.addAttribute("apartments", user.getApartment());
-		return "viewApartmentsManager"; // Nombre de la vista (HTML)
-	}
 
-
-///
 
 	@GetMapping("/addApartmentPhoto/{imgName}")
 	public String addApartmentPhoto(Model model, HttpServletRequest request, @PathVariable String imgName) {
@@ -181,7 +162,6 @@ public String createApartment(HttpServletRequest request,
 		else
 			return "redirect:/addApartmentPhoto/" + imgName;
 	}
-
 
 
 
