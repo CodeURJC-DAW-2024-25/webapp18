@@ -42,7 +42,7 @@ public class SecurityConfiguration {
                                                 "/apartmentInformation/**",
                                                 "/apartmentReviews/**",
                                                 "/login",
-                                                "/loginerror",
+                                                "/loginError",
                                                 "/css/**",
                                                 "/js/**",
                                                 "/fonts/**",
@@ -55,12 +55,10 @@ public class SecurityConfiguration {
                                                 "/register",
                                                 "/nickTaken",
                                                 "/error",
-                                                "/notfounderror/**",
                                                 "/apartmentReviews/**",
-                                                "/indexsearch",
+                                                "/indexSearch",
                                                 "/notRooms/**",
                                                 "/notRooms**",
-                                                "/indexsearch",
                                                 "/captcha",
                                                 "/loadMoreApartments/**",
                                                 "/loadMoreReviews/**",
@@ -73,10 +71,10 @@ public class SecurityConfiguration {
                                 .requestMatchers(
                                                 "/addReservation/**",
                                                 "/profile/**",
-                                                "/editprofile/**",
-                                                "/editprofile/*/images",
-                                                "/editprofileimage/**",
-                                                "/postapartmentReviews/**",
+                                                "/editProfile/**",
+                                                "/editProfile/*/images",
+                                                "/editProfileimage/**",
+                                                "/postApartmentReviews/**",
                                                 "/replace/**")
                                 .hasAnyRole("USER")
 
@@ -88,7 +86,7 @@ public class SecurityConfiguration {
                                                 "/reservationInfo/**",
                                                 "/addReservation/**",
                                                 "/cancelReservation/**",
-                                                "/postapartmentReviews/**",
+                                                "/postApartmentReviews/**",
                                                 "/loadMoreReservations/**")
                                 .hasAnyRole("CLIENT")
 
@@ -97,7 +95,7 @@ public class SecurityConfiguration {
                                                 "/editApartment/**",
                                                 "/viewApartmentsManager",
                                                 "/deleteApartment/**",
-                                                "/chartsmanager",
+                                                "/chartsManager",
                                                 "/addApartment",
                                                 "/addApartment/**",
                                                 "/testChart/**",
@@ -108,10 +106,9 @@ public class SecurityConfiguration {
                                                 "/editApartment/**",
                                                 "/updateApartment",
                                                 "/updateApartment/**",
-                                                "/selectApartmentimage/**",
+                                                "/selectApartmentImage/**",
                                                 "/createApartment/**",
                                                 "/createApartment",
-                                                "/chartsManager",
                                                 "/loadMoreApartmentsManagerView/**")
                                 .hasAnyRole("MANAGER")
 
@@ -125,7 +122,7 @@ public class SecurityConfiguration {
                 )
                                 .formLogin(formLogin -> formLogin
                                                 .loginPage("/login")
-                                                .failureUrl("/loginerror")
+                                                .failureUrl("/loginError")
                                                 .defaultSuccessUrl("/profile")
                                                 .permitAll())
                                 .logout(logout -> logout

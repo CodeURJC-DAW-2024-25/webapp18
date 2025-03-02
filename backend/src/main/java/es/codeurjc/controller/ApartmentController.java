@@ -149,7 +149,7 @@ public class ApartmentController {
 			return "/error";
 	}
 
-	@PostMapping("/selectApartmentimage/{imgName}")
+	@PostMapping("/selectApartmentImage/{imgName}")
 	public String selectImage(@RequestParam MultipartFile imageFile,
 			Model model, HttpServletRequest request, @PathVariable String imgName) throws IOException {
 

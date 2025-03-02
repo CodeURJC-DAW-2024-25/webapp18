@@ -78,7 +78,7 @@ public class UserController {
         return "index";
     }
 
-    @GetMapping("/indexsearch")
+    @GetMapping("/indexSearch")
     public String indexSearch(Model model, @RequestParam String searchValue) {
         List<Apartment> apartments = apartmentService
                 .findTop6ByManager_ValidatedAndNameContainingIgnoreCaseOrderByNameDesc(true,
@@ -223,18 +223,17 @@ public class UserController {
 
     } */
 
-    @GetMapping("/editprofile/{id}")
+    @GetMapping("/editProfile/{id}")
     public String editProfile(Model model, HttpServletRequest request, @PathVariable Long id) {
 
         UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
-        UserE foundUser = userService.findById(id).orElseThrow(); // need to transform the throw into 404 error. Page
-                                                                  // 25 // database
+        UserE foundUser = userService.findById(id).orElseThrow();
 
         if (currentUser.equals(foundUser)) {
             model.addAttribute("user", foundUser);
-            return "editprofile";
+            return "editProfile";
         } else
-            return "/error";
+            return "error";
 
     }
 
@@ -268,7 +267,7 @@ public class UserController {
 
             return "redirect:/profile";
         } else
-            return "/error";
+            return "error";
     }
 
     @GetMapping("/profile/{id}/images")
@@ -287,7 +286,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/editprofileimage/{id}")
+    @PostMapping("/editProfileImage/{id}")
     public String editImage(HttpServletRequest request, @RequestParam MultipartFile imageFile,
             @PathVariable Long id,
             Model model) throws IOException {
@@ -300,7 +299,7 @@ public class UserController {
                 currentUser.setImageFile(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
                 userService.save(currentUser);
             }
-            return "redirect:/editprofile/" + id;
+            return "redirect:/editProfile/" + id;
 
         } else
             return "/error";
@@ -355,7 +354,7 @@ public class UserController {
         return "login";
     }
 
-    @GetMapping("/loginrror")
+    @GetMapping("/loginError")
     public String loginError(Model model) {
         return "loginError";
     }

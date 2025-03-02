@@ -46,7 +46,7 @@ public class ReviewController {
 	 * @param user
 	 * @return
 	 */
-	@PostMapping("/postapartmentReviews/{id}")
+	@PostMapping("/postApartmentReviews/{id}")
 	public String postReview(
 			Model model, HttpServletRequest request,
 			@RequestParam(required = false) Integer rating,
