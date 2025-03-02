@@ -13,6 +13,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -47,6 +48,7 @@ public class ApartmentController {
 	@Autowired
 	RoomService roomService;
 
+	@PreAuthorize("hasRole('MANAGER') and principal.enabled")
 	@GetMapping("/addApartment")
 	public String addApartment(Model model, HttpServletRequest request) {
 		Optional<UserE> user = userService.findByNick(request.getUserPrincipal().getName());
@@ -58,6 +60,7 @@ public class ApartmentController {
 			return "redirect:/login";
 	}
 
+	@PreAuthorize("hasRole('MANAGER') and principal.enabled")
 	@GetMapping("/addApartment/{imgName}")
 	public String addApartmentWithPhoto(Model model, HttpServletRequest request, @PathVariable String imgName) {
 		Optional<UserE> user = userService.findByNick(request.getUserPrincipal().getName());
@@ -68,7 +71,6 @@ public class ApartmentController {
 		} else
 			return "redirect:/login";
 	}
-	
 
 	@PostMapping("/createApartment")
 	public String createApartment(HttpServletRequest request,
@@ -120,14 +122,12 @@ public class ApartmentController {
 		}
 	}
 
-
 	@GetMapping("/addApartmentPhoto/{imgName}")
 	public String addApartmentPhoto(Model model, HttpServletRequest request, @PathVariable String imgName) {
 		model.addAttribute("photo", imgName);
 		return "addApartmentPhoto";
 	}
 
-	
 	@PostMapping("/editApartmentimage/{id}")
 	public String editImage(HttpServletRequest request, @RequestParam MultipartFile imageFile,
 			@PathVariable Long id,
@@ -159,52 +159,48 @@ public class ApartmentController {
 			return "redirect:/addApartmentPhoto/" + imgName;
 	}
 
-
-
-
 	@GetMapping("/editApartment/{id}")
 	public String editApartment(@PathVariable Long id, Model model) {
 		Optional<Apartment> apartmentOpt = apartmentService.findById(id);
-		
+
 		if (apartmentOpt.isPresent()) {
 			Apartment apartment = apartmentOpt.get();
 			model.addAttribute("apartment", apartment);
 			model.addAttribute("id", id);
-			
+
 			int[] roomCounts = new int[5];
-			float[] roomCosts = new float[5]; 
-			
+			float[] roomCosts = new float[5];
+
 			for (int i = 1; i <= 4; i++) {
 				roomCounts[i] = 0;
 				roomCosts[i] = 0;
 			}
-			
+
 			// Count rooms and add cost
 			for (Room room : apartment.getRooms()) {
 				int maxClients = room.getMaxClients();
 				if (maxClients >= 1 && maxClients <= 4) {
 					roomCounts[maxClients]++;
 					if (roomCounts[maxClients] == 1) {
-						roomCosts[maxClients] = room.getcost(); 
+						roomCosts[maxClients] = room.getcost();
 					}
 				}
 			}
-			
-			
+
 			for (int i = 1; i <= 4; i++) {
 				model.addAttribute("room" + i, roomCounts[i]);
-				model.addAttribute("cost" + i, (int)roomCosts[i]); 
+				model.addAttribute("cost" + i, (int) roomCosts[i]);
 			}
-			
+
 			System.out.println("Editando apartamento ID: " + id + ", Nombre: " + apartment.getName());
-			
+
 			return "editApartment";
 		} else {
 			System.out.println("No se encontró apartamento con ID: " + id);
 			return "redirect:/viewApartmentsManager";
 		}
 	}
-	
+
 	@PostMapping("/updateApartment/{id}")
 	public String updateApartment(HttpServletRequest request,
 			@PathVariable Long id,
@@ -215,132 +211,137 @@ public class ApartmentController {
 			Integer room4, Integer cost4,
 			@RequestParam(value = "imageFileUpload", required = false) MultipartFile imageFile,
 			Model model) {
-		
+
 		try {
 			Optional<Apartment> existingApartmentOpt = apartmentService.findById(id);
 			if (!existingApartmentOpt.isPresent()) {
 				model.addAttribute("error", "Apartamento no encontrado");
 				return "editApartment";
 			}
-			
+
 			Apartment existingApartment = existingApartmentOpt.get();
-			
+
 			existingApartment.setName(updatedApartment.getName());
 			existingApartment.setLocation(updatedApartment.getLocation());
 			existingApartment.setDescription(updatedApartment.getDescription());
-			
+
 			if (imageFile != null && !imageFile.isEmpty()) {
-				existingApartment.setImageFile(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
+				existingApartment
+						.setImageFile(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
 				existingApartment.setImage(true);
 			}
-			
+
 			existingApartment.getRooms().clear();
-			
+
 			if (room1 != null && room1 > 0 && cost1 != null && cost1 > 0) {
 				for (int i = 0; i < room1; i++) {
 					existingApartment.getRooms().add(new Room(1, cost1, new ArrayList<>(), existingApartment));
 				}
 			}
-			
+
 			if (room2 != null && room2 > 0 && cost2 != null && cost2 > 0) {
 				for (int i = 0; i < room2; i++) {
 					existingApartment.getRooms().add(new Room(2, cost2, new ArrayList<>(), existingApartment));
 				}
 			}
-			
+
 			if (room3 != null && room3 > 0 && cost3 != null && cost3 > 0) {
 				for (int i = 0; i < room3; i++) {
 					existingApartment.getRooms().add(new Room(3, cost3, new ArrayList<>(), existingApartment));
 				}
 			}
-			
+
 			if (room4 != null && room4 > 0 && cost4 != null && cost4 > 0) {
 				for (int i = 0; i < room4; i++) {
 					existingApartment.getRooms().add(new Room(4, cost4, new ArrayList<>(), existingApartment));
 				}
 			}
-			
+
 			apartmentService.save(existingApartment);
-			
+
 			return "redirect:/viewApartmentsManager";
-			
+
 		} catch (Exception e) {
 			model.addAttribute("error", "Error al actualizar el apartamento: " + e.getMessage());
 			return "editApartment";
 		}
 	}
 
-		@GetMapping("/deleteApartment/{id}")
-		public String deleteApartment(HttpServletRequest request, Model model, @PathVariable Long id) {
-
-			UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
-			UserE foundUser = apartmentService.findById(id).orElseThrow().getManager();
-
-			if (currentUser.equals(foundUser)) {
-				Optional<Apartment> apartment = apartmentService.findById(id);
-				if (apartment.isPresent()) {
-					apartmentService.deleteById(id);
-				}
-
-				return "redirect:/viewApartmentsManager";
-
-			} else
-				return "/error";
-		}
-
-		@GetMapping("/index/{id}/images")
-		public ResponseEntity<Object> downloadImage(HttpServletRequest request, @PathVariable Long id) throws SQLException {
-
-			Optional<Apartment> apartment = apartmentService.findById(id);
-			if (apartment.isPresent() && apartment.get().getImageFile() != null) {
-
-				Resource file = new InputStreamResource(apartment.get().getImageFile().getBinaryStream());
-				return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpg")
-						.contentLength(apartment.get().getImageFile().length()).body(file);
-
-			} else {
-				return ResponseEntity.notFound().build();
-				// return "/error";
-			}
-		}
-
-		@GetMapping("/apartmentInformation/{id}")
-		public String apartmentInformation(Model model, @PathVariable Long id) {
-
-			UserE apartmentManager = apartmentService.findById(id).orElseThrow().getManager();
-
-			if (apartmentManager.getvalidated()) {
-				Apartment apartment = apartmentService.findById(id).orElseThrow();
-				if (apartment.getManager().getvalidated() == false)
-					return "redirect:/error";
-				model.addAttribute("apartment", apartment);
-				model.addAttribute("numRooms", apartment.getNumRooms());
-
-				return "/apartmentInformation";
-
-			} else {
-				return "/error";
-			}
-
-		}
-
-/* 	@GetMapping("/clientlist/{id}")
-	public String clientlist(Model model, HttpServletRequest request, @PathVariable Long id) {
+	@GetMapping("/deleteApartment/{id}")
+	public String deleteApartment(HttpServletRequest request, Model model, @PathVariable Long id) {
 
 		UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
 		UserE foundUser = apartmentService.findById(id).orElseThrow().getManager();
 
 		if (currentUser.equals(foundUser)) {
-			Apartment apartment = apartmentService.findById(id).orElseThrow();
-			List<UserE> validClients = new ArrayList<>();
-			validClients = apartmentService.getValidClients(apartment);
-			model.addAttribute("clients", validClients);
+			Optional<Apartment> apartment = apartmentService.findById(id);
+			if (apartment.isPresent()) {
+				apartmentService.deleteById(id);
+			}
 
-			return "clientlist";
+			return "redirect:/viewApartmentsManager";
 
 		} else
 			return "/error";
-	} */
+	}
+
+	@GetMapping("/index/{id}/images")
+	public ResponseEntity<Object> downloadImage(HttpServletRequest request, @PathVariable Long id) throws SQLException {
+
+		Optional<Apartment> apartment = apartmentService.findById(id);
+		if (apartment.isPresent() && apartment.get().getImageFile() != null) {
+
+			Resource file = new InputStreamResource(apartment.get().getImageFile().getBinaryStream());
+			return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpg")
+					.contentLength(apartment.get().getImageFile().length()).body(file);
+
+		} else {
+			return ResponseEntity.notFound().build();
+			// return "/error";
+		}
+	}
+
+	@GetMapping("/apartmentInformation/{id}")
+	public String apartmentInformation(Model model, @PathVariable Long id) {
+
+		UserE apartmentManager = apartmentService.findById(id).orElseThrow().getManager();
+
+		if (apartmentManager.getvalidated()) {
+			Apartment apartment = apartmentService.findById(id).orElseThrow();
+			if (apartment.getManager().getvalidated() == false)
+				return "redirect:/error";
+			model.addAttribute("apartment", apartment);
+			model.addAttribute("numRooms", apartment.getNumRooms());
+
+			return "/apartmentInformation";
+
+		} else {
+			return "/error";
+		}
+
+	}
+
+	/*
+	 * @GetMapping("/clientlist/{id}")
+	 * public String clientlist(Model model, HttpServletRequest
+	 * request, @PathVariable Long id) {
+	 * 
+	 * UserE currentUser =
+	 * userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
+	 * UserE foundUser = apartmentService.findById(id).orElseThrow().getManager();
+	 * 
+	 * if (currentUser.equals(foundUser)) {
+	 * Apartment apartment = apartmentService.findById(id).orElseThrow();
+	 * List<UserE> validClients = new ArrayList<>();
+	 * validClients = apartmentService.getValidClients(apartment);
+	 * model.addAttribute("clients", validClients);
+	 * 
+	 * return "clientlist";
+	 * 
+	 * } else
+	 * return "/error";
+	 * }
+	 */
 
 	/**
 	 * Using AJAX, loads the next 6 apartments in the page, or none if all are
@@ -352,34 +353,34 @@ public class ApartmentController {
 	 * @return
 	 */
 	@GetMapping("/loadMoreApartments/{start}/{end}")
-public String loadMoreApartments(Model model,
-                              @PathVariable Long start,
-                              @PathVariable Long end) {
-    
-    var apartmentsQuantity = apartmentService.count();
-    
-    if (start <= apartmentsQuantity) {
-        var apartments = new ArrayList<Apartment>();
-        
-        // We obtain the apartments IDs for the actual page
-        List<Long> apartmentIds = new ArrayList<>();
-        for (long index = start; index < end && index <= apartmentsQuantity; index++) {
-            apartmentIds.add(index);
-        }
-        
-        // We look for the avalidated apt
-        for (Long apartmentId : apartmentIds) {
-            Apartment apartment = apartmentService.findById(apartmentId).orElse(null);
-            if (apartment != null && apartment.getManager().getvalidated()) {
-                apartments.add(apartment);
-            }
-        }
-        
-        model.addAttribute("apartments", apartments);
-    }
-    
-    return "apartmentTemplate";
-}
+	public String loadMoreApartments(Model model,
+			@PathVariable Long start,
+			@PathVariable Long end) {
+
+		var apartmentsQuantity = apartmentService.count();
+
+		if (start <= apartmentsQuantity) {
+			var apartments = new ArrayList<Apartment>();
+
+			// We obtain the apartments IDs for the actual page
+			List<Long> apartmentIds = new ArrayList<>();
+			for (long index = start; index < end && index <= apartmentsQuantity; index++) {
+				apartmentIds.add(index);
+			}
+
+			// We look for the avalidated apt
+			for (Long apartmentId : apartmentIds) {
+				Apartment apartment = apartmentService.findById(apartmentId).orElse(null);
+				if (apartment != null && apartment.getManager().getvalidated()) {
+					apartments.add(apartment);
+				}
+			}
+
+			model.addAttribute("apartments", apartments);
+		}
+
+		return "apartmentTemplate";
+	}
 
 	/**
 	 * Using AJAX, loads the next 6 apartments in the page, or none if all are
@@ -390,37 +391,54 @@ public String loadMoreApartments(Model model,
 	 * @param end
 	 * @return
 	 */
-	@GetMapping("/loadMoreApartmentsManagerView/{start}/{end}")
+	/* @GetMapping("/loadMoreApartmentsManagerView/{start}/{end}")
 	public String loadMoreApartmentsManagerView(
 			Model model,
 			HttpServletRequest request,
 			@PathVariable Long start,
 			@PathVariable Long end) {
 
-		var apartmentsQuantity = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow()
-				.getApartment().size();
+				var actualUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
+
+		var apartmentsQuantity = actualUser.getApartment().size();
+
+		var apartments = actualUser.getApartment();
 
 		if (start <= apartmentsQuantity) {
 
-			var apartments = new ArrayList<>();
-
-			// We obtain the apartments IDs for the actual page
-			List<Long> apartmentIds = new ArrayList<>();
-			for (long index = start; index < end && index <= apartmentsQuantity; index++) {
-				apartmentIds.add(index);
-			}
-
-			// We look for the Apartment objects related to the IDs
-			for (Long apartmentId : apartmentIds) {
-				Apartment apartment = apartmentService.findById(apartmentId).orElse(null);
-				if (apartment != null) {
-					apartments.add(apartment);
-				}
-			}
-
-			model.addAttribute("apartments", apartments);
+			model.addAttribute("apartments", apartments.subList(start, end<apartmentsQuantity.intValue()?end:apartmentsQuantity.intValue()));
 		}
 
+		return "viewApartmentTemplate";
+	} */
+	@GetMapping("/loadMoreApartmentsManagerView/{start}/{end}")
+	public String loadMoreApartmentsManagerView(
+			Model model,
+			HttpServletRequest request,
+			@PathVariable int start,
+			@PathVariable int end) {
+	
+		// Get the current user
+		UserE currentUser = userService.findByNick(request.getUserPrincipal().getName())
+				.orElseThrow(() -> new RuntimeException("User not found"));
+	
+		// Get all user's apartments
+		List<Apartment> allApartments = new ArrayList<>(currentUser.getApartment());
+	
+		// Calculate pagination
+		int totalCount = allApartments.size();
+	
+		if (start < totalCount) {
+			// Safely get a sublist for the current page
+			int actualEnd = Math.min(end, totalCount);
+			List<Apartment> paginatedApartments = allApartments.subList(start, actualEnd);
+	
+			model.addAttribute("apartments", paginatedApartments);
+		} else {
+			// If start index is beyond the available apartments, return an empty list
+			model.addAttribute("apartments", new ArrayList<Apartment>());
+		}
+	
 		return "viewApartmentTemplate";
 	}
 
