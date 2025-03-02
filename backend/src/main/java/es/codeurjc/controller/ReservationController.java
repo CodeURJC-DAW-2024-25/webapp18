@@ -35,7 +35,7 @@ public class ReservationController {
 
     @Autowired
     private RoomService roomService;
-    
+
     @GetMapping("/addReservation/{id}")
     public String showAddReservationForm(@PathVariable Long id, Model model) {
         // Either show a form or redirect to apartment information
@@ -60,64 +60,57 @@ public class ReservationController {
             return "notRooms";
     }
 
-
-    
-	@GetMapping("/clientReservations")
-	public String clientReservation(Model model, HttpServletRequest request) {
-		UserE currentClient = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
-
-		List<Reservation> bookings = currentClient.getReservations();
-
-		if (bookings.size() < 3) {
-			model.addAttribute("reservations", bookings);
-
-		} else {
-
-			List<Reservation> auxBookings = new ArrayList<>();
-			for (int i = 0; i < 3; i++) {
-				auxBookings.add(bookings.get(i));
-			}
-
-			model.addAttribute("reservations", auxBookings);
-
-		}
-
-		model.addAttribute("user", currentClient);
-
-		return "clientReservations";
-
-	}
-	
-
-	@GetMapping("/loadMoreReservations/{start}/{end}")
-public String loadMoreReservations(
-        Model model,
-        HttpServletRequest request,
-        @PathVariable int start,
-        @PathVariable int end) {
-    
-    try {
+    @GetMapping("/clientReservations")
+    public String clientReservation(Model model, HttpServletRequest request) {
         UserE currentClient = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
-        List<Reservation> bookings = currentClient.getReservations();
-        List<Reservation> auxBookings = new ArrayList<>();
 
-        if (start < bookings.size()) {  
-            for (int i = start; i < end && i < bookings.size(); i++) {  
+        List<Reservation> bookings = currentClient.getReservations();
+
+        if (bookings.size() < 3) {
+            model.addAttribute("reservations", bookings);
+
+        } else {
+
+            List<Reservation> auxBookings = new ArrayList<>();
+            for (int i = 0; i < 3; i++) {
                 auxBookings.add(bookings.get(i));
             }
+
+            model.addAttribute("reservations", auxBookings);
+
         }
 
-        model.addAttribute("reservations", auxBookings);
-        return "reservationTemplate";  
+        model.addAttribute("user", currentClient);
 
-    } catch (Exception e) {
-        return "error";  
+        return "clientReservations";
+
     }
-}
 
+    @GetMapping("/loadMoreReservations/{start}/{end}")
+    public String loadMoreReservations(
+            Model model,
+            HttpServletRequest request,
+            @PathVariable int start,
+            @PathVariable int end) {
 
+        try {
+            UserE currentClient = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
+            List<Reservation> bookings = currentClient.getReservations();
+            List<Reservation> auxBookings = new ArrayList<>();
 
+            if (start < bookings.size()) {
+                for (int i = start; i < end && i < bookings.size(); i++) {
+                    auxBookings.add(bookings.get(i));
+                }
+            }
 
+            model.addAttribute("reservations", auxBookings);
+            return "reservationTemplate";
+
+        } catch (Exception e) {
+            return "error";
+        }
+    }
 
     @GetMapping("/reservationInfo/{id}")
     public String reservationInfo(Model model, HttpServletRequest request, @PathVariable Long id) {
