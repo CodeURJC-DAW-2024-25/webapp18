@@ -1,8 +1,8 @@
-# Spring MVC Controllers Documentation
+# 🌐 Spring MVC Controllers Documentation
 
-This document provides a comprehensive overview of all controller classes in the application, explaining their purpose and detailing their endpoints.
+This document provides a comprehensive architectural overview of the application's controller classes, delineating their primary responsibilities and detailing their respective endpoint configurations.
 
-## Table of Contents
+## 📋 Table of Contents
 
 - [Review Controller](#review-controller)
 - [Room Controller](#room-controller) 
@@ -11,129 +11,129 @@ This document provides a comprehensive overview of all controller classes in the
 - [Default Controller](#default-controller)
 - [Reservation Controller](#reservation-controller)
 
-## Review Controller
+## 📝 Review Controller
 
-`ReviewController` manages all operations related to apartment reviews, including posting, viewing, and dynamic loading of reviews.
+The `ReviewController` serves as the primary management interface for apartment review-related operations, facilitating review submission, retrieval, and dynamic content loading.
 
-### Methods
+### Principal Methods
 
-| Method | URL | Description |
-|--------|-----|-------------|
-| **postReview** | `POST /postapartmentReviews/{id}` | Adds a review for an apartment. Requires user authentication. |
-| **apartmentReviews** | `GET /apartmentReviews/{id}` | Displays the reviews page for an apartment with the first 6 reviews. |
-| **loadMoreReviews** | `GET /loadMoreReviews/{id}/{start}/{end}` | AJAX endpoint to load additional reviews based on pagination parameters. |
+| Method | Endpoint | Operational Description |
+|--------|----------|-------------------------|
+| **postReview** | `POST /postapartmentReviews/{id}` | Processes and persistently stores apartment reviews with mandatory user authentication. |
+| **apartmentReviews** | `GET /apartmentReviews/{id}` | Renders the initial review compilation for a specific apartment, presenting the first six reviews. |
+| **loadMoreReviews** | `GET /loadMoreReviews/{id}/{start}/{end}` | Implements AJAX-based pagination mechanism for incremental review retrieval. |
 
-#### Key Features:
-- Statistical data including total reviews and score distributions
-- Infinite scrolling support through AJAX loading
-- Validation to ensure managers are verified before reviews can be posted
+#### Sophisticated Features:
+- Comprehensive statistical analysis including aggregate review count and score distribution
+- Advanced infinite scrolling implementation via AJAX methodology
+- Rigorous validation protocols ensuring review submission only by verified managers
 
-## Room Controller
+## 🏠 Room Controller
 
-`RoomController` is a minimal controller that serves as an injection point for the RoomService. It currently has no implemented methods but provides a foundation for future room-related operations.
+The `RoomController` represents a foundational architectural component, currently functioning as a dependency injection mechanism for the `RoomService`. Although currently minimal in implementation, it establishes a robust framework for future room-related operational expansions.
 
-## User Controller
+## 👤 User Controller
 
-`UserController` handles user account management, profile operations, and role-specific views.
+The `UserController` orchestrates comprehensive user account lifecycle management, encompassing authentication, registration, profile manipulation, and role-specific navigational interfaces.
 
-### Authentication & Registration
+### Authentication and Registration Workflow
 
-| Method | URL | Description |
-|--------|-----|-------------|
-| **login** | `GET /login` | Displays the login page. |
-| **loginError** | `GET /loginrror` | Shows login error page. |
-| **register** | `GET /register` | Displays user registration form. |
-| **register** | `POST /register` | Processes registration, encrypts password, assigns roles. |
-| **nickTaken** | `GET /nickTaken` | Shown when a username already exists. |
+| Method | Endpoint | Functional Description |
+|--------|----------|------------------------|
+| **login** | `GET /login` | Renders the authentication interface. |
+| **loginError** | `GET /loginrror` | Presents authentication failure notification interface. |
+| **register** | `GET /register` | Displays user registration interface. |
+| **register** | `POST /register` | Processes registration, implementing password encryption and role assignment. |
+| **nickTaken** | `GET /nickTaken` | Indicates username unavailability during registration. |
 
-### Profile Management
+### Profile Management Capabilities
 
-| Method | URL | Description |
-|--------|-----|-------------|
-| **profile** | `GET /profile` | Displays the current user's profile. |
-| **editProfile** | `GET /editprofile/{id}` | Shows profile edit form. |
-| **editProfile** | `POST /replace/{id}` | Updates user profile information. |
-| **editImage** | `POST /editprofileimage/{id}` | Updates profile image. |
-| **downloadImage** | `GET /profile/{id}/images` | Retrieves a user's profile image. |
+| Method | Endpoint | Operational Description |
+|--------|----------|-------------------------|
+| **profile** | `GET /profile` | Generates personalized user profile visualization. |
+| **editProfile** | `GET /editprofile/{id}` | Presents profile modification interface. |
+| **editProfile** | `POST /replace/{id}` | Executes comprehensive user profile information updates. |
+| **editImage** | `POST /editprofileimage/{id}` | Facilitates profile image modification. |
+| **downloadImage** | `GET /profile/{id}/images` | Retrieves user-associated profile imagery. |
 
-### Navigation & Dashboards
+### Navigation and Dashboard Interfaces
 
-| Method | URL | Description |
-|--------|-----|-------------|
-| **index** | `GET /` | Home page with recommended apartments using a recommendation algorithm. |
-| **indexSearch** | `GET /indexsearch` | Searches apartments by name. |
-| **viewApartmentsManager** | `GET /viewApartmentsManager` | Shows first 6 apartments of a manager. |
-| **chartsManager** | `GET /chartsManager` | Analytics for a manager's apartments. |
-| **chartsAdmin** | `GET /chartsadmin` | Admin dashboard with analytics. |
+| Method | Endpoint | Functional Description |
+|--------|----------|------------------------|
+| **index** | `GET /` | Renders homepage with sophisticated apartment recommendation algorithm. |
+| **indexSearch** | `GET /indexsearch` | Implements apartment name-based search functionality. |
+| **viewApartmentsManager** | `GET /viewApartmentsManager` | Displays initial six apartments managed by current user. |
+| **chartsManager** | `GET /chartsManager` | Generates apartment-specific analytics dashboard. |
+| **chartsAdmin** | `GET /chartsadmin` | Provides comprehensive administrative analytics interface. |
 
-### Admin Functions
+### Administrative Operational Methods
 
-| Method | URL | Description |
-|--------|-----|-------------|
-| **managerValidation** | `GET /managerValidation` | Lists managers pending validation. |
-| **rejectManager** | `POST /rejection/{id}` | Rejects a manager application. |
-| **acceptManager** | `POST /acceptance/{id}` | Accepts a manager application. |
-| **managerList** | `GET /managerlist` | Lists all managers. |
+| Method | Endpoint | Operational Description |
+|--------|----------|-------------------------|
+| **managerValidation** | `GET /managerValidation` | Catalogs managers pending system validation. |
+| **rejectManager** | `POST /rejection/{id}` | Executes manager application rejection protocol. |
+| **acceptManager** | `POST /acceptance/{id}` | Implements manager application acceptance mechanism. |
+| **managerList** | `GET /managerlist` | Generates comprehensive manager registry. |
 
-## Apartment Controller
+## 🏢 Apartment Controller
 
-`ApartmentController` manages apartment listings, including creation, editing, image management, and related client information.
+The `ApartmentController` manages the comprehensive lifecycle of apartment listings, encompassing creation, modification, image management, and associated client information processing.
 
-### Apartment CRUD Operations
+### Apartment CRUD Operational Endpoints
 
-| Method | URL | Description |
-|--------|-----|-------------|
-| **addApartment** | `GET /addApartment` | Form to add a new apartment. |
-| **createApartment** | `POST /createApartment` | Creates apartment with rooms and image. |
-| **editApartment** | `GET /editApartment/{id}` | Form to edit an apartment. |
-| **updateApartment** | `POST /updateApartment/{id}` | Updates apartment details. |
-| **deleteApartment** | `GET /deleteApartment/{id}` | Removes an apartment. |
+| Method | Endpoint | Functional Description |
+|--------|----------|------------------------|
+| **addApartment** | `GET /addApartment` | Renders apartment creation interface. |
+| **createApartment** | `POST /createApartment` | Processes apartment entity creation, including room and image associations. |
+| **editApartment** | `GET /editApartment/{id}` | Presents apartment modification interface. |
+| **updateApartment** | `POST /updateApartment/{id}` | Executes comprehensive apartment information updates. |
+| **deleteApartment** | `GET /deleteApartment/{id}` | Implements apartment entity removal mechanism. |
 
-### Image Management
+### Image Management Capabilities
 
-| Method | URL | Description |
-|--------|-----|-------------|
-| **addApartmentPhoto** | `GET /addApartmentPhoto/{imgName}` | Interface for adding photos. |
-| **editImage** | `POST /editApartmentimage/{id}` | Updates apartment image. |
-| **selectImage** | `POST /selectApartmentimage/{imgName}` | Selects an image. |
-| **downloadImage** | `GET /index/{id}/images` | Retrieves an apartment's image. |
+| Method | Endpoint | Operational Description |
+|--------|----------|-------------------------|
+| **addApartmentPhoto** | `GET /addApartmentPhoto/{imgName}` | Provides photo addition interface. |
+| **editImage** | `POST /editApartmentimage/{id}` | Facilitates apartment image modification. |
+| **selectImage** | `POST /selectApartmentimage/{imgName}` | Implements image selection mechanism. |
+| **downloadImage** | `GET /index/{id}/images` | Retrieves apartment-associated imagery. |
 
-### Viewing & AJAX Loading
+### Visualization and Dynamic Loading Mechanisms
 
-| Method | URL | Description |
-|--------|-----|-------------|
-| **apartmentInformation** | `GET /apartmentInformation/{id}` | Detailed apartment information. |
-| **clientlist** | `GET /clientlist/{id}` | Shows clients who booked this apartment. |
-| **loadMoreApartments** | `GET /loadMoreApartments/{start}/{end}` | AJAX for infinite scrolling. |
-| **loadMoreApartmentsManagerView** | `GET /loadMoreApartmentsManagerView/{start}/{end}` | AJAX for manager's apartment list. |
+| Method | Endpoint | Functional Description |
+|--------|----------|------------------------|
+| **apartmentInformation** | `GET /apartmentInformation/{id}` | Generates comprehensive apartment information display. |
+| **clientlist** | `GET /clientlist/{id}` | Presents clients associated with specific apartment. |
+| **loadMoreApartments** | `GET /loadMoreApartments/{start}/{end}` | Implements infinite scrolling through AJAX methodology. |
+| **loadMoreApartmentsManagerView** | `GET /loadMoreApartmentsManagerView/{start}/{end}` | Provides manager-specific apartment list pagination. |
 
-## Default Controller
+## 🔄 Default Controller
 
-`DefaultController` provides application-wide model attributes through `@ControllerAdvice` to expose common data across all views.
+The `DefaultController` functions as a global attribute provider through `@ControllerAdvice`, ensuring consistent data exposure across all view interfaces.
 
-### Global Attributes
+### Global Attribute Generation
 
-| Method | Description |
-|--------|-------------|
-| **userType** | Adds user role type (Admin/Client/Manager) to all models. |
-| **isAdmin** | Boolean indicating if user is an admin. |
-| **isManager** | Boolean indicating if user is a manager. |
-| **isClient** | Boolean indicating if user is a client. |
-| **isUser** | Boolean indicating if user has the USER role. |
-| **getPath** | Adds current request path to all models. |
+| Method | Operational Description |
+|--------|-------------------------|
+| **userType** | Dynamically assigns user role classification to model interfaces. |
+| **isAdmin** | Generates administrative user identification boolean. |
+| **isManager** | Produces manager role identification boolean. |
+| **isClient** | Creates client role identification boolean. |
+| **isUser** | Generates standard user role identification boolean. |
+| **getPath** | Appends current request path to model interfaces. |
 
-## Reservation Controller
+## 📅 Reservation Controller
 
-`ReservationController` handles booking flow, reservation management, and cancellation processes.
+The `ReservationController` manages the comprehensive reservation workflow, encompassing booking processes, reservation management, and cancellation protocols.
 
-### Reservation Operations
+### Reservation Operational Endpoints
 
-| Method | URL | Description |
-|--------|-----|-------------|
-| **addReservation** | `POST /addReservation/{id}` | Creates reservation after checking room availability. |
-| **clientReservation** | `GET /clientReservations` | Lists a client's reservations (initially up to 3). |
-| **loadMoreReservations** | `GET /loadMoreReservations/{start}/{end}` | AJAX loading of additional reservations. |
-| **reservationInfo** | `GET /reservationInfo/{id}` | Detailed reservation information. |
-| **deleteReservation** | `GET /cancelReservation/{id}` | Cancels reservation and cleans up relationships. |
+| Method | Endpoint | Functional Description |
+|--------|----------|------------------------|
+| **addReservation** | `POST /addReservation/{id}` | Generates reservation after exhaustive room availability verification. |
+| **clientReservation** | `GET /clientReservations` | Presents initial reservation subset for client (maximum three entries). |
+| **loadMoreReservations** | `GET /loadMoreReservations/{start}/{end}` | Implements reservation list expansion via AJAX methodology. |
+| **reservationInfo** | `GET /reservationInfo/{id}` | Generates comprehensive reservation details interface. |
+| **deleteReservation** | `GET /cancelReservation/{id}` | Executes reservation cancellation with referential integrity maintenance. |
 
-**Note**: Reservation cancellation involves removing references from user, apartment, and room entities before deleting the reservation itself.
+**Architectural Note**: Reservation cancellation implements a sophisticated cascade deletion strategy, systematically removing interdependent references across user, apartment, and room entity domains prior to reservation entity removal.
