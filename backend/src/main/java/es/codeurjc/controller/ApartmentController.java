@@ -324,7 +324,7 @@ public class ApartmentController {
 
 		}
 
-	@GetMapping("/clientlist/{id}")
+/* 	@GetMapping("/clientlist/{id}")
 	public String clientlist(Model model, HttpServletRequest request, @PathVariable Long id) {
 
 		UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
@@ -340,7 +340,7 @@ public class ApartmentController {
 
 		} else
 			return "/error";
-	}
+	} */
 
 	/**
 	 * Using AJAX, loads the next 6 apartments in the page, or none if all are

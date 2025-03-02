@@ -38,7 +38,7 @@ public class ReservationService implements GeneralService<Reservation> {
         return reservationRepository.findByUser_Name(name);
     }
 
-    public List<Reservation> findByHotel_Name(String name){
+    public List<Reservation> findByApartment_Name(String name){
         return reservationRepository.findByApartment_Name(name);
     } 
 

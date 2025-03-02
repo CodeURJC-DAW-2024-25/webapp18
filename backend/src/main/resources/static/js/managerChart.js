@@ -1,26 +1,26 @@
 window.onload = function () {
 
-  console.log(hotelNames)
+  console.log(apartmentNames)
   console.log(reviewsAverage)
 
   //Better to construct options first and then pass it as a parameter
   var options = {
     title: {
-      text: "Average review by hotel"
+      text: "Average review by apartment"
     },
     data: null
   };
 
-  let hotelsData = {
+  let apartmentsData = {
     type: "column",
     dataPoints : []
   }
 
-  for (let i = 0; i < hotelNames.length; i++) {
-    hotelsData.dataPoints.push({label : hotelNames[i], y : Number(reviewsAverage[i])});
+  for (let i = 0; i < apartmentNames.length; i++) {
+    apartmentsData.dataPoints.push({label : apartmentNames[i], y : Number(reviewsAverage[i])});
   }
 
-  options.data = hotelsData;
+  options.data = apartmentsData;
 
   $("#chartContainer").CanvasJSChart(options);
 }

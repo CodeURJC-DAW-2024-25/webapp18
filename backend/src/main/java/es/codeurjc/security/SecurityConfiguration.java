@@ -56,19 +56,18 @@ public class SecurityConfiguration {
                                 "/nickTaken",
                                 "/error",
                                 "/notfounderror/**",
-                                "/hotelReviews/**",
+                                "/apartmentReviews/**",
                                 "/indexsearch",
                                 "/notRooms/**",
                                 "/notRooms**",
                                 "/indexsearch",
-                                "/returnmainpage",
                                 "/captcha",
                                 "/loadMoreApartments/**",
                                 "/loadMoreReviews/**",
                                 "/profile/*/images/",
                                 "/static/images/**",
-                                "/index/*/images/**")
-                        .permitAll()
+                                "/index/*/images/**"
+                        ).permitAll()
 
                         // User pages
                         .requestMatchers("/addReservation/**").hasAnyRole("USER")
@@ -94,7 +93,6 @@ public class SecurityConfiguration {
                                 "/editApartment/**",
                                 "/viewApartmentsManager",
                                 "/deleteApartment/**",
-                                "/clientlist/**",
                                 "/chartsmanager",
                                 "/addApartment",
                                 "/addApartment/**",
@@ -106,16 +104,14 @@ public class SecurityConfiguration {
                                 "/editApartment/**",
                                 "/updateApartment",
                                 "/updateApartment/**",
-                                "/addApartmentPhoto/**",
                                 "/selectApartmentimage/**",
                                 "/createApartment/**",
                                 "/createApartment",
                                 "/chartsManager",
-                                "/loadMoreApartmentsManagerView/**")
-                        .hasAnyRole("MANAGER")
+                                "/loadMoreApartmentsManagerView/**"
+                        ).hasAnyRole("MANAGER")
 
                         // Admin pages
-                        .requestMatchers("/managerlist").hasAnyRole("ADMIN")
                         .requestMatchers("/chartsadmin").hasAnyRole("ADMIN")
                         .requestMatchers("/managerValidation").hasAnyRole("ADMIN")
                         .requestMatchers("/acceptance/**").hasAnyRole("ADMIN")

@@ -94,12 +94,6 @@ public class UserController {
 
     }
 
-    @GetMapping("/returnmainpage")
-    public String returnmainpage(Model model, HttpServletRequest request) {
-        return "redirect:/index";
-
-    }
-
     /**
      * Loads the first 6 apartments of a manager
      */
@@ -222,12 +216,12 @@ public class UserController {
 
     }
 
-    @GetMapping("/managerlist")
+/*     @GetMapping("/managerlist")
     public String managerList(Model model, HttpServletRequest request) {
 
         return "managerlist";
 
-    }
+    } */
 
     @GetMapping("/editprofile/{id}")
     public String editProfile(Model model, HttpServletRequest request, @PathVariable Long id) {
@@ -402,7 +396,7 @@ public class UserController {
 
             userService.save(user);
 
-            Resource image = new ClassPathResource("/static/images/default-hotel.jpg");
+            Resource image = new ClassPathResource("/static/images/default.jpg");
             user.setImageFile(BlobProxy.generateProxy(image.getInputStream(), image.contentLength()));
             user.setImage(true);
 

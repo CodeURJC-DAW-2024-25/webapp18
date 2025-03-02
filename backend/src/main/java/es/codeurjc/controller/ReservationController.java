@@ -48,14 +48,19 @@ public class ReservationController {
         LocalDate checkInDate = reservationService.toLocalDate(checkIn);
         LocalDate checkOutDate = reservationService.toLocalDate(checkOut);
         Room room = apartmentService.checkRooms(id, checkInDate, checkOutDate, numPeople);
+        if (checkInDate.isBefore(checkOutDate)) {
+            return "error";
+        }
+        
         if (room != null) {
             UserE user = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
             Apartment apartment = apartmentService.findById(id).orElseThrow();
             Reservation newRe = new Reservation(checkInDate, checkOutDate, numPeople, apartment, room, user);
             reservationService.save(newRe);
             return "redirect:/clientReservations";
-        } else
+        } else {
             return "notRooms";
+        }
     }
 
     @GetMapping("/clientReservations")

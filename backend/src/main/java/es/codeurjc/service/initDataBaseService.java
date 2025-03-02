@@ -329,7 +329,7 @@ public class initDataBaseService {
             userRepository.save(manager6);
             userRepository.save(admin);
 
-            // images for hotels
+            // images for apartments
             setImage(apartment1, "/static/images/apartment7.jpg");
             setImage(apartment2, "/static/images/apartment1.jpg");
             setImage(apartment3, "/static/images/apartment2.jpg");

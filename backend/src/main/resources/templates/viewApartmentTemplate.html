@@ -1,7 +1,9 @@
 <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js'></script>
 {{#apartments}}
 <tr class="align-middle">
-    <td><span class="d-inline-block align-middle">{{name}}</span></td>
+    <td><span class="d-inline-block align-middle"></span><a href="/apartmentInformation/{{id}}" class="btn btn-secondary rounded">{{name}}</a></span></td>
+    
+
     <td><span class="d-inline-block align-middle">{{location}}</span></td>
     <td><span class="d-inline-block align-middle">{{averageRating}}</span></td>
     <td class="text-end">
