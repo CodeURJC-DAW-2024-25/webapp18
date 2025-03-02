@@ -355,7 +355,7 @@ public class UserController {
         return "login";
     }
 
-    @GetMapping("/loginrror")
+    @GetMapping("/loginError")
     public String loginError(Model model) {
         return "loginError";
     }

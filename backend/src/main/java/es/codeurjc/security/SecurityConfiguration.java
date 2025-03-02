@@ -42,7 +42,7 @@ public class SecurityConfiguration {
                                 "/apartmentInformation/**",
                                 "/apartmentReviews/**",
                                 "/login",
-                                "/loginerror",
+                                "/loginError",
                                 "/css/**",
                                 "/js/**",
                                 "/fonts/**",
@@ -120,7 +120,7 @@ public class SecurityConfiguration {
                 )
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
-                        .failureUrl("/loginerror")
+                        .failureUrl("/loginError")
                         .defaultSuccessUrl("/profile")
                         .permitAll())
                 .logout(logout -> logout
