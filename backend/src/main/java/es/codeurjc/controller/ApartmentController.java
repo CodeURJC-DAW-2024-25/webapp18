@@ -352,35 +352,34 @@ public class ApartmentController {
 	 * @return
 	 */
 	@GetMapping("/loadMoreApartments/{start}/{end}")
-	public String loadMoreApartments(Model model,
-			@PathVariable Long start,
-			@PathVariable Long end) {
-
-		var apartmentsQuantity = apartmentService.count();
-
-		if (start <= apartmentsQuantity) {
-
-			var apartments = new ArrayList<>();
-
-			// We obtain the hotels IDs for the actual page
-			List<Long> apartmentIds = new ArrayList<>();
-			for (long index = start; index < end && index <= apartmentsQuantity; index++) {
-				apartmentIds.add(index);
-			}
-
-			// We look for the Hotel objects related to the IDs
-			for (Long apartmentId : apartmentIds) {
-				Apartment apartment = apartmentService.findById(apartmentId).orElse(null);
-				if (apartment != null) {
-					apartments.add(apartment);
-				}
-			}
-
-			model.addAttribute("apartments", apartments);
-		}
-
-		return "apartmentTemplate";
-	}
+public String loadMoreApartments(Model model,
+                              @PathVariable Long start,
+                              @PathVariable Long end) {
+    
+    var apartmentsQuantity = apartmentService.count();
+    
+    if (start <= apartmentsQuantity) {
+        var apartments = new ArrayList<Apartment>();
+        
+        // We obtain the apartments IDs for the actual page
+        List<Long> apartmentIds = new ArrayList<>();
+        for (long index = start; index < end && index <= apartmentsQuantity; index++) {
+            apartmentIds.add(index);
+        }
+        
+        // We look for the avalidated apt
+        for (Long apartmentId : apartmentIds) {
+            Apartment apartment = apartmentService.findById(apartmentId).orElse(null);
+            if (apartment != null && apartment.getManager().getvalidated()) {
+                apartments.add(apartment);
+            }
+        }
+        
+        model.addAttribute("apartments", apartments);
+    }
+    
+    return "apartmentTemplate";
+}
 
 	/**
 	 * Using AJAX, loads the next 6 apartments in the page, or none if all are

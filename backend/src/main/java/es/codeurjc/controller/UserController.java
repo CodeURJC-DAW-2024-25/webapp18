@@ -2,10 +2,10 @@ package es.codeurjc.controller;
 
 // Spring
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller; 
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping; 
-import org.springframework.web.bind.annotation.PostMapping; 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import es.codeurjc.model.Apartment;
 import es.codeurjc.model.Reservation;
@@ -56,14 +56,21 @@ public class UserController {
             recomendedApartments = userService.findRecomendedApartments(6, userReservations, user);
 
         } catch (NullPointerException e) {
-
+            // Handle case when user is not authenticated
         } finally {
             if (recomendedApartments.size() < 6) {
                 // size +1 to avoid looking for id = 0 if size = 0
                 for (int i = recomendedApartments.size() + 1; i < 7; i++) {
-                    Apartment apartment = apartmentService.findById((long) i).orElseThrow();
-                    if (apartment != null && apartment.getManager().getvalidated())
-                        recomendedApartments.add(apartment);
+                    try {
+                        Apartment apartment = apartmentService.findById((long) i).orElseThrow();
+                        // Only add apartments whose managers are validated
+                        if (apartment != null && apartment.getManager().getvalidated()) {
+                            recomendedApartments.add(apartment);
+                        }
+                    } catch (Exception ex) {
+                        // Skip this apartment if not found
+                        continue;
+                    }
                 }
             }
         }
@@ -73,8 +80,9 @@ public class UserController {
 
     @GetMapping("/indexsearch")
     public String indexSearch(Model model, @RequestParam String searchValue) {
-        List<Apartment> apartments = apartmentService.findTop6ByManager_ValidatedAndNameContainingIgnoreCaseOrderByNameDesc(true,
-                searchValue);
+        List<Apartment> apartments = apartmentService
+                .findTop6ByManager_ValidatedAndNameContainingIgnoreCaseOrderByNameDesc(true,
+                        searchValue);
         model.addAttribute("apartments", apartments);
         return "index";
 
@@ -107,7 +115,7 @@ public class UserController {
             apartments = apartments.subList(0, 6);
         }
 
-		model.addAttribute("isValidated", userService.findByNick(managernick).orElseThrow().getvalidated());
+        model.addAttribute("isValidated", userService.findByNick(managernick).orElseThrow().getvalidated());
         model.addAttribute("apartments", apartments);
 
         return "viewApartmentsManager";
@@ -358,58 +366,57 @@ public class UserController {
         return "loginError";
     }
 
-	@GetMapping("/register")
-	public String registerClient(Model model) {
-		return "register";
-	}
+    @GetMapping("/register")
+    public String registerClient(Model model) {
+        return "register";
+    }
 
-	@PostMapping("/register")
-	public String registerClient(Model model, UserE user, Integer type) throws IOException {
-		if (!userService.existNick(user.getNick())) {
-			user.setPass(passwordEncoder.encode(user.getPass()));
-			List<String> rols = new ArrayList<>();
-			rols.add("USER");
-			if (type == 0){
-				rols.add("CLIENT");
-				user.setvalidated(null);
-				user.setRejected(null);
-			}
-			else{
-				rols.add("MANAGER");
-				user.setvalidated(false);
-				user.setRejected(false);
-			}
-			user.setRols(rols);
-			List<Reservation> reservations= new ArrayList<>();
-			user.setReservations(reservations);
-			List<Apartment> apartments= new ArrayList<>();
-			user.setApartment(apartments);
-			List<Review> reviews= new ArrayList<>();
-			user.setReviews(reviews);
+    @PostMapping("/register")
+    public String registerClient(Model model, UserE user, Integer type) throws IOException {
+        if (!userService.existNick(user.getNick())) {
+            user.setPass(passwordEncoder.encode(user.getPass()));
+            List<String> rols = new ArrayList<>();
+            rols.add("USER");
+            if (type == 0) {
+                rols.add("CLIENT");
+                user.setvalidated(null);
+                user.setRejected(null);
+            } else {
+                rols.add("MANAGER");
+                user.setvalidated(false);
+                user.setRejected(false);
+            }
+            user.setRols(rols);
+            List<Reservation> reservations = new ArrayList<>();
+            user.setReservations(reservations);
+            List<Apartment> apartments = new ArrayList<>();
+            user.setApartment(apartments);
+            List<Review> reviews = new ArrayList<>();
+            user.setReviews(reviews);
 
-			user.setLanguage("");
-			user.setLocation("");
-			user.setBio("");
-			user.setPhone("");
-			user.setOrganization("");
+            user.setLanguage("");
+            user.setLocation("");
+            user.setBio("");
+            user.setPhone("");
+            user.setOrganization("");
 
-			userService.save(user);
+            userService.save(user);
 
-			Resource image = new ClassPathResource("/static/images/default-hotel.jpg");
-        	user.setImageFile(BlobProxy.generateProxy(image.getInputStream(), image.contentLength()));
-        	user.setImage(true);
+            Resource image = new ClassPathResource("/static/images/default-hotel.jpg");
+            user.setImageFile(BlobProxy.generateProxy(image.getInputStream(), image.contentLength()));
+            user.setImage(true);
 
-			userService.save(user);
+            userService.save(user);
 
-			return "redirect:/login";
-		} else {
-			return "redirect:/nickTaken";
-		}
-	}
+            return "redirect:/login";
+        } else {
+            return "redirect:/nickTaken";
+        }
+    }
 
-	@GetMapping("/nickTaken")
-	public String takenUserName(Model model, HttpServletRequest request) {
-		return "nickTaken";
-	}
+    @GetMapping("/nickTaken")
+    public String takenUserName(Model model, HttpServletRequest request) {
+        return "nickTaken";
+    }
 
 }

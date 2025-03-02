@@ -1,16 +1,18 @@
+<script src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js'></script>
 {{#apartments}}
 <tr class="align-middle">
     <td><span class="d-inline-block align-middle">{{name}}</span></td>
-    <td> <span class="d-inline-block align-middle">{{location}}</span></td>
+    <td><span class="d-inline-block align-middle">{{location}}</span></td>
     <td><span class="d-inline-block align-middle">{{averageRating}}</span></td>
     <td class="text-end">
-
         <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="actionsDropdown"
-                data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="btn btn-secondary dropdown-toggle" 
+                    type="button" 
+                    data-bs-toggle="dropdown" 
+                    aria-expanded="false">
                 Actions
             </button>
-            <ul class="dropdown-menu" aria-labelledby="actionsDropdown">
+            <ul class="dropdown-menu dropdown-menu-end">
                 <li><a class="dropdown-item text-success" href="/editApartment/{{id}}">Edit</a></li>
                 <li><a class="dropdown-item text-danger" href="/deleteApartment/{{id}}">Delete</a></li>
             </ul>
