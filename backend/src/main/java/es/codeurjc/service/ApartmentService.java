@@ -99,10 +99,8 @@ public class ApartmentService implements GeneralService<Apartment>{
 
     public Room checkRooms(Long id, LocalDate checkIn, LocalDate checkOut, Integer numPeople) {
         Apartment apartment = this.findById(id).orElseThrow();
-        Integer i = 0;
         List<Room> rooms = apartment.getRooms();
         
-        // First try to find a room with exact capacity
         for (Room room : rooms) {
             if (room.getMaxClients() == numPeople && room.available(checkIn, checkOut)) {
                 return room;
@@ -116,7 +114,7 @@ public class ApartmentService implements GeneralService<Apartment>{
             }
         }
         
-        return null; // No suitable room found
+        return null; 
     }
 
     public void deleteById(Long id){

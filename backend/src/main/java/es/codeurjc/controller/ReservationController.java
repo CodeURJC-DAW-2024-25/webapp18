@@ -38,7 +38,6 @@ public class ReservationController {
 
     @GetMapping("/addReservation/{id}")
     public String showAddReservationForm(@PathVariable Long id, Model model) {
-        // Either show a form or redirect to apartment information
         return "redirect:/apartmentInformation/" + id;
     }
 
@@ -56,7 +55,6 @@ public class ReservationController {
             reservationService.save(newRe);
             return "redirect:/clientReservations";
         } else
-            // Fix: Use string concatenation instead of path variable syntax in redirect URL
             return "notRooms";
     }
 

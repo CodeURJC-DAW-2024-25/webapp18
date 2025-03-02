@@ -44,19 +44,15 @@ public class RoomService implements GeneralService<Room> {
 
     @Override
     public List<Room> findAll(Sort sort) {
-        if (!sort.equals(null)) {
-            return roomRepository.findAll(sort);
-        } else {
+        if (sort == null) {
             return roomRepository.findAll();
+        } else {
+            return roomRepository.findAll(sort);
         }
     }
-
+    
     @Override
     public Boolean exist(Long id) {
-        Optional<Room> room = roomRepository.findById(id);
-        if (room.isPresent())
-            return true;
-        else
-            return false;
+        return roomRepository.findById(id).isPresent();
     }
 }

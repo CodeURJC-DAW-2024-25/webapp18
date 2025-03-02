@@ -88,7 +88,7 @@ public class ReviewController {
 				reviews.add(selectedApartment.getReviews().get(i));
 			}
 
-			model.addAttribute("apartmentreviews", reviews);
+			model.addAttribute("apartmentReviews", reviews);
 			model.addAttribute("totalreviews", selectedApartment.getReviews().size());
 
 			for (int i = 1; i <= 5; i++) {
@@ -128,7 +128,7 @@ public class ReviewController {
 				newReviews.add(reviews.get(i - 1));
 			}
 
-			model.addAttribute("apartmentreviews", newReviews);
+			model.addAttribute("apartmentReviews", newReviews);
 		}
 
 		return "apartmentReviewTemplate";

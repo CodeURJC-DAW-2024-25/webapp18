@@ -92,10 +92,6 @@ public class UserController {
 
     }
 
-    // CLIENT CONTROLLERS
-
-    // MANAGER CONTROLLERS
-
     /**
      * Loads the first 6 apartments of a manager
      */
@@ -357,7 +353,7 @@ public class UserController {
         return "login";
     }
 
-    @GetMapping("/loginerror")
+    @GetMapping("/loginrror")
     public String loginError(Model model) {
         return "loginError";
     }

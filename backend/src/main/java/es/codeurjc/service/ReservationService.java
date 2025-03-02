@@ -49,20 +49,17 @@ public class ReservationService implements GeneralService<Reservation> {
 
     @Override
     public List<Reservation> findAll(Sort sort) {
-        if (!sort.equals(null)) {
-            return reservationRepository.findAll(sort);
-        } else {
+        if (sort == null) {
             return reservationRepository.findAll();
+        } else {
+            return reservationRepository.findAll(sort);
         }
     }
-
+    
     @Override
     public Boolean exist(Long id) {
         Optional<Reservation> reservation = reservationRepository.findById(id);
-        if (reservation.isPresent())
-            return true;
-        else
-            return false;
+        return reservation.isPresent();
     }
 
     public void deleteById(Long id) {
@@ -70,11 +67,9 @@ public class ReservationService implements GeneralService<Reservation> {
     }
 
     public LocalDate toLocalDate(String date) {
-        // Check if the date is in YYYY-MM-DD format
         if (date.contains("-")) {
             return LocalDate.parse(date); // This handles YYYY-MM-DD format directly
         } else {
-            // Original code for MM/DD/YYYY format
             String[] list = date.split("/");
             return LocalDate.of(Integer.parseInt(list[2]), Integer.parseInt(list[0]),
                    Integer.parseInt(list[1]));

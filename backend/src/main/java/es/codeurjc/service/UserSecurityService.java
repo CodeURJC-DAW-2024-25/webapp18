@@ -31,7 +31,7 @@ public class UserSecurityService implements UserDetailsService {
         try {
             log.debug("Intentando autenticar usuario con username: {}", username);
 
-            // Búsqueda insensible a mayúsculas/minúsculas
+            // CamelCase unsensitive
             UserE user = userRepository.findByNick(username.toLowerCase())
                 .orElseGet(() -> userRepository.findByEmail(username.toLowerCase())
                     .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username)));

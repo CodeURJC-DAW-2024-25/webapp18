@@ -44,20 +44,16 @@ public class UserService implements GeneralService<UserE> {
 
     @Override
     public List<UserE> findAll(Sort sort) {
-        if (!sort.equals(null)) {
+        if (sort != null) {
             return userRepository.findAll(sort);
         } else {
             return userRepository.findAll();
         }
     }
-
+    
     @Override
     public Boolean exist(Long id) {
-        Optional<UserE> user = userRepository.findById(id);
-        if (user.isPresent())
-            return true;
-        else
-            return false;
+        return userRepository.findById(id).isPresent();
     }
 
     public Optional<UserE> findByNick(String nick) {
@@ -100,8 +96,8 @@ public class UserService implements GeneralService<UserE> {
     }
 
     public List<Apartment> findRecomendedApartments(int numApartments, List<Reservation> userReservations, UserE targetUser) {
-        List<UserE> recomendedUsers = new ArrayList<>();
         List<Apartment> recomendedApartments = new ArrayList<>();
+        List<UserE> recomendedUsers = new ArrayList<>();
 
         for (Reservation reservation : userReservations) {
             Apartment reservedApartment = reservation.getApartment();

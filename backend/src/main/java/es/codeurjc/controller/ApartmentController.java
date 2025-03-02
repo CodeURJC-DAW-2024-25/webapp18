@@ -68,6 +68,7 @@ public class ApartmentController {
 		} else
 			return "redirect:/login";
 	}
+	
 
 	@PostMapping("/createApartment")
 	public String createApartment(HttpServletRequest request,
@@ -90,7 +91,7 @@ public class ApartmentController {
 			newApartment.setReservations(new ArrayList<>());
 			newApartment.setReviews(new ArrayList<>());
 
-			// Procesar la imagen subida directamente
+			// Process image directly
 			if (imageFile != null && !imageFile.isEmpty()) {
 				newApartment.setImageFile(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
 			} else {
@@ -101,26 +102,19 @@ public class ApartmentController {
 			}
 			newApartment.setImage(true);
 
-			// Añadir habitaciones según lo especificado
 			if (room1 != null && room1 > 0 && cost1 != null && cost1 > 0)
 				for (int i = 0; i < room1; i++) {
 					newApartment.getRooms().add(new Room(1, cost1, new ArrayList<>(), newApartment));
 				}
 
-			// [Resto del código para room2, room3, room4...]
-
-			System.out.println("Guardando apartamento: " + newApartment.getName());
 			apartmentService.save(newApartment);
-			System.out.println("Apartamento guardado con éxito. ID: " + newApartment.getId());
 
-			// Prueba con una redirección simple
 			return "redirect:/viewApartmentsManager";
 
 		} catch (Exception e) {
 			System.err.println("Error en la creación del apartamento: " + e.getMessage());
 			e.printStackTrace();
 
-			// En caso de error, volver al formulario con mensaje de error
 			model.addAttribute("error", "Error al crear el apartamento: " + e.getMessage());
 			return "addApartment";
 		}
@@ -133,6 +127,7 @@ public class ApartmentController {
 		return "addApartmentPhoto";
 	}
 
+	
 	@PostMapping("/editApartmentimage/{id}")
 	public String editImage(HttpServletRequest request, @RequestParam MultipartFile imageFile,
 			@PathVariable Long id,
@@ -176,32 +171,29 @@ public class ApartmentController {
 			model.addAttribute("apartment", apartment);
 			model.addAttribute("id", id);
 			
-			// Contar habitaciones por número máximo de clientes y obtener sus precios
-			int[] roomCounts = new int[5]; // Índice 0 no se usa, 1-4 para maxClients
-			float[] roomCosts = new float[5]; // Precios correspondientes
+			int[] roomCounts = new int[5];
+			float[] roomCosts = new float[5]; 
 			
-			// Inicializar con valores predeterminados
 			for (int i = 1; i <= 4; i++) {
 				roomCounts[i] = 0;
 				roomCosts[i] = 0;
 			}
 			
-			// Contar habitaciones por maxClients y obtener costos
+			// Count rooms and add cost
 			for (Room room : apartment.getRooms()) {
 				int maxClients = room.getMaxClients();
 				if (maxClients >= 1 && maxClients <= 4) {
 					roomCounts[maxClients]++;
-					// Si es la primera habitación de este tipo, guarda su costo
 					if (roomCounts[maxClients] == 1) {
-						roomCosts[maxClients] = room.getcost(); // Nota: 'c' minúscula en getcost()
+						roomCosts[maxClients] = room.getcost(); 
 					}
 				}
 			}
 			
-			// Añadir conteos y costos de habitaciones al modelo
+			
 			for (int i = 1; i <= 4; i++) {
 				model.addAttribute("room" + i, roomCounts[i]);
-				model.addAttribute("cost" + i, (int)roomCosts[i]); // Convertir a int si es necesario para el formulario
+				model.addAttribute("cost" + i, (int)roomCosts[i]); 
 			}
 			
 			System.out.println("Editando apartamento ID: " + id + ", Nombre: " + apartment.getName());
