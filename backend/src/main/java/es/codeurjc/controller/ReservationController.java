@@ -48,7 +48,7 @@ public class ReservationController {
         LocalDate checkInDate = reservationService.toLocalDate(checkIn);
         LocalDate checkOutDate = reservationService.toLocalDate(checkOut);
         Room room = apartmentService.checkRooms(id, checkInDate, checkOutDate, numPeople);
-        if (checkInDate.isBefore(checkOutDate)) {
+        if (checkInDate.isAfter(checkOutDate) || checkInDate.isEqual(checkOutDate)) {
             return "error";
         }
         
