@@ -120,15 +120,15 @@ public class SecurityConfiguration {
                                 .hasAnyRole("ADMIN")
 
                 )
-                                .formLogin(formLogin -> formLogin
-                                                .loginPage("/login")
-                                                .failureUrl("/loginError")
-                                                .defaultSuccessUrl("/profile")
-                                                .permitAll())
-                                .logout(logout -> logout
-                                                .logoutUrl("/logout")
-                                                .logoutSuccessUrl("/login")
-                                                .permitAll());
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/login")
+                        .failureUrl("/loginError")
+                        .defaultSuccessUrl("/profile")
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login")
+                        .permitAll());
 
                 return http.build();
         }

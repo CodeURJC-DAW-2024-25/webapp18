@@ -157,11 +157,11 @@ public class Apartment {
         this.reviews = reviews;
     }
 
-    public float getrating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setrating(float rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 
