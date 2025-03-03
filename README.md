@@ -17,7 +17,7 @@
 Laila El Khattabi El Hassnaoui |I have worked on several controllers as well as on the model and templates, and added the additional captcha technology | -[codedSomeControllers](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/12143f311a2336f25c1d224234dba73545c74311) <br> -[Captcha](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/4620fcfc1bfc101829d2ffcb674344233d07a73b#diff-b2469ee29439c23c45f2f41939ce95ae3d142728327838a0f10fb6813e5d4343) <br> -[apartmentInformation](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/737f1e13ee020060434159691ef2b26b8e8ee9c5) <br> -[profile and editProfile](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/0d393065412509a53d0c608dea2b4ca72e4ce242)  <br>-[sidebar,footer page](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/e80f0742c013a2a6680dc19514db039d6b828b09)| Profile, editProfile, footer and sidebar styles, captcha, apartmentInformation  and controllers, service, repository, model|
 Carlos Hermán Andrés Andrés | AJAX loading, several controllers, apartment templates, database creation and configuration | - [viewApartmentsManager template working](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/5b9cdb1d85092b36417e56df6661aead08a77745)<br> - [Client reservation template done](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/c5969e07e5e2cc8407499ee615fdf824ab25fae3)<br> - [Index working](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/5fe4738fdea49ab75f4a7bf896253624adfe1c53)<br> - [Security now allows navigation, and the keystores](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/4829c6fbcab1b363debac50b4cacf57e754404a2)<br> - [Generic footer](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/9583b3c7086e53a310c0993438430f71045ecfde) | index.html, Apartment.controller, Security Configuration, viewApartmentsManager, initDatabseService |
 Elena Ceinos Abeijón | | | |
-Daniel Gómez López | | | |
+Daniel Gómez López | I have worken on some controllers, frontend templates as well as security and the graphic | - [Working web commit](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/f28bbcc8c3e2f9f5fa5254aa6fd56b0d8cd14157)<br> - [fixed register controller](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/397797de859c661348497fd7019c99ca5c8a3ce7)<br> - [reservations changes (to be fixed yet)](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/84e254e2e3e6452b678568d685a165b4308de994)<br> - [fixed nav bar](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/beb3f85ceab6e24f3567d0893872f45ace3e2dc4)<br> - [Half Fixed reviews](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/beb3f85ceab6e24f3567d0893872f45ace3e2dc4)<br> | Register, reservation.Controller, Reviews, navegation Bar, ClientReservations, Navegation Diagram|
 
 ### Screenshots
 
@@ -232,8 +232,8 @@ Daniel Gómez López | d.gomezl.2021@alumnos.urjc.es | daniel-gomez487
 - **Register page** -> In this page, you enter some info about yourself to create an account
   ![image](https://github.com/user-attachments/assets/732e9e69-47c9-4ad4-8dc5-5f1338638db1)
 
-### Diagram Navigation
-![NAVEGATION DIAGRAM](https://github.com/user-attachments/assets/d98ca735-1882-4b36-9abc-27a8b9b9b70e)
+### Navigation Diagram
+![NAVIGATION DIAGRAM](https://github.com/user-attachments/assets/d98ca735-1882-4b36-9abc-27a8b9b9b70e)
 
 
 
