@@ -73,7 +73,7 @@ public class SecurityConfiguration {
                                                 "/profile/**",
                                                 "/editProfile/**",
                                                 "/editProfile/*/images",
-                                                "/editProfileimage/**",
+                                                "/editProfileImage/**",
                                                 "/postApartmentReviews/**",
                                                 "/replace/**")
                                 .hasAnyRole("USER")
@@ -101,7 +101,7 @@ public class SecurityConfiguration {
                                                 "/testChart/**",
                                                 "/application/**",
                                                 "/index/*/images/**",
-                                                "/editApartmentimage/**",
+                                                "/editApartmentImage/**",
                                                 "/editApartment",
                                                 "/editApartment/**",
                                                 "/updateApartment",

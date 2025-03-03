@@ -291,9 +291,9 @@ public class initDataBaseService {
 
             Random randomInt = new Random();
 
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 50; i++) {
                 Review review = new Review(randomInt.nextInt(5) + 1, "Hola" + i, LocalDate.of(2024, 7, 7),
-                        apartment3, client1);
+                        apartment2, client1);
                 reviewRepository.save(review);
                 apartment2.getReviews().add(review);
             }

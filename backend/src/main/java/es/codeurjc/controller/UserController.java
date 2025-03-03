@@ -395,7 +395,7 @@ public class UserController {
 
             userService.save(user);
 
-            Resource image = new ClassPathResource("/static/images/default.jpg");
+            Resource image = new ClassPathResource("/static/images/defaultUser.jpeg");
             user.setImageFile(BlobProxy.generateProxy(image.getInputStream(), image.contentLength()));
             user.setImage(true);
 
