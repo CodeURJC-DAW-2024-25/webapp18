@@ -26,8 +26,12 @@ Daniel Gómez López | I have worken on some controllers, frontend templates as 
 
 ![image](https://github.com/user-attachments/assets/d163e953-b385-49db-bf73-aa069890ea37)
 - **login** -> In this page, if you already have a user, you can log in. If you don't, you can click on "create an account", it will redirect you to the register page. If your  credentials are invalid, you'll be redirected to loginError
+  ![image](https://github.com/user-attachments/assets/aa97a809-2fe6-44bb-b0fd-e564154735f3)
+
 - **loginError** -> This is the login Error page
-- ![image](https://github.com/user-attachments/assets/2f39e5fb-6a20-4660-99f1-cdc8bef024fe)
+ ![image](https://github.com/user-attachments/assets/936beb4c-74d3-454a-97ad-3aa24049a32c)
+
+- **nick taken** -> If you try to register with a username that already exists, you'll be redirected to this page
 
 - **register** -> In this page you can register. Make sure you don't repeat mail nor username. You can choose your role but managers must be validated.
   ![image](https://github.com/user-attachments/assets/031d2582-3aee-4c72-8bda-f2b64601959d)
