@@ -89,13 +89,13 @@ public class ReviewController {
 			}
 
 			model.addAttribute("apartmentReviews", reviews);
-			model.addAttribute("totalreviews", selectedApartment.getReviews().size());
+			model.addAttribute("totalReviews", selectedApartment.getReviews().size());
 
 			for (int i = 1; i <= 5; i++) {
 				reviews = reviewService.findByScoreAndApartment(i, selectedApartment);
 				int numReviews = reviews.size();
 
-				model.addAttribute("numreviews" + i, numReviews);
+				model.addAttribute("numReviews" + i, numReviews);
 			}
 
 			for (int i = 5; i >= 1; i--) {

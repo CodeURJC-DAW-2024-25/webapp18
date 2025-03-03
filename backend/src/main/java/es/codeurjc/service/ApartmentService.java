@@ -1,16 +1,14 @@
 package es.codeurjc.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.stereotype.Service;
-
-
 import java.util.Optional;
-import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
 import es.codeurjc.model.Apartment;
 import es.codeurjc.model.Reservation;
 import es.codeurjc.model.Room;
@@ -76,10 +74,7 @@ public class ApartmentService implements GeneralService<Apartment>{
     @Override
     public Boolean exist(Long id) {
         Optional<Apartment> apartment = apartmentRepository.findById(id);
-        if (apartment.isPresent())
-            return true;
-        else
-            return false;
+        return apartment.isPresent();
     }
 
     public List<UserE> getValidClients(Apartment apartment) {
