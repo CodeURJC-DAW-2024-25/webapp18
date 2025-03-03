@@ -149,10 +149,28 @@ Daniel Gómez López | d.gomezl.2021@alumnos.urjc.es | daniel-gomez487
 
 - **edit profile** -> In this page, you can change your details and your photo. *ONLY USERS* 
   ![image](https://github.com/user-attachments/assets/e4d3a57b-ea63-4a45-a44a-c50f3de93491)
+- **my Reservations** -> In this page, you can view a list of your reservations. Also, you can proceed to view the details or cancel them
+  ![image](https://github.com/user-attachments/assets/72ebc696-61e4-44a9-9b19-5d70a0fd02f0)
+- **Reservation details** -> In this page, you can check your reservation details or cancel it
+  ![image](https://github.com/user-attachments/assets/f0df55ca-39d1-41c2-b64d-42f22a47f0a8)
+
 - **apartment information** -> if you're not logged, you can just check the info. If you're a client, you can check the dates to make a booking. If you're any of the roles, you can also click on "reviews"
+  ![image](https://github.com/user-attachments/assets/746b89a7-87e2-4142-a71f-62bf34430bd2)
+![image](https://github.com/user-attachments/assets/9a831948-4dbd-4b65-b98a-6fb72db6aed0)
+
 - **apartment reviews** -> You can check the reviews and if you're a user, you can leave yours. Also you can check the chart to see how many reviews the apartment has. If there are more than 6 comments, you can load more.
   ![image](https://github.com/user-attachments/assets/767c2905-c841-45e2-8888-699597ea4f59)
   ![image](https://github.com/user-attachments/assets/53c3036b-62fd-4d2f-8b08-a9eb51c7a9c5)
   *ONLY USERS-last*
+- **add apartment** ->*ONLY MANAGER* As a manager, in this page you can upload a new apartment with all the details.
+  ![image](https://github.com/user-attachments/assets/76595ba2-03cb-4aae-a1cc-9fb066d0964a)
+- **my apartments** -> *ONLY MANAGER* As a manager, in this page you can view a list of your apartments. You can also proceed to delete or edit each one.
+  ![image](https://github.com/user-attachments/assets/0c9f8d35-07a2-45a2-ae1a-600d900e6020)
+- **edit apartment** -> *ONLY MANAGER* As a manager, in this page you can edit the details of your selected apartment and check the preview of the neww image.
+  ![image](https://github.com/user-attachments/assets/e169aa4e-abcb-4dc5-adb5-c33f9b55683a)
+- **Manager validation** -> *ONLY ADMIN*  As an admin, in this page you can view a list of the new managers. You can validate them so that they will be able to access all the manager's features, or reject them.
+  ![image](https://github.com/user-attachments/assets/c0033c2b-ed44-4e44-b42a-13a7664e8a9c)
+
+
 
 
