@@ -1,5 +1,67 @@
 # 🏚🏝 dreamLife 
 
+## PHASE 1
+
+### Navigation diagram
+
+### Entities diagram
+
+### Execution instructions
+
+### Templates and classes diagram
+![DAW Diagram](https://github.com/user-attachments/assets/ec9206cc-c70f-4c67-a037-b7da4063956c)
+
+### Member participation
+| Name | Tasks |Most important commits| Most worked on files | 
+|--------------|--------------|--------------|---------------|
+Laila El Khattabi El Hassnaoui | | | |
+Carlos Hermán Andrés Andrés | AJAX loading, several controllers, apartment templates, database creation and configuration | - [viewApartmentsManager template working](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/5b9cdb1d85092b36417e56df6661aead08a77745)<br> - [Client reservation template done](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/c5969e07e5e2cc8407499ee615fdf824ab25fae3)<br> - [Index working](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/5fe4738fdea49ab75f4a7bf896253624adfe1c53)<br> - [Security now allows navigation, and the keystores](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/4829c6fbcab1b363debac50b4cacf57e754404a2)<br> - [Generic footer](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/9583b3c7086e53a310c0993438430f71045ecfde) | index.html, Apartment.controller, Security Configuration, viewApartmentsManager, initDatabseService |
+Elena Ceinos Abeijón | | | |
+Daniel Gómez López | | | |
+
+### Screenshots
+
+- **index** -> This is the welcome page. Also, you can view the validated-manager apartments and click to view each ones info (if you're a user, you can book) and reviews. Also, in the nav bar you can click on "login". If you're already logged, you can click on "profile" to see your details. You can also load more apartments
+![image](https://github.com/user-attachments/assets/ec4f0873-8a6e-432c-b1f3-c16c53c34955)
+
+![image](https://github.com/user-attachments/assets/d163e953-b385-49db-bf73-aa069890ea37)
+- **login** -> In this page, if you already have a user, you can log in. If you don't, you can click on "create an account", it will redirect you to the register page. If your  credentials are invalid, you'll be redirected to loginError
+- **loginError** -> This is the login Error page
+- ![image](https://github.com/user-attachments/assets/2f39e5fb-6a20-4660-99f1-cdc8bef024fe)
+
+- **register** -> In this page you can register. Make sure you don't repeat mail nor username. You can choose your role but managers must be validated.
+  ![image](https://github.com/user-attachments/assets/031d2582-3aee-4c72-8bda-f2b64601959d)
+
+- **profile** -> In this page, you can check your info. Also, you can see a sidebar with your role and some options depending on it. Also, you can click on "edit profile" or "sign out". If you're a manager, you can also see wether you're validated or not. *ONLY USERS*
+  ![image](https://github.com/user-attachments/assets/c5648f58-3473-4eac-8536-1cc0b2a94738)
+  ![image](https://github.com/user-attachments/assets/01db8acd-0d03-415e-be8d-4163f3c81f8d)
+
+- **edit profile** -> In this page, you can change your details and your photo. *ONLY USERS* 
+  ![image](https://github.com/user-attachments/assets/e4d3a57b-ea63-4a45-a44a-c50f3de93491)
+- **my Reservations** -> In this page, you can view a list of your reservations. Also, you can proceed to view the details or cancel them
+  ![image](https://github.com/user-attachments/assets/72ebc696-61e4-44a9-9b19-5d70a0fd02f0)
+- **Reservation details** -> In this page, you can check your reservation details or cancel it
+  ![image](https://github.com/user-attachments/assets/f0df55ca-39d1-41c2-b64d-42f22a47f0a8)
+
+- **apartment information** -> if you're not logged, you can just check the info. If you're a client, you can check the dates to make a booking. If you're any of the roles, you can also click on "reviews"
+  ![image](https://github.com/user-attachments/assets/746b89a7-87e2-4142-a71f-62bf34430bd2)
+![image](https://github.com/user-attachments/assets/9a831948-4dbd-4b65-b98a-6fb72db6aed0)
+
+- **apartment reviews** -> You can check the reviews and if you're a user, you can leave yours. Also you can check the chart to see how many reviews the apartment has. If there are more than 6 comments, you can load more.
+  ![image](https://github.com/user-attachments/assets/767c2905-c841-45e2-8888-699597ea4f59)
+  ![image](https://github.com/user-attachments/assets/53c3036b-62fd-4d2f-8b08-a9eb51c7a9c5)
+  *ONLY USERS-last*
+- **add apartment** ->*ONLY MANAGER* As a manager, in this page you can upload a new apartment with all the details.
+  ![image](https://github.com/user-attachments/assets/76595ba2-03cb-4aae-a1cc-9fb066d0964a)
+- **my apartments** -> *ONLY MANAGER* As a manager, in this page you can view a list of your apartments. You can also proceed to delete or edit each one.
+  ![image](https://github.com/user-attachments/assets/0c9f8d35-07a2-45a2-ae1a-600d900e6020)
+- **edit apartment** -> *ONLY MANAGER* As a manager, in this page you can edit the details of your selected apartment and check the preview of the neww image.
+  ![image](https://github.com/user-attachments/assets/e169aa4e-abcb-4dc5-adb5-c33f9b55683a)
+- **Manager validation** -> *ONLY ADMIN*  As an admin, in this page you can view a list of the new managers. You can validate them so that they will be able to access all the manager's features, or reject them.
+  ![image](https://github.com/user-attachments/assets/c0033c2b-ed44-4e44-b42a-13a7664e8a9c)
+
+
+
 ## Preparation 1
 
 ## Group members
@@ -127,49 +189,6 @@ Daniel Gómez López | d.gomezl.2021@alumnos.urjc.es | daniel-gomez487
 ### Diagram Navigation
 ![DIAGRAMA_NAVEFGACION](https://github.com/user-attachments/assets/2abfd042-32b9-46eb-aeed-7328b53ac9dd)
 
-
-## PHASE 1
-
-### Screenshots
-
-- **index** -> This is the welcome page. Also, you can view the validated-manager apartments and click to view each ones info (if you're a user, you can book) and reviews. Also, in the nav bar you can click on "login". If you're already logged, you can click on "profile" to see your details. You can also load more apartments
-![image](https://github.com/user-attachments/assets/ec4f0873-8a6e-432c-b1f3-c16c53c34955)
-
-![image](https://github.com/user-attachments/assets/d163e953-b385-49db-bf73-aa069890ea37)
-- **login** -> In this page, if you already have a user, you can log in. If you don't, you can click on "create an account", it will redirect you to the register page. If your  credentials are invalid, you'll be redirected to loginError
-- **loginError** -> This is the login Error page
-- ![image](https://github.com/user-attachments/assets/2f39e5fb-6a20-4660-99f1-cdc8bef024fe)
-
-- **register** -> In this page you can register. Make sure you don't repeat mail nor username. You can choose your role but managers must be validated.
-  ![image](https://github.com/user-attachments/assets/031d2582-3aee-4c72-8bda-f2b64601959d)
-
-- **profile** -> In this page, you can check your info. Also, you can see a sidebar with your role and some options depending on it. Also, you can click on "edit profile" or "sign out". If you're a manager, you can also see wether you're validated or not. *ONLY USERS*
-  ![image](https://github.com/user-attachments/assets/c5648f58-3473-4eac-8536-1cc0b2a94738)
-  ![image](https://github.com/user-attachments/assets/01db8acd-0d03-415e-be8d-4163f3c81f8d)
-
-- **edit profile** -> In this page, you can change your details and your photo. *ONLY USERS* 
-  ![image](https://github.com/user-attachments/assets/e4d3a57b-ea63-4a45-a44a-c50f3de93491)
-- **my Reservations** -> In this page, you can view a list of your reservations. Also, you can proceed to view the details or cancel them
-  ![image](https://github.com/user-attachments/assets/72ebc696-61e4-44a9-9b19-5d70a0fd02f0)
-- **Reservation details** -> In this page, you can check your reservation details or cancel it
-  ![image](https://github.com/user-attachments/assets/f0df55ca-39d1-41c2-b64d-42f22a47f0a8)
-
-- **apartment information** -> if you're not logged, you can just check the info. If you're a client, you can check the dates to make a booking. If you're any of the roles, you can also click on "reviews"
-  ![image](https://github.com/user-attachments/assets/746b89a7-87e2-4142-a71f-62bf34430bd2)
-![image](https://github.com/user-attachments/assets/9a831948-4dbd-4b65-b98a-6fb72db6aed0)
-
-- **apartment reviews** -> You can check the reviews and if you're a user, you can leave yours. Also you can check the chart to see how many reviews the apartment has. If there are more than 6 comments, you can load more.
-  ![image](https://github.com/user-attachments/assets/767c2905-c841-45e2-8888-699597ea4f59)
-  ![image](https://github.com/user-attachments/assets/53c3036b-62fd-4d2f-8b08-a9eb51c7a9c5)
-  *ONLY USERS-last*
-- **add apartment** ->*ONLY MANAGER* As a manager, in this page you can upload a new apartment with all the details.
-  ![image](https://github.com/user-attachments/assets/76595ba2-03cb-4aae-a1cc-9fb066d0964a)
-- **my apartments** -> *ONLY MANAGER* As a manager, in this page you can view a list of your apartments. You can also proceed to delete or edit each one.
-  ![image](https://github.com/user-attachments/assets/0c9f8d35-07a2-45a2-ae1a-600d900e6020)
-- **edit apartment** -> *ONLY MANAGER* As a manager, in this page you can edit the details of your selected apartment and check the preview of the neww image.
-  ![image](https://github.com/user-attachments/assets/e169aa4e-abcb-4dc5-adb5-c33f9b55683a)
-- **Manager validation** -> *ONLY ADMIN*  As an admin, in this page you can view a list of the new managers. You can validate them so that they will be able to access all the manager's features, or reject them.
-  ![image](https://github.com/user-attachments/assets/c0033c2b-ed44-4e44-b42a-13a7664e8a9c)
 
 
 
