@@ -233,7 +233,7 @@ Daniel Gómez López | d.gomezl.2021@alumnos.urjc.es | daniel-gomez487
   ![image](https://github.com/user-attachments/assets/732e9e69-47c9-4ad4-8dc5-5f1338638db1)
 
 ### Diagram Navigation
-![DIAGRAMA_NAVEFGACION](https://github.com/user-attachments/assets/2abfd042-32b9-46eb-aeed-7328b53ac9dd)
+![NAVEGATION DIAGRAM](https://github.com/user-attachments/assets/d98ca735-1882-4b36-9abc-27a8b9b9b70e)
 
 
 
