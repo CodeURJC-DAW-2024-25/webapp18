@@ -14,113 +14,115 @@ import es.codeurjc.service.UserSecurityService;
 
 @Configuration
 @EnableWebSecurity
+
 public class SecurityConfiguration {
 
-    @Autowired
-    private UserSecurityService userDetailService;
+        @Autowired
+        private UserSecurityService userDetailService;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+                return new BCryptPasswordEncoder();
+        }
 
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
-    }
+        @Bean
+        public DaoAuthenticationProvider authenticationProvider() {
+                DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+                authProvider.setUserDetailsService(userDetailService);
+                authProvider.setPasswordEncoder(passwordEncoder());
+                return authProvider;
+        }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authenticationProvider(authenticationProvider());
-        http
-                .authorizeHttpRequests(authorize -> authorize
-                        // public pages
-                        .requestMatchers(
-                                "/apartmentInformation/**",
-                                "/apartmentReviews/**",
-                                "/login",
-                                "/loginError",
-                                "/css/**",
-                                "/js/**",
-                                "/fonts/**",
-                                "/vendor/**",
-                                "/favicon.ico",
-                                "/images/**",
-                                "/img/**",
-                                "/",
-                                "/index",
-                                "/register",
-                                "/nickTaken",
-                                "/error",
-                                "/notfounderror/**",
-                                "/apartmentReviews/**",
-                                "/indexsearch",
-                                "/notRooms/**",
-                                "/notRooms**",
-                                "/indexsearch",
-                                "/captcha",
-                                "/loadMoreApartments/**",
-                                "/loadMoreReviews/**",
-                                "/profile/*/images/",
-                                "/static/images/**",
-                                "/index/*/images/**"
-                        ).permitAll()
+        @Bean
+        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+                http.authenticationProvider(authenticationProvider());
+                http.authorizeHttpRequests(authorize -> authorize
+                                // public pages
+                                .requestMatchers(
+                                                "/apartmentInformation/**",
+                                                "/apartmentReviews/**",
+                                                "/login",
+                                                "/loginError",
+                                                "/css/**",
+                                                "/js/**",
+                                                "/fonts/**",
+                                                "/vendor/**",
+                                                "/favicon.ico",
+                                                "/images/**",
+                                                "/img/**",
+                                                "/",
+                                                "/index",
+                                                "/register",
+                                                "/nickTaken",
+                                                "/error",
+                                                "/apartmentReviews/**",
+                                                "/indexSearch",
+                                                "/notRooms/**",
+                                                "/notRooms**",
+                                                "/captcha",
+                                                "/loadMoreApartments/**",
+                                                "/loadMoreReviews/**",
+                                                "/profile/*/images/",
+                                                "/static/images/**",
+                                                "/index/*/images/**")
+                                .permitAll()
 
-                        // User pages
-                        .requestMatchers("/addReservation/**").hasAnyRole("USER")
-                        .requestMatchers("/profile/**").hasAnyRole("USER")
-                        .requestMatchers("/editprofile/**").hasAnyRole("USER")
-                        .requestMatchers("/editprofile/*/images").hasAnyRole("USER")
-                        .requestMatchers("/editprofileimage/**").hasAnyRole("USER")
-                        .requestMatchers("/postapartmentReviews/**").hasAnyRole("USER")
-                        .requestMatchers("/replace/**").hasAnyRole("USER")
+                                // User pages
+                                .requestMatchers(
+                                                "/addReservation/**",
+                                                "/profile/**",
+                                                "/editProfile/**",
+                                                "/editProfile/*/images",
+                                                "/editProfileimage/**",
+                                                "/postApartmentReviews/**",
+                                                "/replace/**")
+                                .hasAnyRole("USER")
 
-                        // Client pages
-                        .requestMatchers("/addReservation/**").hasAnyRole("CLIENT")
-                        .requestMatchers("/clientReservations").hasAnyRole("CLIENT")
-                        .requestMatchers("/clientReservations/**").hasAnyRole("CLIENT")
-                        .requestMatchers("/reservationInfo/**").hasAnyRole("CLIENT")
-                        .requestMatchers("/addReservation/**").hasAnyRole("CLIENT")
-                        .requestMatchers("/cancelReservation/**").hasAnyRole("CLIENT")
-                        .requestMatchers("/postapartmentReviews/**").hasAnyRole("CLIENT")
-                        .requestMatchers("/loadMoreReservations/**").hasAnyRole("CLIENT")
+                                // Client pages
+                                .requestMatchers(
+                                                "/addReservation/**",
+                                                "/clientReservations",
+                                                "/clientReservations/**",
+                                                "/reservationInfo/**",
+                                                "/addReservation/**",
+                                                "/cancelReservation/**",
+                                                "/postApartmentReviews/**",
+                                                "/loadMoreReservations/**")
+                                .hasAnyRole("CLIENT")
 
-                        // Manager pages
-                        .requestMatchers(
-                                "/editApartment/**",
-                                "/viewApartmentsManager",
-                                "/deleteApartment/**",
-                                "/chartsmanager",
-                                "/addApartment",
-                                "/addApartment/**",
-                                "/testChart/**",
-                                "/application/**",
-                                "/index/*/images/**",
-                                "/editApartmentimage/**",
-                                "/editApartment",
-                                "/editApartment/**",
-                                "/updateApartment",
-                                "/updateApartment/**",
-                                "/selectApartmentimage/**",
-                                "/createApartment/**",
-                                "/createApartment",
-                                "/chartsManager",
-                                "/loadMoreApartmentsManagerView/**"
-                        ).hasAnyRole("MANAGER")
+                                // Manager pages
+                                .requestMatchers(
+                                                "/editApartment/**",
+                                                "/viewApartmentsManager",
+                                                "/deleteApartment/**",
+                                                "/chartsManager",
+                                                "/addApartment",
+                                                "/addApartment/**",
+                                                "/testChart/**",
+                                                "/application/**",
+                                                "/index/*/images/**",
+                                                "/editApartmentimage/**",
+                                                "/editApartment",
+                                                "/editApartment/**",
+                                                "/updateApartment",
+                                                "/updateApartment/**",
+                                                "/selectApartmentImage/**",
+                                                "/createApartment/**",
+                                                "/createApartment",
+                                                "/loadMoreApartmentsManagerView/**")
+                                .hasAnyRole("MANAGER")
 
-                        // Admin pages
-                        .requestMatchers("/chartsadmin").hasAnyRole("ADMIN")
-                        .requestMatchers("/managerValidation").hasAnyRole("ADMIN")
-                        .requestMatchers("/acceptance/**").hasAnyRole("ADMIN")
-                        .requestMatchers("/rejection/**").hasAnyRole("ADMIN")
+                                // Admin pages
+                                .requestMatchers(
+                                                "/managerValidation",
+                                                "/acceptance/**",
+                                                "/rejection/**")
+                                .hasAnyRole("ADMIN")
 
                 )
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
-                        .failureUrl("/loginError")
+                        .failureUrl("/loginerror")
                         .defaultSuccessUrl("/profile")
                         .permitAll())
                 .logout(logout -> logout
@@ -128,7 +130,7 @@ public class SecurityConfiguration {
                         .logoutSuccessUrl("/login")
                         .permitAll());
 
-        return http.build();
-    }
+                return http.build();
+        }
 
 }
