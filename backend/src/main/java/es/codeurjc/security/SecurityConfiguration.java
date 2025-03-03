@@ -53,7 +53,7 @@ public class SecurityConfiguration {
                                                 "/",
                                                 "/index",
                                                 "/register",
-                                                "/nickTaken",
+                                                "/nickTaken**",
                                                 "/error",
                                                 "/apartmentReviews/**",
                                                 "/indexSearch",
