@@ -1,6 +1,6 @@
 # 🏚🏝 dreamLife 
 
-## PHASE 1
+## PHASE 1: WEB WITH HTML GENERATED IN SERVER AND AJAX
 
 ### Navigation diagram
 
@@ -60,9 +60,55 @@ Daniel Gómez López | | | |
 - **Manager validation** -> *ONLY ADMIN*  As an admin, in this page you can view a list of the new managers. You can validate them so that they will be able to access all the manager's features, or reject them.
   ![image](https://github.com/user-attachments/assets/c0033c2b-ed44-4e44-b42a-13a7664e8a9c)
 
+  ## EXECUTION INSTRUCTIONS
+
+###VERSION 
+
+The tecnologies that we use in this phase are:
+
+    -MySQL: 8.0.33
+  
+    -Maven : 4.0.0
+  
+    -Spring Boot: 3.2.3
+
+    -Java: 21
+
+    -Google ReCAPTCHA: Version 2
+
+## CONFIGURATION 
+
+In order to execute the app, you will need to follow the next steps:
+
+  - 1.Download the zip that appears in this link, https://github.com/CodeURJC-DAW-2024-25/webapp18
+
+  - 2.Navigate to the MySQL website at https://dev.mysql.com/downloads/workbench/ and select the 'Download' option.
+
+  - 3.Choose your operating system and click 'Download' to initiate the download procedure.
+
+  - 4.Open MySQL Workbench using your applications menu or start menu.
+
+  - 5.Select 'Local instance 3306' from the 'MySQL Connections' section to establish a connection with the default local   MySQL server
+
+  - 6.Provide your MySQL server credentials if requested.
+
+  - 7.Upon establishing the connection, you'll have the capability to create or manage databases and tables, as well as execute SQL queries using the MySQL Workbench interface.
+
+  - 8.Before utilizing this database, it's necessary to input new data by populating the DataSampleService with information regarding the elements in the tables
+
+  - 9.Additionally, it's advisable to update the 'application.properties' file to use 'create-drop' instead of 'update'.
+
+# EXECUTION
+The code for the application is developed in Visual Studio Code. To execute the application, you need to press the 'Run' button within the IDE, ensuring that it is set to the backend directory. Following that, open your preferred browser, such as Google Chrome, and navigate to https://localhost:8443/ to view the main page
+
+# DATABASE ENTITY DIAGRAM
+![DiagramERFASE1](https://github.com/user-attachments/assets/6642d870-c254-45a7-9266-530110b60c44)
+
+
 
 
 ## Preparation 1
+
 
 ## Group members
 | Names |Email |Github user| 
