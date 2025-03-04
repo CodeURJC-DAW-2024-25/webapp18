@@ -7,7 +7,14 @@
       <!-- Profile image -->
       <span>
 
-        <img src="/profile/{{user.id}}/images" class="profile-pict-img img-fluid" alt="userProfileImage" />
+        <span>
+          {{#user.image}}
+            <img src="/profile/{{user.id}}/images" class="profile-pict-img img-fluid" alt="userProfileImage" />
+          {{/user.image}}
+          {{^user.image}}
+            <img src="/images/noProfile.jpg" class="profile-pict-img img-fluid" alt="userProfileImage" />
+          {{/user.image}}
+        </span>
       </span>
     </div>
     <div class="right">

@@ -4,12 +4,15 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import es.codeurjc.model.Apartment;
 import es.codeurjc.model.Reservation;
 import es.codeurjc.model.Review;
@@ -22,9 +25,6 @@ import es.codeurjc.repository.RoomRepository;
 import es.codeurjc.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
-import org.springframework.core.io.Resource;
-
-import java.util.Random;
 
 @Service
 public class initDataBaseService {
@@ -313,11 +313,10 @@ public class initDataBaseService {
             setImage(client2, "/static/images/client2.jpg");
             setImage(client3, "/static/images/client3.jpg");
             setImage(manager1, "/static/images/manager.jpg");
-            setImage(manager1, "/static/images/manager.jpg");
-            setImage(manager2, "/static/images/manager2.jpg");
-            setImage(manager3, "/static/images/manager3.jpg");
-            setImage(manager3, "/static/images/manager3.jpg");
+            setImage(manager2, "/static/images/manager.jpg");
             setImage(manager3, "/static/images/manager2.jpg");
+           // setImage(manager5, "/static/images/manager3.jpg");
+            setImage(manager6, "/static/images/manager2.jpg");
             setImage(admin, "/static/images/admin.jpg");
             userRepository.save(client1);
             userRepository.save(client2);
@@ -325,7 +324,7 @@ public class initDataBaseService {
             userRepository.save(manager1);
             userRepository.save(manager2);
             userRepository.save(manager3);
-            userRepository.save(manager5);
+            //userRepository.save(manager5);
             userRepository.save(manager6);
             userRepository.save(admin);
 
