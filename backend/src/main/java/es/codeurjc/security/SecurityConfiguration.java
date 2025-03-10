@@ -60,6 +60,7 @@ public class SecurityConfiguration {
                                                 "/notRooms/**",
                                                 "/notRooms**",
                                                 "/captcha",
+                                                "profile/*/images",
                                                 "/loadMoreApartments/**",
                                                 "/loadMoreReviews/**",
                                                 "/profile/*/images/",
