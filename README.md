@@ -126,9 +126,11 @@ Daniel Gómez López | d.gomezl.2021@alumnos.urjc.es | daniel-gomez487
 - **Register page** -> In this page, you enter some info about yourself to create an account
   ![image](https://github.com/user-attachments/assets/732e9e69-47c9-4ad4-8dc5-5f1338638db1)
 
+### DIAGRAM NAVIGATION
 
 
 
+![DIAGRAMA_NAVEFGACION](https://github.com/user-attachments/assets/2c870d4b-44a0-46fc-a65a-9c72b871a31f)
 
 ## PHASE 1: WEB WITH HTML GENERATED IN SERVER AND AJAX
 
