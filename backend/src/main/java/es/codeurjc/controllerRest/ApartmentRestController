@@ -1,0 +1,230 @@
+package es.codeurjc.controllerRest;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+
+import org.hibernate.engine.jdbc.BlobProxy;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import es.codeurjc.model.Apartment;
+import es.codeurjc.model.Room;
+import es.codeurjc.model.UserE;
+import es.codeurjc.service.ApartmentService;
+import es.codeurjc.service.ReviewService;
+import es.codeurjc.service.RoomService;
+import es.codeurjc.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+
+@RestController
+@RequestMapping("/api/apartments")
+public class ApartmentRestController {
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    ApartmentService apartmentService;
+
+    @Autowired
+    ReviewService reviewService;
+
+    @Autowired
+    RoomService roomService;
+
+    @GetMapping("/")
+    public Collection<Apartment> getApartments() {
+        return apartmentService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Apartment> getApartment(@PathVariable Long id) {
+        Optional<Apartment> apartment = apartmentService.findById(id);
+        if (apartment.isPresent()) {
+            return ResponseEntity.ok(apartment.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PreAuthorize("hasRole('MANAGER') and principal.enabled")
+    @PostMapping("/")
+    public ResponseEntity<String> createApartment(HttpServletRequest request,
+                                                  @RequestBody Apartment newApartment,
+                                                  @RequestParam("imageFile") MultipartFile imageFile) throws IOException {
+
+        try {
+            UserE user = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
+
+            newApartment.setManager(user);
+            newApartment.setRooms(new ArrayList<>());
+            newApartment.setReservations(new ArrayList<>());
+            newApartment.setReviews(new ArrayList<>());
+
+            // Process image directly
+            if (imageFile != null && !imageFile.isEmpty()) {
+                newApartment.setImageFile(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
+            } else {
+                ClassPathResource defaultImage = new ClassPathResource("static/images/default.jpg");
+                newApartment.setImageFile(
+                        BlobProxy.generateProxy(defaultImage.getInputStream(), defaultImage.contentLength()));
+                newApartment.setImage(true);
+            }
+            newApartment.setImage(true);
+
+            apartmentService.save(newApartment);
+
+            URI location = fromCurrentRequest().path("/{id}")
+                    .buildAndExpand(newApartment.getId()).toUri();
+
+            return ResponseEntity.created(location).body(newApartment);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error creating apartment: " + e.getMessage());
+        }
+    }
+
+    @PreAuthorize("hasRole('MANAGER') and principal.enabled")
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateApartment(
+        HttpServletRequest request,
+        @PathVariable Long id,
+        @RequestBody Apartment updatedApartment,
+        @RequestParam(value = "imageFileUpload", required = false)
+        MultipartFile imageFile) throws IOException {
+
+        try {
+            Optional<Apartment> existingApartmentOpt = apartmentService.findById(id);
+            if (!existingApartmentOpt.isPresent()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            Apartment existingApartment = existingApartmentOpt.get();
+
+            // PENDIENTE -> Ver si se puede hacer con un mapper u otro método de clonado de objetos
+            existingApartment = updatedApartment;
+
+            existingApartment.setName(updatedApartment.getName());
+            existingApartment.setLocation(updatedApartment.getLocation());
+            existingApartment.setDescription(updatedApartment.getDescription());
+
+            if (imageFile != null && !imageFile.isEmpty()) {
+                existingApartment
+                        .setImageFile(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
+                existingApartment.setImage(true);
+            }
+
+            apartmentService.save(existingApartment);
+
+            return ResponseEntity.ok(existingApartment);
+
+        } catch (Exception e) {
+            // PENDIENTE -> Revisar que este error se trate correctamente de esta manera o hay que cambiarlo / quitarlo
+            return ResponseEntity.status(500).body("Error updating apartment: " + e.getMessage());
+        }
+    }
+
+    @PreAuthorize("hasRole('MANAGER') and principal.enabled")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteApartment(HttpServletRequest request, @PathVariable Long id) {
+
+        try {
+            UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
+            UserE foundUser = apartmentService.findById(id).orElseThrow().getManager();
+            Optional<Apartment> apartment = apartmentService.findById(id);
+
+            if (currentUser.equals(foundUser)) {
+                if (apartment.isPresent()) {
+                    apartmentService.deleteById(id);
+                    return ResponseEntity.ok(apartment.get());
+                }else {
+                    return ResponseEntity.notFound().build(); 
+                }
+            } else {
+                return ResponseEntity.status(403).body("Forbidden access to an apartment which is not yours");
+            }
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error deleting apartment: " + e.getMessage());
+        }
+    }
+
+    // PENDIENTE -> Cómo se hacía con imágenes?
+    @GetMapping("/{id}/images")
+    public ResponseEntity<Object> downloadImage(@PathVariable Long id) throws SQLException {
+
+        Optional<Apartment> apartment = apartmentService.findById(id);
+        if (apartment.isPresent() && apartment.get().getImageFile() != null) {
+
+            Resource file = new InputStreamResource(apartment.get().getImageFile().getBinaryStream());
+            return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpg")
+                    .contentLength(apartment.get().getImageFile().length()).body(file);
+
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // PENDIENTE -> Hacer un modelo que tenga más detalles para este controlador, o al revés para el resto
+    @GetMapping("/{id}/info")
+    public ResponseEntity<Apartment> apartmentInformation(@PathVariable Long id) {
+
+        Optional<Apartment> apartmentOpt = apartmentService.findById(id);
+        if (apartmentOpt.isPresent()) {
+            Apartment apartment = apartmentOpt.get();
+            if (apartment.getManager().getvalidated()) {
+                return ResponseEntity.ok(apartment);
+            } else {
+                return ResponseEntity.status(403).build();
+            }
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/loadMore/{start}/{end}")
+    public ResponseEntity<List<Apartment>> loadMoreApartments(@PathVariable int start, @PathVariable int end) {
+
+        List<Apartment> apartments = apartmentService.findAll();
+        int totalCount = apartments.size();
+
+        if (start < totalCount) {
+            int actualEnd = Math.min(end, totalCount);
+            List<Apartment> paginatedApartments = apartments.subList(start, actualEnd);
+            return ResponseEntity.ok(paginatedApartments);
+        } else {
+            return ResponseEntity.ok(new ArrayList<>());
+        }
+    }
+
+    @GetMapping("/manager/loadMore/{start}/{end}")
+    public ResponseEntity<List<Apartment>> loadMoreApartmentsManagerView(HttpServletRequest request,
+                                                                         @PathVariable int start,
+                                                                         @PathVariable int end) {
+
+        UserE currentUser = userService.findByNick(request.getUserPrincipal().getName())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<Apartment> allApartments = new ArrayList<>(currentUser.getApartment());
+        int totalCount = allApartments.size();
+
+        if (start < totalCount) {
+            int actualEnd = Math.min(end, totalCount);
+            List<Apartment> paginatedApartments = allApartments.subList(start, actualEnd);
+            return ResponseEntity.ok(paginatedApartments);
+        } else {
+            return ResponseEntity.ok(new ArrayList<>());
+        }
+    }
+}
