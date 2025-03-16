@@ -1,7 +1,5 @@
 package es.codeurjc.dto;
 
-import es.codeurjc.dto.NewReservationDTO;
-import es.codeurjc.dto.ReservationDTO;
 import es.codeurjc.model.Reservation;
 
 public class ReservationMapper {
@@ -11,6 +9,9 @@ public class ReservationMapper {
         reservation.setCheckIn(dto.getCheckIn());
         reservation.setCheckOut(dto.getCheckOut());
         reservation.setNumPeople(dto.getNumPeople());
+        reservation.setApartmentId(dto.getApartmentId());
+        reservation.setRoomId(dto.getRoomId());
+        reservation.setUserId(dto.getUserId());
         return reservation;
     }
 
@@ -20,6 +21,9 @@ public class ReservationMapper {
         dto.setCheckIn(reservation.getCheckIn());
         dto.setCheckOut(reservation.getCheckOut());
         dto.setNumPeople(reservation.getNumPeople());
+        dto.setApartmentId(reservation.getApartmentId());
+        dto.setRoomId(reservation.getRoomId());
+        dto.setUserId(reservation.getUserId());
         return dto;
     }
 }

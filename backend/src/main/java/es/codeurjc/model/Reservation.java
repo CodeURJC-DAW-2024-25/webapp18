@@ -36,7 +36,6 @@ public class Reservation {
     public Reservation(LocalDate checkIn, LocalDate checkOut, int numPeople, Apartment apartment, Room room, UserE user) {
         this.checkIn = checkIn;
         this.checkOut = checkOut;
-        this.numPeople = numPeople;
         this.apartment = apartment;
         this.room = room;
         this.user = user;
@@ -62,15 +61,15 @@ public class Reservation {
         return apartment;
     }
 
-    public void setApartment(Apartment Apartment) {
-        this.apartment = Apartment;
+    public void setApartment(Apartment apartment) {
+        this.apartment = apartment;
     }
 
-    public Room getRooms() {
+    public Room getRoom() {
         return room;
     }
 
-    public void setRooms(Room room) {
+    public void setRoom(Room room) {
         this.room = room;
     }
 
@@ -99,8 +98,43 @@ public class Reservation {
     }
 
     public Long getId() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getId'");
+        return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getApartmentId() {
+        return apartment != null ? apartment.getId() : null;
+    }
+
+    public void setApartmentId(Long apartmentId) {
+        if (this.apartment == null) {
+            this.apartment = new Apartment();
+        }
+        this.apartment.setId(apartmentId);
+    }
+
+    public Long getRoomId() {
+        return room != null ? room.getId() : null;
+    }
+
+    public void setRoomId(Long roomId) {
+        if (this.room == null) {
+            this.room = new Room();
+        }
+        this.room.setId(roomId);
+    }
+
+    public Long getUserId() {
+        return user != null ? user.getId() : null;
+    }
+
+    public void setUserId(Long userId) {
+        if (this.user == null) {
+            this.user = new UserE();
+        }
+        this.user.setId(userId);
+    }
 }

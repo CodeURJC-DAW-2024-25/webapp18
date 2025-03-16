@@ -7,6 +7,9 @@ public class ReservationBasicDTO {
     private LocalDate checkIn;
     private LocalDate checkOut;
     private Integer numPeople;
+    private Long apartmentId;
+    private Long roomId;
+    private Long userId;
 
 
 }
