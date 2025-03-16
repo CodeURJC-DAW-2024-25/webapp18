@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import es.codeurjc.dto.NewReservationDTO;
+import es.codeurjc.dto.ReservationDTO;
 import es.codeurjc.model.Apartment;
-import es.codeurjc.model.Reservation;
 import es.codeurjc.model.Room;
 import es.codeurjc.model.UserE;
 import es.codeurjc.service.ApartmentService;
@@ -55,8 +56,14 @@ public class ReservationController {
         if (room != null) {
             UserE user = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
             Apartment apartment = apartmentService.findById(id).orElseThrow();
-            Reservation newRe = new Reservation(checkInDate, checkOutDate, numPeople, apartment, room, user);
-            reservationService.save(newRe);
+            NewReservationDTO newReservationDTO = new NewReservationDTO();
+            newReservationDTO.setCheckIn(checkInDate);
+            newReservationDTO.setCheckOut(checkOutDate);
+            newReservationDTO.setNumPeople(numPeople);
+            newReservationDTO.setApartmentId(apartment.getId());
+            newReservationDTO.setRoomId(room.getId());
+            newReservationDTO.setUserId(user.getId());
+            reservationService.save(newReservationDTO);
             return "redirect:/clientReservations";
         } else {
             return "notRooms";
@@ -67,14 +74,15 @@ public class ReservationController {
     public String clientReservation(Model model, HttpServletRequest request) {
         UserE currentClient = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
 
-        List<Reservation> bookings = currentClient.getReservations();
+        List<ReservationDTO> bookings = new ArrayList<>();
+        reservationService.findById(currentClient.getId()).ifPresent(bookings::add);
 
         if (bookings.size() < 3) {
             model.addAttribute("reservations", bookings);
 
         } else {
 
-            List<Reservation> auxBookings = new ArrayList<>();
+            List<ReservationDTO> auxBookings = new ArrayList<>();
             for (int i = 0; i < 3; i++) {
                 auxBookings.add(bookings.get(i));
             }
@@ -98,8 +106,9 @@ public class ReservationController {
 
         try {
             UserE currentClient = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
-            List<Reservation> bookings = currentClient.getReservations();
-            List<Reservation> auxBookings = new ArrayList<>();
+            List<ReservationDTO> bookings = new ArrayList<>();
+            reservationService.findById(currentClient.getId()).ifPresent(bookings::add);
+            List<ReservationDTO> auxBookings = new ArrayList<>();
 
             if (start < bookings.size()) {
                 for (int i = start; i < end && i < bookings.size(); i++) {
@@ -118,10 +127,10 @@ public class ReservationController {
     @GetMapping("/reservationInfo/{id}")
     public String reservationInfo(Model model, HttpServletRequest request, @PathVariable Long id) {
         UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
-        UserE reservationUser = reservationService.findById(id).orElseThrow().getUser();
+        ReservationDTO reservation = reservationService.findById(id).orElseThrow();
 
-        if (currentUser.equals(reservationUser)) {
-            model.addAttribute("reservation", reservationService.findById(id).orElseThrow());
+        if (currentUser.getId().equals(reservation.getUserId())) {
+            model.addAttribute("reservation", reservation);
             return "reservationInfo";
         } else
             return "/error";
@@ -131,21 +140,10 @@ public class ReservationController {
     public String deleteReservation(HttpServletRequest request, @PathVariable Long id) {
 
         UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
-        UserE reservationUser = reservationService.findById(id).orElseThrow().getUser();
+        ReservationDTO reservation = reservationService.findById(id).orElseThrow();
 
-        if (currentUser.equals(reservationUser)) {
-            Reservation reservation = reservationService.findById(id).orElseThrow();
-            if (reservation != null) {
-                reservation.getUser().getReservations().remove(reservation);
-                reservation.getApartment().getReservations().remove(reservation);
-                reservation.getRooms().getReservations().remove(reservation);
-
-                userService.save(reservation.getUser());
-                apartmentService.save(reservation.getApartment());
-                roomService.save(reservation.getRooms());
-
-                reservationService.deleteById(id);
-            }
+        if (currentUser.getId().equals(reservation.getUserId())) {
+            reservationService.deleteById(id);
             return "redirect:/clientReservations";
         } else
             return "/error";
