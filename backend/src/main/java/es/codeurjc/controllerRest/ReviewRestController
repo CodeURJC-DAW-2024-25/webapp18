@@ -1,0 +1,108 @@
+package es.codeurjc.controller;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import es.codeurjc.model.Apartment;
+import es.codeurjc.model.Review;
+import es.codeurjc.model.UserE;
+import es.codeurjc.service.ApartmentService;
+import es.codeurjc.service.ReviewService;
+import es.codeurjc.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+
+@RestController
+@RequestMapping("/api/reviews")
+public class ReviewController {
+
+    @Autowired
+    private ReviewService reviewService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private ApartmentService apartmentService;
+
+    @PostMapping("/post/{id}")
+    public ResponseEntity<?> postReview(
+            HttpServletRequest request,
+            @RequestParam(required = false) Integer rating,
+            @RequestParam String comment,
+            @PathVariable Long id) {
+
+        Optional<Apartment> optionalApartment = apartmentService.findById(id);
+        if (optionalApartment.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Apartment apartment = optionalApartment.get();
+        UserE apartmentManager = apartment.getManager();
+
+        if (!apartmentManager.getvalidated()) {
+            return ResponseEntity.badRequest().body("Apartment manager not validated");
+        }
+
+        int score = (rating != null) ? rating : 0;
+        if (score == 0) {
+            return ResponseEntity.badRequest().body("Rating cannot be zero");
+        }
+
+        UserE user = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
+        Review review = new Review(score, comment, LocalDate.now(), apartment, user);
+        apartment.getReviews().add(review);
+        apartmentService.save(apartment);
+
+        return ResponseEntity.ok(review);
+    }
+
+    @GetMapping("/apartment/{id}")
+    public ResponseEntity<?> getApartmentReviews(@PathVariable Long id) {
+        Optional<Apartment> optionalApartment = apartmentService.findById(id);
+        if (optionalApartment.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Apartment apartment = optionalApartment.get();
+        UserE apartmentManager = apartment.getManager();
+
+        if (!apartmentManager.getvalidated()) {
+            return ResponseEntity.badRequest().body("Apartment manager not validated");
+        }
+
+        List<Review> reviews = apartment.getReviews();
+        return ResponseEntity.ok(reviews);
+    }
+
+    @GetMapping("/load/{id}/{start}/{end}")
+    public ResponseEntity<?> loadMoreReviews(
+            @PathVariable Long id,
+            @PathVariable int start,
+            @PathVariable int end) {
+
+        Optional<Apartment> optionalApartment = apartmentService.findById(id);
+        if (optionalApartment.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        List<Review> reviews = optionalApartment.get().getReviews();
+        int reviewsQuantity = reviews.size();
+        
+        if (start > reviewsQuantity) {
+            return ResponseEntity.badRequest().body("Invalid range");
+        }
+
+        List<Review> newReviews = new ArrayList<>();
+        for (int i = start; i < end && i <= reviewsQuantity; i++) {
+            newReviews.add(reviews.get(i - 1));
+        }
+
+        return ResponseEntity.ok(newReviews);
+    }
+}
