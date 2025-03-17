@@ -28,7 +28,7 @@ import es.codeurjc.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/api/apartments")
+@RequestMapping("/api/v1/apartments")
 public class ApartmentRestController {
 
     @Autowired
@@ -193,16 +193,26 @@ public class ApartmentRestController {
         }
     }
 
+    // PENDIENTE -> Cambiar las URL de este método AJAX para que cuadren con el formato
+
     @GetMapping("/loadMore/{start}/{end}")
-    public ResponseEntity<List<Apartment>> loadMoreApartments(@PathVariable int start, @PathVariable int end) {
+    public Page<Apartment> loadMoreApartments(
+        @PathVariable int start,
+        @PathVariable int end,
+        Pageable pageable,
+        @PathVariable int page,
+        @PathVariable int size) {
 
         List<Apartment> apartments = apartmentService.findAll();
         int totalCount = apartments.size();
 
         if (start < totalCount) {
             int actualEnd = Math.min(end, totalCount);
-            List<Apartment> paginatedApartments = apartments.subList(start, actualEnd);
-            return ResponseEntity.ok(paginatedApartments);
+/*             List<Apartment> paginatedApartments = apartments.subList(start, actualEnd);
+            return ResponseEntity.ok(paginatedApartments); */
+
+            return apartmentService.findAll(pageable).map(this::toDTO).subList(start, actualEnd);
+
         } else {
             return ResponseEntity.ok(new ArrayList<>());
         }
