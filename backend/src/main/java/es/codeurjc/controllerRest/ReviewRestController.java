@@ -1,21 +1,12 @@
-package es.codeurjc.controller;
+package es.codeurjc.controllerRest;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import es.codeurjc.dto.NewReviewDTO;
+import es.codeurjc.dto.ReviewDTO;
+import es.codeurjc.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import es.codeurjc.model.Apartment;
-import es.codeurjc.model.Review;
-import es.codeurjc.model.UserE;
-import es.codeurjc.service.ApartmentService;
-import es.codeurjc.service.ReviewService;
-import es.codeurjc.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/reviews")
@@ -26,7 +17,7 @@ public class ReviewRestController {
 
     @PostMapping("/post/{id}")
     public ReviewDTO createReview(@RequestBody NewReviewDTO NewReviewDTO) {
-    return reviewService.save(newReviewDTO);
+    return reviewService.save(NewReviewDTO);
  
     }
 

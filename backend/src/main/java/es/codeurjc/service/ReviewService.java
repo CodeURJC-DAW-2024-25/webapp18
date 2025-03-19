@@ -1,38 +1,31 @@
 package es.codeurjc.service;
 
-import java.sql.Date;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-
+import es.codeurjc.dto.NewReviewDTO;
+import es.codeurjc.dto.ReviewDTO;
+import es.codeurjc.dto.ReviewMapper;
 import es.codeurjc.model.Apartment;
 import es.codeurjc.model.Review;
 import es.codeurjc.repository.ReviewRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.util.List;
+import java.util.Optional;
 @Service
-public class ReviewService implements GeneralService<Review> {
+public class ReviewService{
 
     @Autowired
     private ReviewRepository reviewRepository;
 
-    @Override
-    public void save(Review review) {
-        reviewRepository.save(review);
-
+    public ReviewDTO save(NewReviewDTO newReviewDTO) {
+        Review review = ReviewMapper.toEntity(newReviewDTO);
+        review = reviewRepository.save(review);
+        return ReviewMapper.toDTO(review);
     }
 
-    @Override
-    public void delete(Review review) {
-        reviewRepository.delete(review);
-    }
-
-    @Override
-    public Optional<Review> findById(Long id) {
-        return reviewRepository.findById(id);
-
+    public Optional<ReviewDTO> findById(Long id) {
+        return reviewRepository.findById(id).map(ReviewMapper::toDTO);
     }
 
     public List<Review> findByUser_Name(String name) {
@@ -43,7 +36,7 @@ public class ReviewService implements GeneralService<Review> {
         return reviewRepository.findByApartment_Name(name);
     }
 
-    public List<Review> findByDate(Date date) {
+    public List<Review> findByDate(Date date){
         return reviewRepository.findByDate(date);
     }
 
@@ -59,22 +52,4 @@ public class ReviewService implements GeneralService<Review> {
         return reviewRepository.findByScoreAndApartment(score, apartment);
     }
 
-    @Override
-    public List<Review> findAll() {
-        return reviewRepository.findAll();
-    }
-
-    @Override
-    public List<Review> findAll(Sort sort) {
-        if (sort == null) {
-            return reviewRepository.findAll();
-        } else {
-            return reviewRepository.findAll(sort);
-        }
-    }
-
-    @Override
-    public Boolean exist(Long id) {
-        return reviewRepository.findById(id).isPresent();
-    }
 }
