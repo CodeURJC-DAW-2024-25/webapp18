@@ -3,9 +3,6 @@ package es.codeurjc.dto;
 import java.sql.Blob;
 import java.util.List;
 import es.codeurjc.model.UserE;
-import es.codeurjc.model.Reservation;
-import es.codeurjc.model.Review;
-import es.codeurjc.model.Room;
 
 public record ApartmentDTO (
      Long id,

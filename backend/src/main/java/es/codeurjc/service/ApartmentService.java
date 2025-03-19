@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import es.codeurjc.dto.ApartmentBasicDTO;
 import es.codeurjc.dto.ApartmentDTO;
-import es.codeurjc.dto.MapperApartment;
+import es.codeurjc.dto.ApartmentMapper;
 import es.codeurjc.model.Apartment;
 import es.codeurjc.model.Reservation;
 import es.codeurjc.model.Room;
@@ -27,7 +27,7 @@ public class ApartmentService implements GeneralService<Apartment>{
     ApartmentRepository apartmentRepository;
 
     @Autowired
-    private MapperApartment mapper;
+    private ApartmentMapper mapper;
 
 
     public Collection<ApartmentDTO> getApartments(){
