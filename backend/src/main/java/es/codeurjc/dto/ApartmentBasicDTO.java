@@ -2,8 +2,6 @@ package es.codeurjc.dto;
 
 import java.sql.Blob;
 
-import es.codeurjc.model.UserE;
-
 public record ApartmentBasicDTO(
      Long id,
      String name,
@@ -13,5 +11,7 @@ public record ApartmentBasicDTO(
      Blob imageFile,
      String imagePath,
      boolean image,
-     UserE manager
+     UserBasicDTO manager
      ) {}
+
+//Pendiente cambiar userE or userEbasicDTO

@@ -83,7 +83,12 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-processor</artifactId>
             <version>1.5.5.Final</version>
-            <scope>provided</scope>
+            <scope>provided</scope>    
+        </dependency>
+        <dependency>
+            <compilerArgs>
+               <arg>-Amapstruct.verbose=true</arg>
+            </compilerArgs>   
         </dependency>
     </dependencies>
 
