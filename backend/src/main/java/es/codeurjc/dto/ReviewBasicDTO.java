@@ -1,4 +1,5 @@
 package es.codeurjc.dto;
+import java.time.LocalDate;
 
 public record ReviewBasicDTO (
     Long reviewId,
