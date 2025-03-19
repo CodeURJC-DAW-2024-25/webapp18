@@ -44,7 +44,7 @@ public class ReviewRestController {
     private ApartmentService apartmentService;
  
     @PostMapping("/post/{id}")
-    public ResponseEntity<Review> postReview(HttpServletRequest request,
+    public ResponseEntity<ReviewDTO> postReview(HttpServletRequest request,
                                                 @RequestBody Review newReview,
                                                 @PathVariable Long id,
                                                 @PathVariable String comment,
@@ -69,7 +69,7 @@ public class ReviewRestController {
         URI location = fromCurrentRequest().path("/post/{id}")
                 .buildAndExpand(newReview.getId()).toUri();
 
-        return ResponseEntity.created(location).body(toDTO(newReview));
+        return ResponseEntity.created(location).body(reviewService.toDTO(newReview));
 
         }
     

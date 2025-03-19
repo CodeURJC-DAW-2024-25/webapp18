@@ -3,7 +3,7 @@ package es.codeurjc.dto;
 import java.time.LocalDate;
 
 public record ReservationDTO(
-    Long id,
+    Long idReservation,
     LocalDate checkIn,
     LocalDate checkOut,
     Integer numPeople,

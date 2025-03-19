@@ -1,7 +1,6 @@
 package es.codeurjc.service;
 
 import es.codeurjc.dto.ReviewBasicDTO;
-import es.codeurjc.dto.NewReviewDTO;
 import es.codeurjc.dto.ReviewDTO;
 import es.codeurjc.dto.ReviewMapper;
 import es.codeurjc.model.Apartment;
@@ -33,7 +32,7 @@ public class ReviewService implements GeneralService<Review>{
         return toDTO(reviewRepository.findById(id).orElseThrow());
     }
 
-    ReviewDTO toDTO(Review review){
+    public ReviewDTO toDTO(Review review){
         return mapper.toDTO(review);
     }
 

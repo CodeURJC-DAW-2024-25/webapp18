@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import es.codeurjc.dto.NewRoomRequestDTO;
+
 import es.codeurjc.dto.RoomDTO;
 import es.codeurjc.dto.RoomMapper;
 import es.codeurjc.model.Apartment;
@@ -36,13 +36,13 @@ public class RoomService {
         return roomMapper.toDTOs(roomRepository.findByMaxClients(maxClients));
     }
 
-    public RoomDTO save(NewRoomRequestDTO newRoomDTO) {
+    public RoomDTO save(RoomDTO newRoomDTO) {
         Room room = new Room();
         room.setMaxClients(newRoomDTO.maxClients());
         room.setcost(newRoomDTO.cost());
         
         // find the apt and assign
-        Apartment apartment = apartmentRepository.findById(newRoomDTO.apartmentId())
+        Apartment apartment = apartmentRepository.findById(newRoomDTO.apartment().id()) //REVISAR----------------------
                 .orElseThrow(() -> new RuntimeException("Apartment not found"));
         room.setApartment(apartment);
         

@@ -38,7 +38,7 @@ public class ApartmentService implements GeneralService<Apartment>{
         return toDTO(apartmentRepository.findById(id).orElseThrow());
     }
 
-    ApartmentDTO toDTO(Apartment apartment){
+    public ApartmentDTO toDTO(Apartment apartment){
         return mapper.toDTO(apartment);
     }
 

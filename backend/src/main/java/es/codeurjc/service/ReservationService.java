@@ -1,6 +1,5 @@
 package es.codeurjc.service;
 
-import es.codeurjc.dto.NewReservationDTO;
 import es.codeurjc.dto.ReservationDTO;
 import es.codeurjc.dto.ReservationMapper;
 import es.codeurjc.model.Reservation;
@@ -13,18 +12,20 @@ import java.util.Optional;
 
 @Service
 public class ReservationService {
+    @Autowired
+    private ReservationMapper mapper;
 
     @Autowired
     private ReservationRepository reservationRepository;
 
-    public ReservationDTO save(NewReservationDTO newReservationDTO) {
-        Reservation reservation = ReservationMapper.toEntity(newReservationDTO);
+    public ReservationDTO save(ReservationDTO newReservationDTO) {
+        Reservation reservation = mapper.toDomain(newReservationDTO);
         reservation = reservationRepository.save(reservation);
-        return ReservationMapper.toDTO(reservation);
+        return mapper.toDTO(reservation);
     }
 
     public Optional<ReservationDTO> findById(Long id) {
-        return reservationRepository.findById(id).map(ReservationMapper::toDTO);
+        return reservationRepository.findById(id).map(mapper::toDTO);
     }
 
     public void deleteById(Long id) {

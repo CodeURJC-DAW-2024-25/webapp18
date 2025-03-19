@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import es.codeurjc.dto.NewRoomRequestDTO;
 import es.codeurjc.dto.RoomDTO;
 import es.codeurjc.service.RoomService;
 
@@ -46,7 +45,7 @@ public class RoomRestController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public RoomDTO createRoom(@RequestBody NewRoomRequestDTO newRoomDTO) {
+    public RoomDTO createRoom(@RequestBody RoomDTO newRoomDTO) {
         return roomService.save(newRoomDTO);
     }
 

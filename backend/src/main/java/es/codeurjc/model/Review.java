@@ -39,11 +39,11 @@ public class Review {
         this.user = user;
     }
 
-    public Long getIdReview() {
+    public Long getId() {
         return id;
     }
 
-    public void setIdReview(Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

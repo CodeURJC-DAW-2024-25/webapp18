@@ -1,6 +1,5 @@
 package es.codeurjc.controllerRest;
 
-import es.codeurjc.dto.NewReservationDTO;
 import es.codeurjc.dto.ReservationDTO;
 import es.codeurjc.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +15,8 @@ public class ReservationRestController {
     private ReservationService reservationService;
 
     @PostMapping
-    public ReservationDTO createReservation(@RequestBody NewReservationDTO newReservationDTO) {
-        return reservationService.save(newReservationDTO);
+    public ReservationDTO createReservation(@RequestBody ReservationDTO reservationDTO) {
+        return reservationService.save(reservationDTO);
     }
 
     @GetMapping("/{id}")
