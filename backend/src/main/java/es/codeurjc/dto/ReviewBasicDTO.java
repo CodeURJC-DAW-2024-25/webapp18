@@ -1,8 +1,10 @@
 package es.codeurjc.dto;
 
+import java.sql.Date;
+
 public record ReviewBasicDTO (
     Long reviewId,
     int score,
-    LocalDate date,
+    Date date,
     String comment
 ) {}
