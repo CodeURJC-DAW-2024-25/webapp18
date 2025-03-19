@@ -2,6 +2,7 @@ package es.codeurjc.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import es.codeurjc.dto.ApartmentBasicDTO;
+import es.codeurjc.dto.ApartmentDTO;
+import es.codeurjc.dto.MapperApartment;
 import es.codeurjc.model.Apartment;
 import es.codeurjc.model.Reservation;
 import es.codeurjc.model.Room;
@@ -21,6 +25,39 @@ public class ApartmentService implements GeneralService<Apartment>{
     
     @Autowired
     ApartmentRepository apartmentRepository;
+
+    @Autowired
+    private MapperApartment mapper;
+
+
+    public Collection<ApartmentDTO> getApartments(){
+        return toDTOs(apartmentRepository.findAll());
+    }
+
+    public ApartmentDTO getApartment(Long id){
+        return toDTO(apartmentRepository.findById(id).orElseThrow());
+    }
+
+    ApartmentDTO toDTO(Apartment apartment){
+        return mapper.toDTO(apartment);
+    }
+
+    ApartmentBasicDTO toBasicDTO(Apartment apartment){
+        return mapper.toBasicDTO(apartment);
+    }
+
+    Collection<ApartmentDTO> toDTOs(Collection<Apartment> apartments){
+        return mapper.toDTOs(apartments);
+    }
+
+    Collection<ApartmentBasicDTO> toBasicDTOs(Collection<Apartment> apartments){
+        return mapper.toBasicDTOs(apartments);
+    }
+
+    Apartment toDomain(ApartmentDTO apartmentDTO){
+        return mapper.toDomain(apartmentDTO);
+    }
+
     
 
 

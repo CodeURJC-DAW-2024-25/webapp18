@@ -34,6 +34,7 @@ public class Apartment {
     private Blob imageFile;
 
     private boolean image;
+    private String imagePath;
 
     @ManyToOne
     private UserE manager;
@@ -60,13 +61,14 @@ public class Apartment {
         this.description = description;
     }
 
-    public Apartment(String name, String description, String location, float rating, Blob imageApartment,
+    public Apartment(String name, String description, String location, float rating, Blob imageFile,
             UserE manager, List<Room> rooms, List<Reservation> reservations, List<Review> reviews) {
         this.name = name;
         this.description = description;
         this.location = location;
         this.rating = rating;
-        // this.imageApartment = imageApartment;
+        this.imageFile = imageFile;
+        this.imagePath = null;
         this.manager = manager;
         this.rooms = rooms;
         this.reservations = reservations;
@@ -123,6 +125,14 @@ public class Apartment {
 
     public void setImage(boolean image) {
         this.image = image;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public UserE getManager() {

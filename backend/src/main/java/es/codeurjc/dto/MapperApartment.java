@@ -1,25 +1,26 @@
 package es.codeurjc.dto;
 
+import java.util.Collection;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 import org.mapstruct.Mapping;
 
-import es.codeurjc.dto.ApartmentDTO;
 import es.codeurjc.model.Apartment;
 
 @Mapper(componentModel = "spring")
 public interface MapperApartment {
-    MapperApartment INSTANCE = Mappers.getMapper(MapperApartment.class);
+    //PENDIENTE -> Corregir esto tras el mapper de review
+    ApartmentDTO toDTO(Apartment apartment);
+    ApartmentBasicDTO toBasicDTO(Apartment apartment);
 
-    @Mapping(source = "manager", target = "manager")
-    @Mapping(source = "rooms", target = "rooms")
-    @Mapping(source = "reservations", target = "reservations")
-    @Mapping(source = "reviews", target = "reviews")
-    ApartmentDTO toApartmentDTO(Apartment apartment);
+    Collection<ApartmentDTO> toDTOs(Collection<Apartment> apartments);
+    Collection<ApartmentBasicDTO> toBasicDTOs(Collection<Apartment> apartments);
 
-    @Mapping(source = "manager", target = "manager")
-    @Mapping(source = "rooms", target = "rooms")
-    @Mapping(source = "reservations", target = "reservations")
-    @Mapping(source = "reviews", target = "reviews")
-    Apartment toApartment(ApartmentDTO apartmentDTO);
+    Apartment toDomain(ApartmentDTO apartmentDTO);
+
+    @Mapping(target = "rooms", ignore = true)
+    @Mapping(target = "reservations", ignore = true)
+    @Mapping(target = "reviews", ignore = true)
+    Apartment toBasicDomain(ApartmentBasicDTO basicDTO);
+
+
 }

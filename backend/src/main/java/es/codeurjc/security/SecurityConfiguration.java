@@ -43,6 +43,7 @@ public class SecurityConfiguration {
                                 // public pages
                                 .requestMatchers(
                                                 "/apartmentInformation/**",
+                                                "/apartments/**",
                                                 "/apartmentReviews/**",
                                                 "/login",
                                                 "/loginError",
