@@ -1,4 +1,5 @@
 package es.codeurjc.dto;
+import java.time.LocalDate;
 
 import java.sql.Date;
 

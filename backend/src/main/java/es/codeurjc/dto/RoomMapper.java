@@ -22,7 +22,4 @@ public interface RoomMapper {
 
     @Mapping(target = "reservations", ignore = true)
     Room toDomain(RoomDTO roomDTO);
-
-    @Mapping(target = "rooms", ignore = true)
-    Apartment toDomain(ApartmentBasicDTO apartmentDTO);
 }

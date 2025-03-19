@@ -22,6 +22,6 @@ public interface UserMapper {
     @Mapping(target = "reservations", ignore = true)
     UserE toDomain(UserDTO userDTO);
 
-    @Mapping(target = "users", ignore = true)
+    //@Mapping(target = "user", ignore = true)
     UserE toDomain(UserBasicDTO userBasicDTO);
 }
