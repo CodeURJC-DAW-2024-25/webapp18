@@ -1,32 +1,20 @@
 package es.codeurjc.dto;
 
+import java.util.Collection;
 import org.mapstruct.Mapper;
-
 import es.codeurjc.model.Review;
+
 
 @Mapper(componentModel = "spring")
 public interface ReviewMapper {
 
-    
-} ReviewMapper {
+    //PENDIENTE -> Corregir esto tras el mapper de review
+    ReviewDTO toDTO(Review review);
+    ReviewBasicDTO toBasicDTO(Review review);
 
-    public static Review toEntity(NewReviewDTO dto) {
-        Review review = new Review();
-        review.setScore(dto.getScore());
-        review.setComment(dto.getComment());
-        review.setUser(dto.getUser());
-        review.setApartment(dto.getApartment());
-        return review;
-    }
+    Collection<ReviewDTO> toDTOs(Collection<Review> reviews);
+    Collection<ReviewBasicDTO> toBasicDTOs(Collection<Review> reviews);
 
-    public static ReviewDTO toDTO(Review review) {
-        ReviewDTO dto = new ReviewDTO(); // Ahora es un ReviewDTO
-        dto.setReviewId(review.getReviewId());
-        dto.setUser(review.getUser());
-        dto.setApartment(review.getApartment());
-        dto.setScore(review.getScore());
-        dto.setDate(review.getDate());
-        dto.setComment(review.getComment());
-        return dto;
-    }
+    Review toDomain(ReviewDTO reviewDTO);
+    Review toBasicDomain(ReviewBasicDTO basicDTO);
 }
