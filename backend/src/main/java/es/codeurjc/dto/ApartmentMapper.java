@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 import es.codeurjc.model.Apartment;
 
 @Mapper(componentModel = "spring")
-public interface MapperApartment {
+public interface ApartmentMapper {
     //PENDIENTE -> Corregir esto tras el mapper de review
     ApartmentDTO toDTO(Apartment apartment);
     ApartmentBasicDTO toBasicDTO(Apartment apartment);
@@ -21,6 +21,4 @@ public interface MapperApartment {
     @Mapping(target = "reservations", ignore = true)
     @Mapping(target = "reviews", ignore = true)
     Apartment toBasicDomain(ApartmentBasicDTO basicDTO);
-
-
 }
