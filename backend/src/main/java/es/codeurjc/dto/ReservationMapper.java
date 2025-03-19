@@ -1,29 +1,24 @@
 package es.codeurjc.dto;
 
+import es.codeurjc.dto.NewReservationDTO;
+import es.codeurjc.dto.ReservationDTO;
+import es.codeurjc.dto.ReservationBasicDTO;
 import es.codeurjc.model.Reservation;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-public class ReservationMapper {
+@Mapper(componentModel = "spring")
+public interface ReservationMapper {
 
-    public static Reservation toEntity(NewReservationDTO dto) {
-        Reservation reservation = new Reservation();
-        reservation.setCheckIn(dto.getCheckIn());
-        reservation.setCheckOut(dto.getCheckOut());
-        reservation.setNumPeople(dto.getNumPeople());
-        reservation.setApartmentId(dto.getApartmentId());
-        reservation.setRoomId(dto.getRoomId());
-        reservation.setUserId(dto.getUserId());
-        return reservation;
-    }
+    @Mapping(source = "apartmentId", target = "apartment.id")
+    @Mapping(source = "roomId", target = "room.id")
+    @Mapping(source = "userId", target = "user.id")
+    Reservation toEntity(NewReservationDTO dto);
 
-    public static ReservationDTO toDTO(Reservation reservation) {
-        ReservationDTO dto = new ReservationDTO();
-        dto.setId(reservation.getId());
-        dto.setCheckIn(reservation.getCheckIn());
-        dto.setCheckOut(reservation.getCheckOut());
-        dto.setNumPeople(reservation.getNumPeople());
-        dto.setApartmentId(reservation.getApartmentId());
-        dto.setRoomId(reservation.getRoomId());
-        dto.setUserId(reservation.getUserId());
-        return dto;
-    }
+    @Mapping(source = "apartment.id", target = "apartmentId")
+    @Mapping(source = "room.id", target = "roomId")
+    @Mapping(source = "user.id", target = "userId")
+    ReservationDTO toDTO(Reservation reservation);
+
+    ReservationBasicDTO toBasicDTO(Reservation reservation);
 }
