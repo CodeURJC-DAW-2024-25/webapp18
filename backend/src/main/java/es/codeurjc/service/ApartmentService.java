@@ -69,7 +69,6 @@ public class ApartmentService implements GeneralService<Apartment>{
     @Override
     public void delete(Apartment apartment) {
         apartmentRepository.delete(apartment);
-        ;
     }
     
     @Override
