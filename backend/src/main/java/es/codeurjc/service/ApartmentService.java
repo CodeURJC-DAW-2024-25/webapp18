@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,29 @@ public class ApartmentService implements GeneralService<Apartment>{
     private ApartmentMapper mapper;
 
 
+    //PENDIENTE -> Hacer los métodos save, create... que irían en el controlador
+
+    public ApartmentDTO toDTO(Apartment apartment){
+        return mapper.toDTO(apartment);
+    }
+
+    public ApartmentBasicDTO toBasicDTO(Apartment apartment){
+        return mapper.toBasicDTO(apartment);
+    }
+
+    public Collection<ApartmentDTO> toDTOs(Collection<Apartment> apartments){
+        return mapper.toDTOs(apartments);
+    }
+
+    public Collection<ApartmentBasicDTO> toBasicDTOs(Collection<Apartment> apartments){
+        return mapper.toBasicDTOs(apartments);
+    }
+
+    public Apartment toDomain(ApartmentDTO apartmentDTO){
+        return mapper.toDomain(apartmentDTO);
+    }
+
+    
     public Collection<ApartmentDTO> getApartments(){
         return toDTOs(apartmentRepository.findAll());
     }
@@ -37,29 +62,6 @@ public class ApartmentService implements GeneralService<Apartment>{
     public ApartmentDTO getApartment(Long id){
         return toDTO(apartmentRepository.findById(id).orElseThrow());
     }
-
-    public ApartmentDTO toDTO(Apartment apartment){
-        return mapper.toDTO(apartment);
-    }
-
-    ApartmentBasicDTO toBasicDTO(Apartment apartment){
-        return mapper.toBasicDTO(apartment);
-    }
-
-    Collection<ApartmentDTO> toDTOs(Collection<Apartment> apartments){
-        return mapper.toDTOs(apartments);
-    }
-
-    Collection<ApartmentBasicDTO> toBasicDTOs(Collection<Apartment> apartments){
-        return mapper.toBasicDTOs(apartments);
-    }
-
-    Apartment toDomain(ApartmentDTO apartmentDTO){
-        return mapper.toDomain(apartmentDTO);
-    }
-
-    
-
 
     @Override
     public void save(Apartment apartment) {
@@ -105,6 +107,11 @@ public class ApartmentService implements GeneralService<Apartment>{
         } else {
             return apartmentRepository.findAll();
         }
+    }
+
+
+    public Page<ApartmentDTO> findAll(Pageable pageable) {
+        return apartmentRepository.findAll(pageable).map(this::toDTO);
     }
 
     @Override

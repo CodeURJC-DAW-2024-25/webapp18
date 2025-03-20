@@ -11,9 +11,10 @@ import java.util.Optional;
 
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,6 @@ import static org.springframework.web.servlet.support.ServletUriComponentsBuilde
 
 import es.codeurjc.dto.ApartmentDTO;
 import es.codeurjc.model.Apartment;
-import es.codeurjc.model.Room;
 import es.codeurjc.model.UserE;
 import es.codeurjc.service.ApartmentService;
 import es.codeurjc.service.ReviewService;
@@ -92,7 +92,7 @@ public class ApartmentRestController{
 
     @PreAuthorize("hasRole('MANAGER') and principal.enabled")
     @PutMapping("/{id}")
-    public ApartmentDTO updateApartment(
+    public ResponseEntity<ApartmentDTO> updateApartment(
         HttpServletRequest request,
         @PathVariable Long id,
         @RequestBody ApartmentDTO updatedApartmentDTO,
@@ -108,11 +108,11 @@ public class ApartmentRestController{
             Apartment oldApartment = oldApartmentOpt.get();
 
             // PENDIENTE -> Ver si se puede hacer con un mapper u otro método de clonado de objetos
-            oldApartment = toDomain(updatedApartmentDTO);
+            oldApartment = apartmentService.toDomain(updatedApartmentDTO);
 
-            oldApartment.setName(updatedApartment.getName());
-            oldApartment.setLocation(updatedApartment.getLocation());
-            oldApartment.setDescription(updatedApartment.getDescription());
+            oldApartment.setName(updatedApartmentDTO.name());
+            oldApartment.setLocation(updatedApartmentDTO.location());
+            oldApartment.setDescription(updatedApartmentDTO.description());
 
             if (imageFile != null && !imageFile.isEmpty()) {
                 oldApartment
@@ -122,17 +122,17 @@ public class ApartmentRestController{
 
             apartmentService.save(oldApartment);
 
-            return ResponseEntity.ok(oldApartment);
+            return ResponseEntity.ok(apartmentService.toDTO(oldApartment));
 
         } catch (Exception e) {
             // PENDIENTE -> Revisar que este error se trate correctamente de esta manera o hay que cambiarlo / quitarlo
-            return ResponseEntity.status(500).body("Error updating apartment: " + e.getMessage());
+            return ResponseEntity.status(500).body(null);
         }
     }
 
     @PreAuthorize("hasRole('MANAGER') and principal.enabled")
     @DeleteMapping("/{id}")
-    public ApartmentDTO deleteApartment(HttpServletRequest request, @PathVariable Long id) {
+    public ResponseEntity<ApartmentDTO> deleteApartment(HttpServletRequest request, @PathVariable Long id) {
 
         try {
             UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
@@ -152,10 +152,10 @@ public class ApartmentRestController{
            Apartment apartment = apartmentService.findById(id).orElseThrow();
            apartmentService.deleteById(id);
 
-           return toDTO(apartment);
+           return ResponseEntity.ok(apartmentService.toDTO(apartment));
 
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error deleting apartment: " + e.getMessage());
+            return ResponseEntity.status(500).body(null);
         }
     }
 
@@ -194,26 +194,24 @@ public class ApartmentRestController{
 
     // PENDIENTE -> Cambiar las URL de este método AJAX para que cuadren con el formato
 
-    @GetMapping("/loadMore/{start}/{end}")
-    public Page<Apartment> loadMoreApartments(
-        @PathVariable int start,
-        @PathVariable int end,
+    @GetMapping("/loadMore")
+    public Page<ApartmentDTO> loadMoreApartments(
         Pageable pageable,
-        @PathVariable int page,
-        @PathVariable int size) {
+        @RequestParam (defaultValue = "0") int numPage,
+        @RequestParam (defaultValue = "6") int pageSize) {
 
         List<Apartment> apartments = apartmentService.findAll();
         int totalCount = apartments.size();
 
-        if (start < totalCount) {
-            int actualEnd = Math.min(end, totalCount);
-/*             List<Apartment> paginatedApartments = apartments.subList(start, actualEnd);
+        if (numPage * pageSize < totalCount) {
+        /*     int actualEnd = Math.min(numPage * pageSize, totalCount);
+            List<Apartment> paginatedApartments = apartments.subList(start, actualEnd);
             return ResponseEntity.ok(paginatedApartments); */
 
-            return apartmentService.findAll(pageable).map(this::toDTO).subList(start, actualEnd);
+            return apartmentService.findAll(pageable);
 
         } else {
-            return ResponseEntity.ok(new ArrayList<>());
+            return Page.empty();
         }
     }
 
