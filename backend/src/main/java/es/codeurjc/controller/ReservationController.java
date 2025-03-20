@@ -138,11 +138,11 @@ public class ReservationController {
             if (reservation != null) {
                 reservation.getUser().getReservations().remove(reservation);
                 reservation.getApartment().getReservations().remove(reservation);
-                reservation.getRooms().getReservations().remove(reservation);
+                reservation.getRoom().getReservations().remove(reservation);
 
                 userService.save(reservation.getUser());
                 apartmentService.save(reservation.getApartment());
-                roomService.save(reservation.getRooms());
+                roomService.save(reservation.getRoom());
 
                 reservationService.deleteById(id);
             }

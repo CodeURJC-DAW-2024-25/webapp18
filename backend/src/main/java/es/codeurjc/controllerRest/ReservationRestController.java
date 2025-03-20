@@ -1,6 +1,8 @@
 package es.codeurjc.controllerRest;
 
 import es.codeurjc.dto.ReservationDTO;
+import es.codeurjc.dto.ReservationMapper;
+import es.codeurjc.model.Reservation;
 import es.codeurjc.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,14 +16,19 @@ public class ReservationRestController {
     @Autowired
     private ReservationService reservationService;
 
+    @Autowired
+    private ReservationMapper reservationMapper;
+
     @PostMapping
     public ReservationDTO createReservation(@RequestBody ReservationDTO reservationDTO) {
-        return reservationService.save(reservationDTO);
+        Reservation reservation = reservationMapper.toDomain(reservationDTO);
+        Reservation savedReservation = reservationService.save(reservation);
+        return reservationMapper.toDTO(savedReservation);
     }
 
     @GetMapping("/{id}")
     public Optional<ReservationDTO> getReservation(@PathVariable Long id) {
-        return reservationService.findById(id);
+        return reservationService.findById(id).map(reservationMapper::toDTO);
     }
 
     @DeleteMapping("/{id}")
