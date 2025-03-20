@@ -3,6 +3,8 @@ package es.codeurjc.dto;
 import java.sql.Blob;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public record UserDTO( 
    Long id,
    String name,
@@ -12,6 +14,7 @@ public record UserDTO(
    String language,
    String phone,
    String email,
+   @JsonIgnore
    Blob imageFile,
    boolean image,
    String imagePath,

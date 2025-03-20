@@ -4,12 +4,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import es.codeurjc.dto.ApartmentBasicDTO;
@@ -162,5 +164,29 @@ public class ApartmentService implements GeneralService<Apartment>{
     public long count(){
         return apartmentRepository.count();
     }
+
+    public ApartmentDTO createApartment(ApartmentDTO newApartmentDTO, Long id) {
+        Apartment newApartment = toDomain(newApartmentDTO);
+        apartmentRepository.save(newApartment);
+        return toDTO(newApartment);
+    }
+
+
+    public ApartmentDTO updateApartment(ApartmentDTO updatedApartmentDTO, Long id) {
+        
+        Apartment updatedApartment = toDomain(updatedApartmentDTO);
+        updatedApartment.setId(id);
+        apartmentRepository.save(updatedApartment);
+
+        return toDTO(updatedApartment);
+    }
+
+    public ApartmentDTO deleteApartment(Long id) {
+        Apartment apartment = apartmentRepository.findById(id).orElseThrow();
+        apartmentRepository.delete(apartment);
+        return toDTO(apartment);
+    }
+
+
 
 }

@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -33,9 +34,9 @@ import es.codeurjc.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/api/apartments")
-public class ApartmentRestController{
-    
+@RequestMapping("/api/v1/apartments")
+public class ApartmentRestController {
+
     @Autowired
     UserService userService;
     @Autowired
@@ -45,7 +46,6 @@ public class ApartmentRestController{
     @Autowired
     RoomService roomService;
 
-
     @GetMapping("/")
     public Collection<ApartmentDTO> getApartments() {
         return apartmentService.getApartments();
@@ -53,110 +53,62 @@ public class ApartmentRestController{
 
     @GetMapping("/{id}")
     public ApartmentDTO getApartment(@PathVariable Long id) {
-/*         Optional<Apartment> apartment = apartmentService.findById(id);
-        if (apartment.isPresent()) {
-            return ResponseEntity.ok(apartment.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        } */
-       return apartmentService.getApartment(id);
+        return apartmentService.getApartment(id);
     }
 
-    //PENDIENTE -> Añadir los controladores de búsqueda de apartamentos y de recomendación
+    // PENDIENTE -> Añadir los controladores de búsqueda de apartamentos y de
+    // recomendación
 
     @PreAuthorize("hasRole('MANAGER') and principal.enabled")
-    @PostMapping("/")
-    public ResponseEntity<ApartmentDTO> createApartment(HttpServletRequest request,
-                                                  @RequestBody Apartment newApartment) throws IOException {
+    @PostMapping("/{id}")
+    public ResponseEntity<?> createApartment(
+            HttpServletRequest request,
+            @PathVariable Long id,
+            @RequestBody ApartmentDTO newApartmentDTO) throws IOException {
 
-        try {
-            UserE user = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
+        UserE manager = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
 
-            newApartment.setManager(user);
-            newApartment.setRooms(new ArrayList<>());
-            newApartment.setReservations(new ArrayList<>());
-            newApartment.setReviews(new ArrayList<>());
-            apartmentService.save(newApartment);
-
-            URI location = fromCurrentRequest().path("/{id}")
-                    .buildAndExpand(newApartment.getId()).toUri();
-
-            return ResponseEntity.created(location).body(apartmentService.toDTO(newApartment));
-
-        } catch (Exception e) {
-           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-        .body(null);
-
+        if (manager.getId() == id) {
+            newApartmentDTO = apartmentService.createApartment(newApartmentDTO, id);
+            URI location = fromCurrentRequest().path("/{id}").buildAndExpand(newApartmentDTO.id()).toUri();
+            return ResponseEntity.created(location).body(newApartmentDTO);
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("This apartment is not yours");
         }
+
     }
 
     @PreAuthorize("hasRole('MANAGER') and principal.enabled")
     @PutMapping("/{id}")
     public ResponseEntity<ApartmentDTO> updateApartment(
-        HttpServletRequest request,
-        @PathVariable Long id,
-        @RequestBody ApartmentDTO updatedApartmentDTO,
-        @RequestParam(value = "imageFileUpload", required = false)
-        MultipartFile imageFile) throws IOException {
+            HttpServletRequest request,
+            @PathVariable Long id,
+            @RequestBody ApartmentDTO updatedApartmentDTO) throws IOException {
 
-        try {
-            Optional<Apartment> oldApartmentOpt = apartmentService.findById(id);
-            if (!oldApartmentOpt.isPresent()) {
-                throw new NoSuchElementException();
-            }
+        UserE manager = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
 
-            Apartment oldApartment = oldApartmentOpt.get();
-
-            // PENDIENTE -> Ver si se puede hacer con un mapper u otro método de clonado de objetos
-            oldApartment = apartmentService.toDomain(updatedApartmentDTO);
-
-            oldApartment.setName(updatedApartmentDTO.name());
-            oldApartment.setLocation(updatedApartmentDTO.location());
-            oldApartment.setDescription(updatedApartmentDTO.description());
-
-            if (imageFile != null && !imageFile.isEmpty()) {
-                oldApartment
-                        .setImageFile(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
-                oldApartment.setImage(true);
-            }
-
-            apartmentService.save(oldApartment);
-
-            return ResponseEntity.ok(apartmentService.toDTO(oldApartment));
-
-        } catch (Exception e) {
-            // PENDIENTE -> Revisar que este error se trate correctamente de esta manera o hay que cambiarlo / quitarlo
-            return ResponseEntity.status(500).body(null);
+        if (!apartmentService.exist(id)){
+            return ResponseEntity.notFound().build();
+        } else if (manager.getId() == id) {
+            return ResponseEntity.ok(apartmentService.updateApartment(updatedApartmentDTO, id));
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
     }
 
     @PreAuthorize("hasRole('MANAGER') and principal.enabled")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApartmentDTO> deleteApartment(HttpServletRequest request, @PathVariable Long id) {
+        
+        UserE manager = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
 
-        try {
-            UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
-            UserE apartmentManager = apartmentService.findById(id).orElseThrow().getManager();
-           /*  Optional<Apartment> apartment = apartmentService.findById(id);
-
-            if (currentUser.equals(apartmentManager)) {
-                if (apartment.isPresent()) {
-                    apartmentService.deleteById(id);
-                    return ResponseEntity.ok(apartment.get());
-                }else {
-                    return ResponseEntity.notFound().build(); 
-                }
-            } else {
-                return ResponseEntity.status(403).body("Forbidden access to an apartment which is not yours");
-            } */
-           Apartment apartment = apartmentService.findById(id).orElseThrow();
-           apartmentService.deleteById(id);
-
-           return ResponseEntity.ok(apartmentService.toDTO(apartment));
-
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(null);
-        }
+        if (!apartmentService.exist(id)){
+            return ResponseEntity.notFound().build();
+        } else if (manager.getId() == id) {
+            return ResponseEntity.ok(apartmentService.deleteApartment(id));
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        } 
     }
 
     // PENDIENTE -> Cómo se hacía con imágenes?
@@ -175,7 +127,8 @@ public class ApartmentRestController{
         }
     }
 
-    // PENDIENTE -> Hacer un modelo que tenga más detalles para este controlador, o al revés para el resto
+    // PENDIENTE -> Hacer un modelo que tenga más detalles para este controlador, o
+    // al revés para el resto
     @GetMapping("/{id}/info")
     public ResponseEntity<Apartment> apartmentInformation(@PathVariable Long id) {
 
@@ -192,21 +145,24 @@ public class ApartmentRestController{
         }
     }
 
-    // PENDIENTE -> Cambiar las URL de este método AJAX para que cuadren con el formato
+    // PENDIENTE -> Cambiar las URL de este método AJAX para que cuadren con el
+    // formato
 
     @GetMapping("/loadMore")
     public Page<ApartmentDTO> loadMoreApartments(
-        Pageable pageable,
-        @RequestParam (defaultValue = "0") int numPage,
-        @RequestParam (defaultValue = "6") int pageSize) {
+            Pageable pageable,
+            @RequestParam(defaultValue = "0") int numPage,
+            @RequestParam(defaultValue = "6") int pageSize) {
 
         List<Apartment> apartments = apartmentService.findAll();
         int totalCount = apartments.size();
 
         if (numPage * pageSize < totalCount) {
-        /*     int actualEnd = Math.min(numPage * pageSize, totalCount);
-            List<Apartment> paginatedApartments = apartments.subList(start, actualEnd);
-            return ResponseEntity.ok(paginatedApartments); */
+            /*
+             * int actualEnd = Math.min(numPage * pageSize, totalCount);
+             * List<Apartment> paginatedApartments = apartments.subList(start, actualEnd);
+             * return ResponseEntity.ok(paginatedApartments);
+             */
 
             return apartmentService.findAll(pageable);
 
@@ -217,8 +173,8 @@ public class ApartmentRestController{
 
     @GetMapping("/manager/loadMore/{start}/{end}")
     public ResponseEntity<List<Apartment>> loadMoreApartmentsManagerView(HttpServletRequest request,
-                                                                         @PathVariable int start,
-                                                                         @PathVariable int end) {
+            @PathVariable int start,
+            @PathVariable int end) {
 
         UserE currentUser = userService.findByNick(request.getUserPrincipal().getName())
                 .orElseThrow(() -> new RuntimeException("User not found"));

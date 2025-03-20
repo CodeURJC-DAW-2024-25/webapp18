@@ -1,10 +1,9 @@
 package es.codeurjc.dto;
 import java.sql.Blob;
 import java.util.List;
-import es.codeurjc.model.Apartment;
-import es.codeurjc.model.Reservation;
-import es.codeurjc.model.Review;
-import jakarta.persistence.Lob;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public record UserBasicDTO( 
     Long id,
     String name,
@@ -14,6 +13,7 @@ public record UserBasicDTO(
     String language,
     String phone,
     String email,
+    @JsonIgnore
     Blob imageFile,
     boolean image,
     String imagePath,

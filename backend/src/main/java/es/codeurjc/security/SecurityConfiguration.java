@@ -34,12 +34,12 @@ public class SecurityConfiguration {
         }
 
         @Bean
-        
+
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
                 http.csrf().disable();
                 http.authenticationProvider(authenticationProvider());
                 http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/api/**").permitAll()
+                                .requestMatchers("/api/v1/**").permitAll()
                                 // public pages
                                 .requestMatchers(
                                                 "/apartmentInformation/**",
@@ -125,15 +125,15 @@ public class SecurityConfiguration {
                                 .hasAnyRole("ADMIN")
 
                 )
-                .formLogin(formLogin -> formLogin
-                        .loginPage("/login")
-                        .failureUrl("/loginError")
-                        .defaultSuccessUrl("/profile")
-                        .permitAll())
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login")
-                        .permitAll());
+                                .formLogin(formLogin -> formLogin
+                                                .loginPage("/login")
+                                                .failureUrl("/loginError")
+                                                .defaultSuccessUrl("/profile")
+                                                .permitAll())
+                                .logout(logout -> logout
+                                                .logoutUrl("/logout")
+                                                .logoutSuccessUrl("/login")
+                                                .permitAll());
 
                 return http.build();
         }

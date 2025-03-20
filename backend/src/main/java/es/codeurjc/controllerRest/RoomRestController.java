@@ -20,7 +20,7 @@ import es.codeurjc.dto.RoomDTO;
 import es.codeurjc.service.RoomService;
 
 @RestController
-@RequestMapping("/api/rooms")
+@RequestMapping("/api/v1/rooms")
 public class RoomRestController {
 
     @Autowired
