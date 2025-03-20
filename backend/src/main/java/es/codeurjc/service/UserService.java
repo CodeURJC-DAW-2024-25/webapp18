@@ -107,7 +107,7 @@ public class UserService implements GeneralService<UserE> {
             for (UserE recommendedUser : recomendedUsers) {
                 for (Reservation recommendedUserReservation : recommendedUser.getReservations()) {
                     Apartment recommendedApartment = recommendedUserReservation.getApartment();
-                    Boolean validApartment = recommendedApartment.getManager().getvalidated();
+                    Boolean validApartment = recommendedApartment.getManager().getValidated();
 
                     if ((!recomendedApartments.contains(recommendedApartment)) && validApartment) {
                         recomendedApartments.add(recommendedApartment);

@@ -55,7 +55,7 @@ public class ReviewController {
 
 		UserE apartmentManager = apartmentService.findById(id).orElseThrow().getManager();
 
-		if (apartmentManager.getvalidated()) {
+		if (apartmentManager.getValidated()) {
 			int score = (rating != null) ? rating : 0;
 			if(score != 0){
 				UserE user = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
@@ -79,7 +79,7 @@ public class ReviewController {
 
 		UserE apartmentManager = apartmentService.findById(id).orElseThrow().getManager();
 
-		if (apartmentManager.getvalidated()) {
+		if (apartmentManager.getValidated()) {
 			Apartment selectedApartment = apartmentService.findById(id).orElseThrow();
 			model.addAttribute("apartment", selectedApartment);
 

@@ -306,9 +306,9 @@ public class ApartmentController {
 
 		UserE apartmentManager = apartmentService.findById(id).orElseThrow().getManager();
 
-		if (apartmentManager.getvalidated()) {
+		if (apartmentManager.getValidated()) {
 			Apartment apartment = apartmentService.findById(id).orElseThrow();
-			if (apartment.getManager().getvalidated() == false)
+			if (apartment.getManager().getValidated() == false)
 				return "redirect:/error";
 			model.addAttribute("apartment", apartment);
 			model.addAttribute("numRooms", apartment.getNumRooms());
@@ -371,7 +371,7 @@ public class ApartmentController {
 			// We look for the avalidated apt
 			for (Long apartmentId : apartmentIds) {
 				Apartment apartment = apartmentService.findById(apartmentId).orElse(null);
-				if (apartment != null && apartment.getManager().getvalidated()) {
+				if (apartment != null && apartment.getManager().getValidated()) {
 					apartments.add(apartment);
 				}
 			}

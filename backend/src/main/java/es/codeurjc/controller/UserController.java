@@ -64,7 +64,7 @@ public class UserController {
                     try {
                         Apartment apartment = apartmentService.findById((long) i).orElseThrow();
                         // Only add apartments whose managers are validated
-                        if (apartment != null && apartment.getManager().getvalidated()) {
+                        if (apartment != null && apartment.getManager().getValidated()) {
                             recomendedApartments.add(apartment);
                         }
                     } catch (Exception ex) {
@@ -97,6 +97,7 @@ public class UserController {
     /**
      * Loads the first 6 apartments of a manager
      */
+    //pendiente de hacer en apartamento rest
     @GetMapping("/viewApartmentsManager")
     public String viewApartmentsManager(Model model, HttpServletRequest request) {
 
@@ -109,7 +110,7 @@ public class UserController {
             apartments = apartments.subList(0, 6);
         }
 
-        model.addAttribute("isValidated", userService.findByNick(managernick).orElseThrow().getvalidated());
+        model.addAttribute("isValidated", userService.findByNick(managernick).orElseThrow().getValidated());
         model.addAttribute("apartments", apartments);
 
         return "viewApartmentsManager";
@@ -196,7 +197,7 @@ public class UserController {
 
         if (manager != null) {
             manager.setRejected(true);
-            manager.setvalidated(false);
+            manager.setValidated(false);
             userService.save(manager);
         }
         return "redirect:/managerValidation";
@@ -209,7 +210,7 @@ public class UserController {
 
         if (manager != null) {
             manager.setRejected(false);
-            manager.setvalidated(true);
+            manager.setValidated(true);
             userService.save(manager);
         }
         return "redirect:/managerValidation";
@@ -372,11 +373,11 @@ public class UserController {
             rols.add("USER");
             if (type == 0) {
                 rols.add("CLIENT");
-                user.setvalidated(null);
+                user.setValidated(null);
                 user.setRejected(null);
             } else {
                 rols.add("MANAGER");
-                user.setvalidated(false);
+                user.setValidated(false);
                 user.setRejected(false);
             }
             user.setRols(rols);

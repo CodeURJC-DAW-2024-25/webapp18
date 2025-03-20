@@ -182,7 +182,7 @@ public class ApartmentRestController{
         Optional<Apartment> apartmentOpt = apartmentService.findById(id);
         if (apartmentOpt.isPresent()) {
             Apartment apartment = apartmentOpt.get();
-            if (apartment.getManager().getvalidated()) {
+            if (apartment.getManager().getValidated()) {
                 return ResponseEntity.ok(apartment);
             } else {
                 return ResponseEntity.status(403).build();

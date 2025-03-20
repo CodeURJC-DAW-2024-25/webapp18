@@ -209,11 +209,11 @@ public class UserE {
         this.pass = pass;
     }
 
-    public Boolean getvalidated() {
+    public Boolean getValidated() {
         return validated;
     }
 
-    public void setvalidated(Boolean validated) {
+    public void setValidated(Boolean validated) {
         this.validated = validated;
     }
 
