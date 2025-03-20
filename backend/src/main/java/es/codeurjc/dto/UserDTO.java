@@ -14,6 +14,7 @@ public record UserDTO(
    String email,
    Blob imageFile,
    boolean image,
+   String imagePath,
    String organization,
    Boolean validated,
    Boolean rejected,

@@ -41,6 +41,8 @@ public class UserE {
 
     private boolean image;
 
+    private String imagePath;
+
     private String organization;
 
     private Boolean validated;
@@ -95,6 +97,7 @@ public class UserE {
         this.email = email;
         this.organization = organization;
         this.imageFile = imageFile;
+        this.imagePath = null;
         this.rols = rols;
         this.nick = nick;
         this.pass = pass;
@@ -191,6 +194,14 @@ public class UserE {
 
     public void setImage(boolean image) {
         this.image = image;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public String getNick() {

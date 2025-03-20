@@ -1,24 +1,35 @@
 package es.codeurjc.service;
 
+import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import es.codeurjc.dto.UserDTO;
+import es.codeurjc.dto.UserMapper;
 import es.codeurjc.model.Apartment;
 import es.codeurjc.model.Reservation;
 import es.codeurjc.model.UserE;
 import es.codeurjc.repository.UserRepository;
+import org.springframework.core.io.InputStreamResource;
 
 @Service
 public class UserService implements GeneralService<UserE> {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserMapper mapper;
 
 
     @Override
@@ -120,4 +131,39 @@ public class UserService implements GeneralService<UserE> {
         return recomendedApartments;
     }
 
+    public Resource getImage(Long id) throws SQLException {
+
+		UserE user = userRepository.findById(id).orElseThrow();
+
+		if (user.getImageFile() != null) {
+			return new InputStreamResource(user.getImageFile().getBinaryStream());
+		} else {
+			throw new NoSuchElementException();
+		}
+	}
+
+    public UserDTO replacePost(Long id, UserDTO userDTO) {
+        if (userRepository.existsById(id)) {
+
+			UserE user = mapper.toDomain(userDTO);
+			user.setId(id);
+
+			userRepository.save(user);
+
+			return mapper.toDTO(user);
+
+		} else {
+			throw new NoSuchElementException();
+		}
+        
+    }
+
+    public void replacePostImage(long id, InputStream inputStream, long size) {
+        UserE user = userRepository.findById(id).orElseThrow();
+
+		user.setImageFile(BlobProxy.generateProxy(inputStream, size));
+
+		userRepository.save(user);
+
+    }
 }
