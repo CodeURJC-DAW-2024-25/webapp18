@@ -1,21 +1,26 @@
 package es.codeurjc.controllerRest;
 
 
+import es.codeurjc.dto.ApartmentDTO;
 import es.codeurjc.dto.ReviewDTO;
 import es.codeurjc.model.Apartment;
 import es.codeurjc.model.Review;
 import es.codeurjc.model.UserE;
 import es.codeurjc.service.ApartmentService;
 import es.codeurjc.service.ReviewService;
+import es.codeurjc.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.net.URI;
 import java.time.LocalDate;
@@ -45,7 +50,6 @@ public class ReviewRestController {
         }
  
         Apartment apartment = optionalApartment.get();
-        UserE apartmentManager = apartment.getManager();
 
         newReview.setScore(score);
         newReview.setComment(comment);
@@ -68,4 +72,29 @@ public class ReviewRestController {
        return reviewService.getReview(id);
 
 }
+
+
+    @GetMapping("/reviews/loadMore/{start}/{end}")
+    public ResponseEntity<List<Review>> loadMoreReviews(HttpServletRequest request,
+            @RequestParam Long id,
+            @PathVariable int start,
+            @PathVariable int end) {
+
+        Apartment currentAppartment = apartmentService.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    
+        List<Review> allReviews = new ArrayList<>();
+        for (Review review : currentAppartment.getReviews()) {
+            allReviews.add(review);
+        }
+        int totalCount = allReviews.size();
+    
+        if (start < totalCount) {
+            int actualEnd = Math.min(end, totalCount);
+            List<Review> paginatedReviews = allReviews.subList(start, actualEnd);
+            return ResponseEntity.ok(paginatedReviews);
+        } else {
+            return ResponseEntity.ok(new ArrayList<>());
+        }
+    }
 }
