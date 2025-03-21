@@ -1,6 +1,7 @@
 package es.codeurjc.controllerRest;
 
 import java.io.IOException;
+import java.net.URI;
 import java.security.Principal;
 import java.sql.SQLException;
 import java.util.Collection;
@@ -44,41 +45,47 @@ public class UserRestController {
     @Autowired
     private UserService userService;
 
+    //works
     @GetMapping("/all")
-    public List<UserE> getAllUsers() {
-        return userService.findAll();
+    public List<UserDTO> getAllUsers() {
+        return mapper.toDTOs(userService.findAll());
     }
 
+    //works
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         Optional<UserE> user = userService.findById(id);
-        
+
         return user.map(u -> ResponseEntity.ok(mapper.toDTO(u)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    // THis return the list of all unvalidated managers
+    //works
+    @GetMapping("/")
+    public ResponseEntity<Collection<UserDTO>> managerValidation(
+        @RequestParam(required = false, defaultValue = "false") Boolean validated,
+        @RequestParam(required = false, defaultValue = "false") Boolean rejected) {
+        Collection<UserE> unvalidatedManagersList = userService.findByValidatedAndRejected(validated, rejected);
 
-    @PostMapping("/")
-    public ResponseEntity<UserE> createUser(@RequestBody UserE user) {
-        if (userService.existNick(user.getNick())) {
-            return ResponseEntity.badRequest().build();
+        if (unvalidatedManagersList != null && !unvalidatedManagersList.isEmpty()) {
+            Collection<UserDTO> unvalidatedManagersDTOList = mapper.toDTOs(unvalidatedManagersList);
+            return ResponseEntity.ok(unvalidatedManagersDTOList);
+        } else {
+            return ResponseEntity.noContent().build();
         }
-        userService.save(user);
-        return ResponseEntity.ok(user);
+
     }
 
-    /*
-     * @DeleteMapping("/{id}")
-     * public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-     * if (userService.findById(id).isPresent()) {
-     * userService.deleteById(id);// pendiente deberiamos de añadir si hay tiempo en
-     * el service un deleteById
-     * return ResponseEntity.noContent().build();
-     * } else {
-     * return ResponseEntity.notFound().build();
-     * }
-     * }
-     */
+    // works
+    @PostMapping("/")
+    public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
+        if (userService.existNick(userDTO.nick())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Nickname already exists");
+        }
+        return userService.createUser(userDTO);
+    }
+
 
     // permite a un manager poder ser validado de nuevo
     @PutMapping("/{id}/application")
@@ -95,28 +102,16 @@ public class UserRestController {
         }
     }
 
-    @GetMapping("/")
-    public ResponseEntity<Collection<UserDTO>> managerValidation(@RequestParam(required = false) Boolean validated,
-            @RequestParam(required = false) Boolean rejected) {
-        Collection<UserE> unvalidatedManagersList = userService.findByValidatedAndRejected(validated, rejected);
-
-        if (unvalidatedManagersList != null && !unvalidatedManagersList.isEmpty()) {
-            Collection<UserDTO> unvalidatedManagersDTOList = mapper.toDTOs(unvalidatedManagersList);
-            return ResponseEntity.ok(unvalidatedManagersDTOList);
-        } else {
-            return ResponseEntity.noContent().build();
-        }
-
-    }
-
-
+    // This edits a user
+    @Transactional
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO,
             HttpServletRequest request,
             @RequestParam(required = false) Boolean rejected, @RequestParam(required = false) Boolean validated) {
         UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
 
-        // Only an admin can change the validated and rejected fields, so if a user tries to do it, it will return a 403 status code
+        // Only an admin can change the validated and rejected fields, so if a user
+        // tries to do it, it will return a 403 status code
         if (!(rejected == null && validated == null) && (!currentUser.getRols().contains("ADMIN"))) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
@@ -127,6 +122,19 @@ public class UserRestController {
         return ResponseEntity.ok(mapper.toDTO(user));
 
     }
+
+    
+/*     @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        if (userService.findById(id).isPresent()) {
+            userService.deleteById(id);// pendiente deberiamos de añadir si hay tiempo en el service un deleteById
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    } */
+
+
 
     @GetMapping("/{id}/image")
     public ResponseEntity<Object> downloadImage(@PathVariable Long id) throws SQLException, IOException {
@@ -140,8 +148,9 @@ public class UserRestController {
 
     }
 
-    @PutMapping("/{id}/image")
-    public ResponseEntity<Object> replacePostImage(HttpServletRequest request, @PathVariable long id,
+
+    @PutMapping("/{id}/image1")
+    public ResponseEntity<Object> replaceUserImage(HttpServletRequest request, @PathVariable long id,
             @RequestParam MultipartFile imageFile)
             throws IOException {
 
@@ -149,7 +158,7 @@ public class UserRestController {
         UserE foundUser = userService.findById(id).orElseThrow();
 
         if (currentUser.equals(foundUser)) {
-            userService.replacePostImage(id, imageFile.getInputStream(), imageFile.getSize());
+            userService.replaceUserImage(id, imageFile.getInputStream(), imageFile.getSize());
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
@@ -158,20 +167,19 @@ public class UserRestController {
 
     }
 
-
-    //PENDIENTE -> cambiar el nombre a esta ruta, y revisar el controlador
-    @PutMapping("/{id}/profile-image")
+    // PENDIENTE -> cambiar el nombre a esta ruta, y revisar el controlador
+    @PutMapping("/{id}/image2")
     public ResponseEntity<Object> updateProfileImage(HttpServletRequest request,
-                                                     @PathVariable Long id,
-                                                     @RequestParam MultipartFile imageFile) throws IOException {
+            @PathVariable Long id,
+            @RequestParam MultipartFile imageFile) throws IOException {
         UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
         UserE foundUser = userService.findById(id).orElseThrow();
-    
+
         if (!currentUser.equals(foundUser)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body("You are trying to change the image of another user");
         }
-    
+
         if (!imageFile.isEmpty()) {
             currentUser.setImageFile(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
             userService.save(currentUser);
@@ -180,36 +188,14 @@ public class UserRestController {
             return ResponseEntity.badRequest().body("The image file is empty");
         }
     }
-    
-
-    // pendiente las imagenes van aparte en otro fichero
-    // pendientes de hacer register seria un post, login post, prfile que es un get
-    @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
-        if (userService.existNick(userDTO.nick())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Nickname already exists");
-        }
-
-        UserE newUser = mapper.toDomain(userDTO);
-        newUser.setValidated(false);
-        newUser.setRejected(false);
-
-        
-        newUser.setPass(passwordEncoder.encode(userDTO.pass()));
-
-        userService.save(newUser);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDTO(newUser));
-    }
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(HttpServletRequest request, @RequestBody UserDTO userDTO) {
         Optional<UserE> userOpt = userService.findByNick(userDTO.nick());
-    
+
         if (userOpt.isPresent()) {
             UserE user = userOpt.get();
-            
-            
+
             if (passwordEncoder.matches(userDTO.pass(), user.getPass())) {
                 request.getSession().setAttribute("user", user);
                 return ResponseEntity.ok("Login exitoso, sesión iniciada.");
@@ -218,20 +204,18 @@ public class UserRestController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
     }
 
-    @Transactional 
+    //PENDIENTE -> Revisar si esto es necesario
+    @Transactional
     @GetMapping("/profile")
     public ResponseEntity<UserDTO> getCurrentUser(HttpServletRequest request) {
         String nick = request.getUserPrincipal().getName();
         Optional<UserE> userOpt = userService.findByNick(nick);
-    
+
         if (userOpt.isPresent()) {
             return ResponseEntity.ok(mapper.toDTO(userOpt.get()));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
-    
-    
-
 
 }
