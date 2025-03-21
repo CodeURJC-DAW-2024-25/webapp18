@@ -3,10 +3,12 @@ package es.codeurjc.dto;
 import java.util.Collection;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.stereotype.Component;
 
 import es.codeurjc.model.Apartment;
 
 @Mapper(componentModel = "spring")
+@Component
 public interface ApartmentMapper {
     //PENDIENTE -> Corregir esto tras el mapper de review
     ApartmentDTO toDTO(Apartment apartment);

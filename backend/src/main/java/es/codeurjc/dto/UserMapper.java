@@ -5,10 +5,12 @@ import java.util.List;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.stereotype.Component;
 
 import es.codeurjc.model.UserE;
 
 @Mapper(componentModel = "spring")
+@Component
 public interface UserMapper {
 
     UserDTO toDTO(UserE user);

@@ -351,9 +351,10 @@ public class UserController {
 
     @GetMapping("/login")
     public String login(Model model) {
-
+        model.addAttribute("token", "");
         return "login";
     }
+
 
     @GetMapping("/loginError")
     public String loginError(Model model) {

@@ -1,26 +1,35 @@
 package es.codeurjc.controllerRest;
 
+import java.io.IOException;
+import java.security.Principal;
+import java.sql.SQLException;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import es.codeurjc.dto.UserDTO;
+import es.codeurjc.dto.UserMapper;
 import es.codeurjc.model.UserE;
 import es.codeurjc.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
-import es.codeurjc.dto.UserDTO;
-import es.codeurjc.dto.UserMapper;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import jakarta.transaction.Transactional;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -28,6 +37,9 @@ public class UserRestController {
 
     @Autowired
     private UserMapper mapper;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private UserService userService;
@@ -38,10 +50,13 @@ public class UserRestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserE> getUserById(@PathVariable Long id) {
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         Optional<UserE> user = userService.findById(id);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        
+        return user.map(u -> ResponseEntity.ok(mapper.toDTO(u)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
 
     @PostMapping("/")
     public ResponseEntity<UserE> createUser(@RequestBody UserE user) {
@@ -145,27 +160,78 @@ public class UserRestController {
 
 
     //PENDIENTE -> cambiar el nombre a esta ruta, y revisar el controlador
-    @PostMapping("/editProfileImage/{id}")
-    public String editImage(HttpServletRequest request, @RequestParam MultipartFile imageFile,
-            @PathVariable Long id,
-            Model model) throws IOException {
-
+    @PutMapping("/{id}/profile-image")
+    public ResponseEntity<Object> updateProfileImage(HttpServletRequest request,
+                                                     @PathVariable Long id,
+                                                     @RequestParam MultipartFile imageFile) throws IOException {
         UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
         UserE foundUser = userService.findById(id).orElseThrow();
-
-        if (currentUser.equals(foundUser)) {
-            if (!imageFile.getOriginalFilename().isBlank()) {
-                currentUser.setImageFile(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
-                userService.save(currentUser);
-            }
-            return "redirect:/editProfile/" + id;
-
-        } else
-            return "/error";
-
+    
+        if (!currentUser.equals(foundUser)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("You are trying to change the image of another user");
+        }
+    
+        if (!imageFile.isEmpty()) {
+            currentUser.setImageFile(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
+            userService.save(currentUser);
+            return ResponseEntity.ok("Image updated successfully");
+        } else {
+            return ResponseEntity.badRequest().body("The image file is empty");
+        }
     }
+    
 
     // pendiente las imagenes van aparte en otro fichero
     // pendientes de hacer register seria un post, login post, prfile que es un get
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
+        if (userService.existNick(userDTO.nick())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Nickname already exists");
+        }
+
+        UserE newUser = mapper.toDomain(userDTO);
+        newUser.setValidated(false);
+        newUser.setRejected(false);
+
+        // Encriptar la contraseña con BCrypt
+        newUser.setPass(passwordEncoder.encode(userDTO.pass()));
+
+        userService.save(newUser);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDTO(newUser));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(HttpServletRequest request, @RequestBody UserDTO userDTO) {
+        Optional<UserE> userOpt = userService.findByNick(userDTO.nick());
+    
+        if (userOpt.isPresent()) {
+            UserE user = userOpt.get();
+            
+            // Compara la contraseña encriptada con la ingresada
+            if (passwordEncoder.matches(userDTO.pass(), user.getPass())) {
+                request.getSession().setAttribute("user", user); // Guarda el usuario en la sesión
+                return ResponseEntity.ok("Login exitoso, sesión iniciada.");
+            }
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+    }
+
+    @Transactional // Mantiene la sesión de Hibernate abierta
+    @GetMapping("/profile")
+    public ResponseEntity<UserDTO> getCurrentUser(HttpServletRequest request) {
+        String nick = request.getUserPrincipal().getName();
+        Optional<UserE> userOpt = userService.findByNick(nick);
+    
+        if (userOpt.isPresent()) {
+            return ResponseEntity.ok(mapper.toDTO(userOpt.get()));
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+    
+    
+
 
 }
