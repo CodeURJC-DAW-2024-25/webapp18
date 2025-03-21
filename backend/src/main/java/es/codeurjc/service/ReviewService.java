@@ -7,6 +7,8 @@ import es.codeurjc.model.Apartment;
 import es.codeurjc.model.Review;
 import es.codeurjc.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -104,6 +106,10 @@ public class ReviewService implements GeneralService<Review>{
         } else {
             return reviewRepository.findAll(sort);
         }
+    }
+
+    public Page<ReviewDTO> findAll(Pageable pageable) {
+    return reviewRepository.findAll(pageable).map(this::toDTO);
     }
 
     @Override
