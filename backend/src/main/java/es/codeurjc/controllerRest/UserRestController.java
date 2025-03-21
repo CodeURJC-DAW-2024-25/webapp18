@@ -194,7 +194,7 @@ public class UserRestController {
         newUser.setValidated(false);
         newUser.setRejected(false);
 
-        // Encriptar la contraseña con BCrypt
+        
         newUser.setPass(passwordEncoder.encode(userDTO.pass()));
 
         userService.save(newUser);
@@ -209,16 +209,16 @@ public class UserRestController {
         if (userOpt.isPresent()) {
             UserE user = userOpt.get();
             
-            // Compara la contraseña encriptada con la ingresada
+            
             if (passwordEncoder.matches(userDTO.pass(), user.getPass())) {
-                request.getSession().setAttribute("user", user); // Guarda el usuario en la sesión
+                request.getSession().setAttribute("user", user);
                 return ResponseEntity.ok("Login exitoso, sesión iniciada.");
             }
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
     }
 
-    @Transactional // Mantiene la sesión de Hibernate abierta
+    @Transactional 
     @GetMapping("/profile")
     public ResponseEntity<UserDTO> getCurrentUser(HttpServletRequest request) {
         String nick = request.getUserPrincipal().getName();
