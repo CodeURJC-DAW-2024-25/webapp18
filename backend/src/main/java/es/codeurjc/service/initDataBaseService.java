@@ -47,6 +47,11 @@ public class initDataBaseService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+
+    /*Pendiente -> Revisar la creación de datos para evitar cosas que no tienen sentido
+        como managers no validados con apartamentos, meter los imagepath a los usuarios y apartamentos
+    
+    */
     @PostConstruct
     @Transactional
     private void initDatabase() throws IOException {

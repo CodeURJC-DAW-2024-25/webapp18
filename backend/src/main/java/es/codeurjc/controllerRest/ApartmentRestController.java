@@ -46,11 +46,13 @@ public class ApartmentRestController {
     @Autowired
     RoomService roomService;
 
+    // works
     @GetMapping("/")
     public Collection<ApartmentDTO> getApartments() {
         return apartmentService.getApartments();
     }
 
+    // works
     @GetMapping("/{id}")
     public ApartmentDTO getApartment(@PathVariable Long id) {
         return apartmentService.getApartment(id);
@@ -59,7 +61,6 @@ public class ApartmentRestController {
     // PENDIENTE -> Añadir los controladores de búsqueda de apartamentos y de
     // recomendación
 
-    @PreAuthorize("hasRole('MANAGER') and principal.enabled")
     @PostMapping("/{id}")
     public ResponseEntity<?> createApartment(
             HttpServletRequest request,

@@ -17,6 +17,6 @@ public record ApartmentDTO (
      boolean image,
      UserBasicDTO manager,
      List<RoomBasicDTO> rooms,
-     List<ReservationDTO> reservations,
-     List<ReviewDTO> reviews
+     List<ReservationBasicDTO> reservations,
+     List<ReviewBasicDTO> reviews
 ){}

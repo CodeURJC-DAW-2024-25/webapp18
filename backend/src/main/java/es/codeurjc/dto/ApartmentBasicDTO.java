@@ -13,6 +13,6 @@ public record ApartmentBasicDTO(
      @JsonIgnore
      Blob imageFile,
      String imagePath,
-     boolean image,
-     UserBasicDTO manager
+     boolean image
+     //UserBasicDTO manager
      ) {}

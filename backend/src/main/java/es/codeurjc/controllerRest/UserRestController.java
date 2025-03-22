@@ -103,6 +103,7 @@ public class UserRestController {
     }
 
     // This edits a user
+    //Pendiente -> No funciona porque al hacer getUserPrincipal da null
     @Transactional
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO,

@@ -37,6 +37,7 @@ public class Reservation {
         this.checkIn = checkIn;
         this.checkOut = checkOut;
         this.apartment = apartment;
+        this.numPeople = numPeople;
         this.room = room;
         this.user = user;
     }
