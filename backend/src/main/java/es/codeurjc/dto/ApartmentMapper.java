@@ -12,9 +12,11 @@ import es.codeurjc.model.Apartment;
 public interface ApartmentMapper {
     //PENDIENTE -> Corregir esto tras el mapper de review
     ApartmentDTO toDTO(Apartment apartment);
+    
     ApartmentBasicDTO toBasicDTO(Apartment apartment);
 
     Collection<ApartmentDTO> toDTOs(Collection<Apartment> apartments);
+    
     Collection<ApartmentBasicDTO> toBasicDTOs(Collection<Apartment> apartments);
 
     Apartment toDomain(ApartmentDTO apartmentDTO);

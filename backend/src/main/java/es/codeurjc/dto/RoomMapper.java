@@ -13,15 +13,15 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 @Component
 public interface RoomMapper {
-
+    
     RoomDTO toDTO(Room room);
-
+    
     RoomBasicDTO toBasicDTO(Room room);
-
+    
     List<RoomDTO> toDTOs(Collection<Room> rooms);
-
+    
     List<RoomBasicDTO> toBasicDTOs(Collection<Room> rooms);
-
+    
     @Mapping(target = "reservations", ignore = true)
     Room toDomain(RoomDTO roomDTO);
 }

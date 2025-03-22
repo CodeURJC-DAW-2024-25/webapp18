@@ -1,270 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>
-		4.0.0
-	</modelVersion>
-	<!-- Definir el parent de Spring Boot -->
-	<parent>
-		<groupId>
-			org.springframework.boot
-		</groupId>
-		<artifactId>
-			spring-boot-starter-parent
-		</artifactId>
-		<version>
-			3.4.2
-		</version>
-		<relativePath />
-		<!-- Importante para evitar errores -->
-	</parent>
-	<groupId>
-		es.codeurjc
-	</groupId>
-	<artifactId>
-		backend
-	</artifactId>
-	<version>
-		1.0-SNAPSHOT
-	</version>
-	<!-- Definición de propiedades globales del proyecto -->
-	<properties>
-		<java.version>
-			21
-		</java.version>
-		<jjwt.version>
-			0.12.6
-		</jjwt.version>
-	</properties>
-	<dependencies>
-		<!-- Herramientas de desarrollo para Spring Boot -->
-		<dependency>
-			<groupId>
-				org.springframework.boot
-			</groupId>
-			<artifactId>
-				spring-boot-devtools
-			</artifactId>
-		</dependency>
-		<!-- Dependencias para pruebas -->
-		<dependency>
-			<groupId>
-				org.springframework.boot
-			</groupId>
-			<artifactId>
-				spring-boot-starter-test
-			</artifactId>
-			<scope>
-				test
-			</scope>
-		</dependency>
-		<!-- Mustache para plantillas HTML -->
-		<dependency>
-			<groupId>
-				org.springframework.boot
-			</groupId>
-			<artifactId>
-				spring-boot-starter-mustache
-			</artifactId>
-		</dependency>
-		<!-- Spring Web para crear controladores y APIs REST -->
-		<dependency>
-			<groupId>
-				org.springframework.boot
-			</groupId>
-			<artifactId>
-				spring-boot-starter-web
-			</artifactId>
-		</dependency>
-		<!-- JPA para trabajar con bases de datos -->
-		<dependency>
-			<groupId>
-				org.springframework.boot
-			</groupId>
-			<artifactId>
-				spring-boot-starter-data-jpa
-			</artifactId>
-		</dependency>
-		<!-- API de persistencia de Jakarta -->
-		<dependency>
-			<groupId>
-				jakarta.persistence
-			</groupId>
-			<artifactId>
-				jakarta.persistence-api
-			</artifactId>
-		</dependency>
-		<!-- Conector de MySQL -->
-		<dependency>
-			<groupId>
-				mysql
-			</groupId>
-			<artifactId>
-				mysql-connector-java
-			</artifactId>
-			<version>
-				8.0.33
-			</version>
-		</dependency>
-		<!-- Seguridad con Spring Security -->
-		<dependency>
-			<groupId>
-				org.springframework.boot
-			</groupId>
-			<artifactId>
-				spring-boot-starter-security
-			</artifactId>
-		</dependency>
-		<!-- MapStruct -->
-		<dependency>
-			<groupId>
-				org.mapstruct
-			</groupId>
-			<artifactId>
-				mapstruct
-			</artifactId>
-			<version>
-				1.5.5.Final
-			</version>
-		</dependency>
-		<dependency>
-			<groupId>
-				org.mapstruct
-			</groupId>
-			<artifactId>
-				mapstruct-processor
-			</artifactId>
-			<version>
-				1.5.5.Final
-			</version>
-			<scope>
-				provided
-			</scope>
-		</dependency>
-		<dependency>
-			<groupId>
-				io.jsonwebtoken
-			</groupId>
-			<artifactId>
-				jjwt-api
-			</artifactId>
-			<version>
-				${jjwt.version}
-			</version>
-		</dependency>
-		<dependency>
-			<groupId>
-				io.jsonwebtoken
-			</groupId>
-			<artifactId>
-				jjwt-impl
-			</artifactId>
-			<version>
-				${jjwt.version}
-			</version>
-			<scope>
-				runtime
-			</scope>
-		</dependency>
-		<dependency>
-			<groupId>
-				io.jsonwebtoken
-			</groupId>
-			<artifactId>
-				jjwt-jackson
-			</artifactId>
-			<version>
-				${jjwt.version}
-			</version>
-			<scope>
-				runtime
-			</scope>
-		</dependency>
-	</dependencies>
-	<build>
-		<plugins>
-			<!-- Plugin necesario para compilar y ejecutar aplicaciones Spring Boot con Maven -->
-			<plugin>
-				<groupId>
-					org.springframework.boot
-				</groupId>
-				<artifactId>
-					spring-boot-maven-plugin
-				</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>
-					org.apache.maven.plugins
-				</groupId>
-				<artifactId>
-					maven-clean-plugin
-				</artifactId>
-				<version>
-					3.1.0
-				</version>
-				<executions>
-					<execution>
-						<id>
-							auto-clean
-						</id>
-						<phase>
-							validate
-						</phase>
-						<goals>
-							<goal>
-								clean
-							</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<!-- Plugin para manejar recursos y evitar errores con resources -->
-			<plugin>
-				<groupId>
-					org.apache.maven.plugins
-				</groupId>
-				<artifactId>
-					maven-resources-plugin
-				</artifactId>
-				<version>
-					3.3.1
-				</version>
-				<executions>
-					<execution>
-						<id>
-							default-resources
-						</id>
-						<phase>
-							process-resources
-						</phase>
-						<goals>
-							<goal>
-								resources
-							</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>
-					org.apache.maven.plugins
-				</groupId>
-				<artifactId>
-					maven-compiler-plugin
-				</artifactId>
-				<version>
-					3.8.1
-				</version>
-            <configuration>
-                <source>11</source>
-                <target>11</target>
-                <annotationProcessorPaths>
-                    <path>
-                        <groupId>org.mapstruct</groupId>
-                        <artifactId>mapstruct-processor</artifactId>
-                        <version>1.5.3.Final</version>
-                    </path>
-                </annotationProcessorPaths>
-            </configuration>
-			</plugin>
-		</plugins>
-	</build>
+    <modelVersion>4.0.0</modelVersion>
+    <!-- Define the Spring Boot parent -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.4.2</version>
+        <relativePath /> <!-- Important to avoid errors -->
+    </parent>
+    <groupId>es.codeurjc</groupId>
+    <artifactId>backend</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    
+    <!-- Definition of global project properties -->
+    <properties>
+        <java.version>21</java.version>
+        <jjwt.version>0.12.6</jjwt.version>
+    </properties>
+    
+    <dependencies>
+        <!-- Spring Boot development tools -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+        </dependency>
+        
+        <!-- Test dependencies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- Mustache for HTML templates -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mustache</artifactId>
+        </dependency>
+        
+        <!-- Spring Web for creating controllers and REST APIs -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        
+        <!-- JPA for working with databases -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        
+        <!-- Jakarta Persistence API -->
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+        </dependency>
+        
+        <!-- MySQL Connector -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version>
+        </dependency>
+        
+        <!-- Security with Spring Security -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        
+        <!-- MapStruct -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>1.5.5.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>1.5.5.Final</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <!-- JWT dependencies -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>${jjwt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>${jjwt.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>${jjwt.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
+    
+    <build>
+        <plugins>
+            <!-- Plugin needed to compile and run Spring Boot applications with Maven -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            
+            <!-- Clean plugin for project cleanup -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>auto-clean</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <!-- Plugin for handling resources and avoiding resource errors -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>default-resources</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>resources</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <!-- Compiler plugin with MapStruct configuration -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>1.5.5.Final</version>
+                        </path>
+                    </annotationProcessorPaths>
+                    <compilerArgs>
+                        <arg>-Amapstruct.defaultComponentModel=spring</arg>
+                        <arg>-Amapstruct.verbose=true</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

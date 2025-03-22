@@ -1,15 +1,14 @@
 package es.codeurjc.dto;
 
-
-import es.codeurjc.model.Reservation;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.stereotype.Component;
 
+import es.codeurjc.model.Reservation;
+
 @Mapper(componentModel = "spring")
 @Component
 public interface ReservationMapper {
-
     @Mapping(source = "apartmentId", target = "apartment.id")
     @Mapping(source = "roomId", target = "room.id")
     @Mapping(source = "userId", target = "user.id")
