@@ -9,8 +9,10 @@ import org.springframework.stereotype.Component;
 import es.codeurjc.model.UserE;
 
 @Mapper(componentModel = "spring")
-@Component
+
 public interface UserMapper {
+    @Mapping(target = "reviews", ignore = true)
+    
     UserDTO toDTO(UserE user);
     
     UserBasicDTO toBasicDTO(UserE user);
@@ -19,9 +21,13 @@ public interface UserMapper {
     
     List<UserBasicDTO> toBasicDTOs(Collection<UserE> users);
     
+    @Mapping(target = "apartment", ignore = true)
     @Mapping(target = "reservations", ignore = true)
+    @Mapping(target = "reviews", ignore = true)
     UserE toDomain(UserDTO userDTO);
     
-    //@Mapping(target = "user", ignore = true)
+    @Mapping(target = "apartment", ignore = true)
+    @Mapping(target = "reservations", ignore = true)
+    @Mapping(target = "reviews", ignore = true)
     UserE toDomain(UserBasicDTO userBasicDTO);
 }

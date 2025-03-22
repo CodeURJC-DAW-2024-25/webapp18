@@ -1,30 +1,31 @@
 package es.codeurjc.controllerRest;
 
 
-import es.codeurjc.dto.ApartmentDTO;
+import java.io.IOException;
+import java.net.URI;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
+
 import es.codeurjc.dto.ReviewDTO;
 import es.codeurjc.model.Apartment;
 import es.codeurjc.model.Review;
 import es.codeurjc.model.UserE;
 import es.codeurjc.service.ApartmentService;
 import es.codeurjc.service.ReviewService;
-import es.codeurjc.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
-
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.net.URI;
-import java.time.LocalDate;
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/v1/reviews")

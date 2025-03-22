@@ -1,6 +1,5 @@
 package es.codeurjc.dto;
 
-
 import java.sql.Date;
 
 public record ReviewBasicDTO (
