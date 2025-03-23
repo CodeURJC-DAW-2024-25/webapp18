@@ -21,32 +21,26 @@ public class Apartment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     private String name;
-
     private String description;
-
     private String location;
-
     private float rating;
-
     @Lob
     private Blob imageFile;
-
-    private boolean image;
     private String imagePath;
-
+    private boolean image;
+   
     @ManyToOne
     private UserE manager;
-
+   
     @OneToMany(mappedBy = "apartment", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Room> rooms;
-
+   
     @OneToMany(mappedBy = "apartment", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Reservation> reservations;
-
+   
     @OneToMany(mappedBy = "apartment", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Review> reviews;

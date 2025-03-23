@@ -2,12 +2,11 @@ package es.codeurjc.dto;
 import java.sql.Date;
 
 public record ReviewDTO (
-    Long reviewId,
-    UserBasicDTO user,
-    ApartmentBasicDTO apartment,
+    Long id,
     int score,
+    String comment,
     Date date,
-    String comment
-
+    UserBasicDTO user,
+    ApartmentBasicDTO apartment
 ) {}
 

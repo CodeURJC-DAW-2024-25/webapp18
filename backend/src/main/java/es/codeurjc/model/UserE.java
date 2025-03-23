@@ -252,11 +252,11 @@ public class UserE {
         this.reviews = reviews;
     }
 
-    public List<Apartment> getApartment() {
+    public List<Apartment> getApartments() {
         return apartments;
     }
 
-    public void setApartment(List<Apartment> apartment) {
+    public void setApartments(List<Apartment> apartment) {
         this.apartments = apartment;
     }
 

@@ -1,20 +1,16 @@
 package es.codeurjc.controllerRest;
 
 
-import es.codeurjc.dto.ApartmentDTO;
 import es.codeurjc.dto.ReviewDTO;
 import es.codeurjc.model.Apartment;
 import es.codeurjc.model.Review;
 import es.codeurjc.model.UserE;
 import es.codeurjc.service.ApartmentService;
 import es.codeurjc.service.ReviewService;
-import es.codeurjc.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;

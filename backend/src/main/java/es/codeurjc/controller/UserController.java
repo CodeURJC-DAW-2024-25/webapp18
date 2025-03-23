@@ -104,7 +104,7 @@ public class UserController {
         String managernick = request.getUserPrincipal().getName();
         UserE currentManager = userService.findByNick(managernick).orElseThrow();
 
-        List<Apartment> apartments = currentManager.getApartment();
+        List<Apartment> apartments = currentManager.getApartments();
 
         if (apartments.size() > 6) {
             apartments = apartments.subList(0, 6);
@@ -143,7 +143,7 @@ public class UserController {
         var reviewsAverage = new ArrayList<String>();
         var apartmentNames = new ArrayList<String>();
 
-        for (Apartment apartment : currentManager.getApartment()) {
+        for (Apartment apartment : currentManager.getApartments()) {
             apartmentNames.add(apartment.getName());
             reviewsAverage.add("%.1f".formatted((apartment.getAverageRating())));
         }
@@ -385,7 +385,7 @@ public class UserController {
             List<Reservation> reservations = new ArrayList<>();
             user.setReservations(reservations);
             List<Apartment> apartments = new ArrayList<>();
-            user.setApartment(apartments);
+            user.setApartments(apartments);
             List<Review> reviews = new ArrayList<>();
             user.setReviews(reviews);
 

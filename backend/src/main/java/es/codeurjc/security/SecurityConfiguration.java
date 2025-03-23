@@ -14,8 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.client.HttpClientErrorException.Unauthorized;
-
 import es.codeurjc.security.jwt.JwtRequestFilter;
 import es.codeurjc.security.jwt.UnauthorizedHandlerJwt;
 import es.codeurjc.service.UserSecurityService;
@@ -98,6 +96,7 @@ public class SecurityConfiguration {
                                 .csrf(csrf -> csrf.disable())
                                 .authenticationProvider(authenticationProvider())
                                 .authorizeHttpRequests(authorize -> authorize
+                                // Pendiente -> Estas rutas no habría que quitarlas de aquí?
                                                 // Endpoints públicos
                                                 .requestMatchers(
                                                                 "/api/**",

@@ -14,5 +14,4 @@ public record ApartmentBasicDTO(
      Blob imageFile,
      String imagePath,
      boolean image
-     //UserBasicDTO manager
      ) {}

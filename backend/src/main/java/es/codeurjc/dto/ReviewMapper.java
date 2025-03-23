@@ -2,7 +2,9 @@ package es.codeurjc.dto;
 
 import java.util.Collection;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.springframework.stereotype.Component;
+
 
 import es.codeurjc.model.Review;
 
@@ -11,13 +13,16 @@ import es.codeurjc.model.Review;
 @Component
 public interface ReviewMapper {
 
-    //PENDIENTE -> Corregir esto tras el mapper de review
     ReviewDTO toDTO(Review review);
     ReviewBasicDTO toBasicDTO(Review review);
 
     Collection<ReviewDTO> toDTOs(Collection<Review> reviews);
     Collection<ReviewBasicDTO> toBasicDTOs(Collection<Review> reviews);
-
+    
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "apartment", ignore = true)
     Review toDomain(ReviewDTO reviewDTO);
-    Review toBasicDomain(ReviewBasicDTO basicDTO);
+
+    // Pendiente -> la función de abajo es necesaria?
+    //Review toBasicDomain(ReviewBasicDTO basicDTO);
 }

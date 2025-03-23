@@ -1,26 +1,32 @@
 package es.codeurjc.dto;
 
-import java.util.Collection;
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.NullValueMappingStrategy;
 import org.springframework.stereotype.Component;
 
 import es.codeurjc.model.Apartment;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
 @Component
 public interface ApartmentMapper {
-    //PENDIENTE -> Corregir esto tras el mapper de review
+
+
     ApartmentDTO toDTO(Apartment apartment);
+
+
     ApartmentBasicDTO toBasicDTO(Apartment apartment);
 
-    Collection<ApartmentDTO> toDTOs(Collection<Apartment> apartments);
-    Collection<ApartmentBasicDTO> toBasicDTOs(Collection<Apartment> apartments);
+    List<ApartmentDTO> toDTOs(List<Apartment> apartments);
 
-    Apartment toDomain(ApartmentDTO apartmentDTO);
-
+    List<ApartmentBasicDTO> toBasicDTOs(List<Apartment> apartments);
+    
     @Mapping(target = "rooms", ignore = true)
     @Mapping(target = "reservations", ignore = true)
     @Mapping(target = "reviews", ignore = true)
-    Apartment toBasicDomain(ApartmentBasicDTO basicDTO);
+    @Mapping(target = "manager", ignore = true)
+    Apartment toDomain(ApartmentDTO apartmentDTO);
+
 }

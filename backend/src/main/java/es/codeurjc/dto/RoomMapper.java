@@ -5,7 +5,6 @@ import org.mapstruct.Mapping;
 import org.springframework.stereotype.Component;
 
 import es.codeurjc.model.Room;
-import es.codeurjc.model.Apartment;
 
 import java.util.Collection;
 import java.util.List;
@@ -23,5 +22,6 @@ public interface RoomMapper {
     List<RoomBasicDTO> toBasicDTOs(Collection<Room> rooms);
 
     @Mapping(target = "reservations", ignore = true)
+    @Mapping(target = "apartment", ignore = true)
     Room toDomain(RoomDTO roomDTO);
 }

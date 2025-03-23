@@ -1,9 +1,10 @@
 package es.codeurjc.security.jwt;
 
 import org.springframework.http.ResponseCookie;
+import org.springframework.stereotype.Component;
 
-import org.springframework.http.ResponseCookie;
 
+@Component
 public class JwtCookieManager {
 
     public static final String ACCESS_TOKEN_COOKIE_NAME = "AuthToken";

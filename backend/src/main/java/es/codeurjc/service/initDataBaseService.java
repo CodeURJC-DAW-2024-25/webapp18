@@ -209,9 +209,9 @@ public class initDataBaseService {
             roomRepository.save(room3);
 
             // add apartment to manager
-            manager1.getApartment().add(apartment1);
-            manager2.getApartment().add(apartment2);
-            manager2.getApartment().add(apartment3);
+            manager1.getApartments().add(apartment1);
+            manager2.getApartments().add(apartment2);
+            manager2.getApartments().add(apartment3);
 
             userRepository.save(manager1);
             userRepository.save(manager2);

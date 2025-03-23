@@ -400,9 +400,9 @@ public class ApartmentController {
 
 				var actualUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
 
-		var apartmentsQuantity = actualUser.getApartment().size();
+		var apartmentsQuantity = actualUser.getApartments().size();
 
-		var apartments = actualUser.getApartment();
+		var apartments = actualUser.getApartments();
 
 		if (start <= apartmentsQuantity) {
 
@@ -423,7 +423,7 @@ public class ApartmentController {
 				.orElseThrow(() -> new RuntimeException("User not found"));
 	
 		// Get all user's apartments
-		List<Apartment> allApartments = new ArrayList<>(currentUser.getApartment());
+		List<Apartment> allApartments = new ArrayList<>(currentUser.getApartments());
 	
 		// Calculate pagination
 		int totalCount = allApartments.size();

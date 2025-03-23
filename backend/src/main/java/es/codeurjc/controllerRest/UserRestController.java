@@ -1,8 +1,6 @@
 package es.codeurjc.controllerRest;
 
 import java.io.IOException;
-import java.net.URI;
-import java.security.Principal;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;

@@ -2,66 +2,62 @@ package es.codeurjc.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import es.codeurjc.dto.ApartmentBasicDTO;
 import es.codeurjc.dto.ApartmentDTO;
 import es.codeurjc.dto.ApartmentMapper;
 import es.codeurjc.model.Apartment;
 import es.codeurjc.model.Reservation;
+import es.codeurjc.model.Review;
 import es.codeurjc.model.Room;
 import es.codeurjc.model.UserE;
 import es.codeurjc.repository.ApartmentRepository;
 
-@Service 
-public class ApartmentService implements GeneralService<Apartment>{
+@Service
+public class ApartmentService implements GeneralService<Apartment> {
 
-    
     @Autowired
     ApartmentRepository apartmentRepository;
 
     @Autowired
     private ApartmentMapper mapper;
 
+    // PENDIENTE -> Hacer los métodos save, create... que irían en el controlador
 
-    //PENDIENTE -> Hacer los métodos save, create... que irían en el controlador
-
-    public ApartmentDTO toDTO(Apartment apartment){
+    public ApartmentDTO toDTO(Apartment apartment) {
         return mapper.toDTO(apartment);
     }
 
-    public ApartmentBasicDTO toBasicDTO(Apartment apartment){
+    public ApartmentBasicDTO toBasicDTO(Apartment apartment) {
         return mapper.toBasicDTO(apartment);
     }
 
-    public Collection<ApartmentDTO> toDTOs(Collection<Apartment> apartments){
+    public List<ApartmentDTO> toDTOs(List<Apartment> apartments) {
         return mapper.toDTOs(apartments);
     }
 
-    public Collection<ApartmentBasicDTO> toBasicDTOs(Collection<Apartment> apartments){
+    public List<ApartmentBasicDTO> toBasicDTOs(List<Apartment> apartments) {
         return mapper.toBasicDTOs(apartments);
     }
 
-    public Apartment toDomain(ApartmentDTO apartmentDTO){
+    public Apartment toDomain(ApartmentDTO apartmentDTO) {
         return mapper.toDomain(apartmentDTO);
     }
 
-    
-    public Collection<ApartmentDTO> getApartments(){
+    public List<ApartmentDTO> getApartments() {
         return toDTOs(apartmentRepository.findAll());
     }
 
-    public ApartmentDTO getApartment(Long id){
+    public ApartmentDTO getApartment(Long id) {
         return toDTO(apartmentRepository.findById(id).orElseThrow());
     }
 
@@ -74,28 +70,29 @@ public class ApartmentService implements GeneralService<Apartment>{
     public void delete(Apartment apartment) {
         apartmentRepository.delete(apartment);
     }
-    
+
     @Override
     public Optional<Apartment> findById(Long id) {
         return apartmentRepository.findById(id);
     }
 
-    public List<Apartment> findByName(String name){
+    public List<Apartment> findByName(String name) {
         return apartmentRepository.findByName(name);
     }
 
-    public List<Apartment> findByLocation(String location){
+    public List<Apartment> findByLocation(String location) {
         return apartmentRepository.findByLocation(location);
     }
 
-    public List<Apartment> findTop6ByManager_Validated(Boolean validated){
+    public List<Apartment> findTop6ByManager_Validated(Boolean validated) {
         return apartmentRepository.findTop6ByManager_Validated(validated);
     }
 
     public List<Apartment> findTop6ByManager_ValidatedAndNameContainingIgnoreCaseOrderByNameDesc(Boolean validated,
-            String searchValue){
-                return apartmentRepository.findTop6ByManager_ValidatedAndNameContainingIgnoreCaseOrderByNameDesc(validated, searchValue);
-            }
+            String searchValue) {
+        return apartmentRepository.findTop6ByManager_ValidatedAndNameContainingIgnoreCaseOrderByNameDesc(validated,
+                searchValue);
+    }
 
     @Override
     public List<Apartment> findAll() {
@@ -110,7 +107,6 @@ public class ApartmentService implements GeneralService<Apartment>{
             return apartmentRepository.findAll();
         }
     }
-
 
     public Page<ApartmentDTO> findAll(Pageable pageable) {
         return apartmentRepository.findAll(pageable).map(this::toDTO);
@@ -140,40 +136,52 @@ public class ApartmentService implements GeneralService<Apartment>{
     public Room checkRooms(Long id, LocalDate checkIn, LocalDate checkOut, Integer numPeople) {
         Apartment apartment = this.findById(id).orElseThrow();
         List<Room> rooms = apartment.getRooms();
-        
+
         for (Room room : rooms) {
             if (room.getMaxClients() == numPeople && room.available(checkIn, checkOut)) {
                 return room;
             }
         }
-        
-        // If exact match not found, try to find a room that can accommodate at least that many
+
+        // If exact match not found, try to find a room that can accommodate at least
+        // that many
         for (Room room : rooms) {
             if (room.getMaxClients() >= numPeople && room.available(checkIn, checkOut)) {
                 return room;
             }
         }
-        
-        return null; 
+
+        return null;
     }
 
-    public void deleteById(Long id){
+    public void deleteById(Long id) {
         apartmentRepository.deleteById(id);
     }
 
-    public long count(){
+    public long count() {
         return apartmentRepository.count();
     }
 
-    public ApartmentDTO createApartment(ApartmentDTO newApartmentDTO, Long id) {
+    @Transactional
+    public ApartmentDTO createApartment(ApartmentDTO newApartmentDTO) {
         Apartment newApartment = toDomain(newApartmentDTO);
+
+        for (Room room : newApartment.getRooms()) {
+            room.setApartment(newApartment);
+        }
+        for (Reservation reservation : newApartment.getReservations()) {
+            reservation.setApartment(newApartment);
+        }
+        for (Review review : newApartment.getReviews()) {
+            review.setApartment(newApartment);
+        }
+
         apartmentRepository.save(newApartment);
         return toDTO(newApartment);
     }
 
-
     public ApartmentDTO updateApartment(ApartmentDTO updatedApartmentDTO, Long id) {
-        
+
         Apartment updatedApartment = toDomain(updatedApartmentDTO);
         updatedApartment.setId(id);
         apartmentRepository.save(updatedApartment);
@@ -186,7 +194,5 @@ public class ApartmentService implements GeneralService<Apartment>{
         apartmentRepository.delete(apartment);
         return toDTO(apartment);
     }
-
-
 
 }

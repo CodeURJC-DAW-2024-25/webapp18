@@ -4,24 +4,20 @@ import java.io.IOException;
 import java.net.URI;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 import es.codeurjc.dto.ApartmentDTO;
@@ -47,9 +43,17 @@ public class ApartmentRestController {
     RoomService roomService;
 
     // works
+    // PENDIENTE -> Revisar si es necesario controlar que no se salga del máximo
     @GetMapping("/")
-    public Collection<ApartmentDTO> getApartments() {
-        return apartmentService.getApartments();
+    public Page<ApartmentDTO> getApartments(
+        @RequestParam(required = false) Integer page,
+        @RequestParam(required = false) Integer size,
+        Pageable pageable) {
+
+        if (page != null && size != null) {
+            return apartmentService.findAll(PageRequest.of(page, size));
+        }
+        return apartmentService.findAll(pageable);
     }
 
     // works
@@ -61,21 +65,14 @@ public class ApartmentRestController {
     // PENDIENTE -> Añadir los controladores de búsqueda de apartamentos y de
     // recomendación
 
-    @PostMapping("/{id}")
-    public ResponseEntity<?> createApartment(
-            HttpServletRequest request,
-            @PathVariable Long id,
+    // works pendiente -> que funcione pero autenticando al usuario como manager
+    @PostMapping("/")
+    public ResponseEntity<ApartmentDTO> createApartment(
             @RequestBody ApartmentDTO newApartmentDTO) throws IOException {
 
-        UserE manager = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
-
-        if (manager.getId() == id) {
-            newApartmentDTO = apartmentService.createApartment(newApartmentDTO, id);
-            URI location = fromCurrentRequest().path("/{id}").buildAndExpand(newApartmentDTO.id()).toUri();
-            return ResponseEntity.created(location).body(newApartmentDTO);
-        } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("This apartment is not yours");
-        }
+        newApartmentDTO = apartmentService.createApartment(newApartmentDTO);
+        URI location = fromCurrentRequest().path("/{id}").buildAndExpand(newApartmentDTO.id()).toUri();
+        return ResponseEntity.created(location).body(newApartmentDTO);
 
     }
 
@@ -88,7 +85,7 @@ public class ApartmentRestController {
 
         UserE manager = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
 
-        if (!apartmentService.exist(id)){
+        if (!apartmentService.exist(id)) {
             return ResponseEntity.notFound().build();
         } else if (manager.getId() == id) {
             return ResponseEntity.ok(apartmentService.updateApartment(updatedApartmentDTO, id));
@@ -100,16 +97,16 @@ public class ApartmentRestController {
     @PreAuthorize("hasRole('MANAGER') and principal.enabled")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApartmentDTO> deleteApartment(HttpServletRequest request, @PathVariable Long id) {
-        
+
         UserE manager = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
 
-        if (!apartmentService.exist(id)){
+        if (!apartmentService.exist(id)) {
             return ResponseEntity.notFound().build();
         } else if (manager.getId() == id) {
             return ResponseEntity.ok(apartmentService.deleteApartment(id));
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-        } 
+        }
     }
 
     // PENDIENTE -> Cómo se hacía con imágenes?
@@ -180,7 +177,7 @@ public class ApartmentRestController {
         UserE currentUser = userService.findByNick(request.getUserPrincipal().getName())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        List<Apartment> allApartments = new ArrayList<>(currentUser.getApartment());
+        List<Apartment> allApartments = new ArrayList<>(currentUser.getApartments());
         int totalCount = allApartments.size();
 
         if (start < totalCount) {

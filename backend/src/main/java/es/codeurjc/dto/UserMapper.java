@@ -21,9 +21,12 @@ public interface UserMapper {
 
     List<UserBasicDTO> toBasicDTOs(Collection<UserE> users);
 
+    @Mapping(target = "apartments", ignore = true)
     @Mapping(target = "reservations", ignore = true)
+    @Mapping(target = "reviews", ignore = true)
     UserE toDomain(UserDTO userDTO);
 
-    //@Mapping(target = "user", ignore = true)
-    UserE toDomain(UserBasicDTO userBasicDTO);
+    //Pendiente -> Revisar si este método es necesario
+/*     // @Mapping(target = "user", ignore = true)
+    UserE toDomain(UserBasicDTO userBasicDTO); */
 }
