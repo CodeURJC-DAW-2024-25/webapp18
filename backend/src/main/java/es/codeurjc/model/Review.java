@@ -14,11 +14,9 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
+    
     private int score;
-
     private String comment;
-
     private LocalDate date;
 
     @ManyToOne

@@ -61,14 +61,12 @@ public class SecurityConfiguration {
 
         http
 			.authorizeHttpRequests(authorize -> authorize
-                                .requestMatchers("/api/v1/**")
+                                .requestMatchers("/api/v1/**, \"/swagger-ui/**\", \"/v3/api-docs/**\"")
                                 //pendiente de añadir los permisoa a las rutas
-
-
-
                                 .permitAll()
                                 .anyRequest().authenticated());
-                                 // Disable Form login Authentication
+
+        // Disable Form login Authentication
         http.formLogin(formLogin -> formLogin.disable());
 
         // Disable CSRF protection (it is difficult to implement in REST APIs)
@@ -80,10 +78,10 @@ public class SecurityConfiguration {
         // Stateless session
         http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-		// Add JWT Token filter
-		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+	// Add JWT Token filter
+	http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
-		return http.build();
+	return http.build();
 	}
 
 
@@ -104,7 +102,10 @@ public class SecurityConfiguration {
                                                                 "/api/v1/users/",
                                                                 "/api/v1/users/all",
                                                                 "/api/v1/users/{id}",
-                                                                "/api/v1/users/{id}/image")
+                                                                "/api/v1/users/{id}/image",
+                                                                "/swagger-ui/**",
+                                                                "/swagger-ui.html",
+                                                                "/api-docs/**")
                                                 .permitAll()
 
                                                 // Endpoints que requieren autenticación

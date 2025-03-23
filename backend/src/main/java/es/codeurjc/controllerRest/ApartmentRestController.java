@@ -109,7 +109,6 @@ public class ApartmentRestController {
         }
     }
 
-    // PENDIENTE -> Cómo se hacía con imágenes?
     @GetMapping("/{id}/images")
     public ResponseEntity<Object> downloadImage(@PathVariable Long id) throws SQLException {
 
@@ -125,8 +124,6 @@ public class ApartmentRestController {
         }
     }
 
-    // PENDIENTE -> Hacer un modelo que tenga más detalles para este controlador, o
-    // al revés para el resto
     @GetMapping("/{id}/info")
     public ResponseEntity<Apartment> apartmentInformation(@PathVariable Long id) {
 
@@ -143,9 +140,6 @@ public class ApartmentRestController {
         }
     }
 
-    // PENDIENTE -> Cambiar las URL de este método AJAX para que cuadren con el
-    // formato
-
     @GetMapping("/loadMore")
     public Page<ApartmentDTO> loadMoreApartments(
             Pageable pageable,
@@ -156,14 +150,7 @@ public class ApartmentRestController {
         int totalCount = apartments.size();
 
         if (numPage * pageSize < totalCount) {
-            /*
-             * int actualEnd = Math.min(numPage * pageSize, totalCount);
-             * List<Apartment> paginatedApartments = apartments.subList(start, actualEnd);
-             * return ResponseEntity.ok(paginatedApartments);
-             */
-
             return apartmentService.findAll(pageable);
-
         } else {
             return Page.empty();
         }

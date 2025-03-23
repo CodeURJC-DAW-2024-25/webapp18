@@ -1,4 +1,5 @@
 package es.codeurjc.dto;
+
 import java.sql.Date;
 
 public record ReviewDTO (
@@ -6,7 +7,6 @@ public record ReviewDTO (
     int score,
     String comment,
     Date date,
-    UserBasicDTO user,
-    ApartmentBasicDTO apartment
+    ApartmentBasicDTO apartment,
+    UserBasicDTO user
 ) {}
-
