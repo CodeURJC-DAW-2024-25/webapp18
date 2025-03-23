@@ -1,0 +1,469 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Apartment API
+  description: API for managing apartments
+paths:
+  /api/v1/apartments/:
+    get:
+      summary: Get all apartments
+      description: Retrieve a list of all apartments
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApartmentDTO'
+  /api/v1/apartments/{id}:
+    get:
+      summary: Get apartment by ID
+      description: Retrieve an apartment by its ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApartmentDTO'
+        '404':
+          description: Apartment not found
+    post:
+      summary: Create a new apartment
+      description: Create a new apartment for the specified user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApartmentDTO'
+      responses:
+        '201':
+          description: Apartment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApartmentDTO'
+        '403':
+          description: Forbidden
+    put:
+      summary: Update an apartment
+      description: Update an existing apartment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApartmentDTO'
+      responses:
+        '200':
+          description: Apartment updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApartmentDTO'
+        '403':
+          description: Forbidden
+        '404':
+          description: Apartment not found
+    delete:
+      summary: Delete an apartment
+      description: Delete an existing apartment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Apartment deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApartmentDTO'
+        '403':
+          description: Forbidden
+        '404':
+          description: Apartment not found
+  /api/v1/apartments/{id}/images:
+    get:
+      summary: Download apartment image
+      description: Download the image of an apartment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            image/jpg:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Apartment or image not found
+  /api/v1/apartments/{id}/info:
+    get:
+      summary: Get apartment information
+      description: Retrieve detailed information about an apartment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Apartment'
+        '403':
+          description: Forbidden
+        '404':
+          description: Apartment not found
+  /api/v1/apartments/loadMore:
+    get:
+      summary: Load more apartments
+      description: Load more apartments with pagination
+      parameters:
+        - name: numPage
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 6
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApartmentDTO'
+  /api/v1/apartments/manager/loadMore/{start}/{end}:
+    get:
+      summary: Load more apartments for manager
+      description: Load more apartments for the manager with pagination
+      parameters:
+        - name: start
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: end
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Apartment'
+components:
+  schemas:
+    ApartmentDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          format: double
+        location:
+          type: string
+        imageUrl:
+          type: string
+    Apartment:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          format: double
+        location:
+          type: string
+        imageUrl:
+          type: string
+        manager:
+          $ref: '#openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Apartment API
+  description: API for managing apartments
+paths:
+  /api/v1/apartments/:
+    get:
+      summary: Get all apartments
+      description: Retrieve a list of all apartments
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApartmentDTO'
+  /api/v1/apartments/{id}:
+    get:
+      summary: Get apartment by ID
+      description: Retrieve an apartment by its ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApartmentDTO'
+        '404':
+          description: Apartment not found
+    post:
+      summary: Create a new apartment
+      description: Create a new apartment for the specified user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApartmentDTO'
+      responses:
+        '201':
+          description: Apartment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApartmentDTO'
+        '403':
+          description: Forbidden
+    put:
+      summary: Update an apartment
+      description: Update an existing apartment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApartmentDTO'
+      responses:
+        '200':
+          description: Apartment updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApartmentDTO'
+        '403':
+          description: Forbidden
+        '404':
+          description: Apartment not found
+    delete:
+      summary: Delete an apartment
+      description: Delete an existing apartment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Apartment deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApartmentDTO'
+        '403':
+          description: Forbidden
+        '404':
+          description: Apartment not found
+  /api/v1/apartments/{id}/images:
+    get:
+      summary: Download apartment image
+      description: Download the image of an apartment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            image/jpg:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Apartment or image not found
+  /api/v1/apartments/{id}/info:
+    get:
+      summary: Get apartment information
+      description: Retrieve detailed information about an apartment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Apartment'
+        '403':
+          description: Forbidden
+        '404':
+          description: Apartment not found
+  /api/v1/apartments/loadMore:
+    get:
+      summary: Load more apartments
+      description: Load more apartments with pagination
+      parameters:
+        - name: numPage
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 6
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApartmentDTO'
+  /api/v1/apartments/manager/loadMore/{start}/{end}:
+    get:
+      summary: Load more apartments for manager
+      description: Load more apartments for the manager with pagination
+      parameters:
+        - name: start
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: end
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Apartment'
+components:
+  schemas:
+    ApartmentDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          format: double
+        location:
+          type: string
+        imageUrl:
+          type: string
+    Apartment:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          format: double
+        location:
+          type: string
+        imageUrl:
+          type: string
+        manager:
+          $ref: '#/components/schemas/ApartmentDTO'

@@ -75,7 +75,7 @@ public class ReviewRestController {
 }
 
 
-    @GetMapping("/reviews/loadMore/{start}/{end}")
+    @GetMapping("/loadMore/{start}/{end}")
     public ResponseEntity<List<Review>> loadMoreReviews(HttpServletRequest request,
             @RequestParam Long id,
             @PathVariable int start,
