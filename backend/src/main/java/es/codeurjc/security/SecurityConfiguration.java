@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -45,82 +46,99 @@ public class SecurityConfiguration {
         }
 
         @Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-		return authConfig.getAuthenticationManager();
-	}
+        public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+                return authConfig.getAuthenticationManager();
+        }
 
         @Bean
-	@Order(1)
-	public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
-		
-		http.authenticationProvider(authenticationProvider());
-		
-		http
-			.securityMatcher("/api/**")
-			.exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandlerJwt));
+        @Order(1)
+        public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
 
-        http
-			.authorizeHttpRequests(authorize -> authorize
-                                .requestMatchers("/api/v1/**, \"/swagger-ui/**\", \"/v3/api-docs/**\"")
-                                //pendiente de añadir los permisoa a las rutas
-                                .permitAll()
-                                .anyRequest().authenticated());
+                http.authenticationProvider(authenticationProvider());
 
-        // Disable Form login Authentication
-        http.formLogin(formLogin -> formLogin.disable());
+                http
+                                .securityMatcher("/api/")
+                                .exceptionHandling(
+                                                handling -> handling.authenticationEntryPoint(unauthorizedHandlerJwt));
 
-        // Disable CSRF protection (it is difficult to implement in REST APIs)
-        http.csrf(csrf -> csrf.disable());
+                http
+                                .authorizeHttpRequests(auth -> auth
+                                                // public endpoints
+                                                .requestMatchers(
+                                                                HttpMethod.POST,
+                                                                "/api/v1/users/",
+                                                                "/api/v1/users/login")
+                                                .permitAll()
+                                                .requestMatchers(HttpMethod.POST,
+                                                                "/api/v1/apartments/",
+                                                                "/api/v1/apartments/{id}",
+                                                                "/api/v1/apartments/{id}/info",
+                                                                "/api/v1/apartments/{id}/images",
+                                                                "/api/v1/apartments/loadMore",
+                                                                "/api/v1/reviews/{id}",
+                                                                "/api/v1/reviews/loadMore/**",
+                                                                "/api/v1/rooms",
+                                                                "/api/v1/rooms/{id}",
+                                                                "/api/v1/rooms/filter",
+                                                                "/api/v1/users/{id}/image",
+                                                                "/swagger-ui/**",
+                                                                "/v3/api-docs/**")
+                                                .permitAll()
 
-        // Disable Basic Authentication
-        http.httpBasic(httpBasic -> httpBasic.disable());
+                                                // Basic client (make reservations)
+                                                .requestMatchers(HttpMethod.POST,
+                                                                "/api/v1/reservations")
+                                                .hasRole("CLIENT")
+                                                .requestMatchers(HttpMethod.GET,
+                                                                "/api/v1/reservations/{id}",
+                                                                "/api/v1/reservations/{id}")
+                                                .hasAnyRole("CLIENT", "ADMIN")
 
-        // Stateless session
-        http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                                                // Manager (apartments)
+                                                .requestMatchers(HttpMethod.GET,
+                                                                "/api/v1/apartments/manager/loadMore/**")
+                                                .hasRole("MANAGER")
+                                                .requestMatchers(HttpMethod.POST,
+                                                "/api/v1/apartments/",
+                                                "/api/v1/rooms")
+                                                .hasRole("MANAGER")
+                                                .requestMatchers(HttpMethod.PUT,
+                                                "/api/v1/apartments/{id}",
+                                                "/api/v1/managers/{id}/application",
+                                                "/api/v1/rooms/{id}")
+                                                .hasRole("MANAGER")
+                                                .requestMatchers(HttpMethod.DELETE,
+                                                "/api/v1/apartments/{id}",
+                                                "/api/v1/rooms/{id}")
+                                                .hasRole("MANAGER")
 
-	// Add JWT Token filter
-	http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+                                                // Logged user
+                                                .requestMatchers(HttpMethod.GET, "/api/v1/users/profile")
+                                                .authenticated()
+                                                .requestMatchers(HttpMethod.PUT, "/api/v1/users/{id}").authenticated()
+                                                .requestMatchers(HttpMethod.PUT, "/api/v1/users/{id}/image1")
+                                                .authenticated()
+                                                .requestMatchers(HttpMethod.PUT, "/api/v1/users/{id}/image2")
+                                                .authenticated()
 
-	return http.build();
-	}
+                                                // 🛑 TODO lo demás, protegido por defecto
+                                                .anyRequest().authenticated());
 
+                http.formLogin(form -> form.disable());
+                http.csrf(csrf -> csrf.disable());
+                http.httpBasic(httpBasic -> httpBasic.disable());
+                http.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
-
+                return http.build();
+        }
 
         @Bean
         @Order(2)
-        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        public SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception {
                 http
-                                .csrf(csrf -> csrf.disable())
                                 .authenticationProvider(authenticationProvider())
                                 .authorizeHttpRequests(authorize -> authorize
-                                // Pendiente -> Estas rutas no habría que quitarlas de aquí?
-                                                // Endpoints públicos
-                                                .requestMatchers(
-                                                                "/api/**",
-                                                                "/api/v1/users/login",
-                                                                "/api/v1/users/",
-                                                                "/api/v1/users/all",
-                                                                "/api/v1/users/{id}",
-                                                                "/api/v1/users/{id}/image",
-                                                                "/swagger-ui/**",
-                                                                "/swagger-ui.html",
-                                                                "/api-docs/**")
-                                                .permitAll()
-
-                                                // Endpoints que requieren autenticación
-                                                .requestMatchers(
-                                                                "/api/v1/users/profile",
-                                                                "/api/v1/users/{id}/application",
-                                                                "/api/v1/users/{id}",
-                                                                "/api/v1/users/{id}/profile-image")
-                                                .authenticated()
-
-                                                // Endpoints restringidos solo a ADMIN
-                                                .requestMatchers(
-                                                                "/api/v1/users/{id}/validate",
-                                                                "/api/v1/users/{id}/reject")
-                                                .hasRole("ADMIN")
 
                                                 // Rutas públicas adicionales
                                                 .requestMatchers(
@@ -209,8 +227,8 @@ public class SecurityConfiguration {
                                                 .logoutSuccessUrl("/login")
                                                 .permitAll())
                                 .sessionManagement(session -> session
-                                // Asegura que la sesión se cree si es necesaria
-                                                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS) 
+                                                // Asegura que la sesión se cree si es necesaria
+                                                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                                                 .maximumSessions(1));
 
                 return http.build();
