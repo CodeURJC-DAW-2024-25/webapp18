@@ -19,10 +19,10 @@ import jakarta.servlet.http.HttpSession;
 
 @Service
 public class UserLoginService {
-	
+
 	@Autowired
 	private AuthenticationManager authenticationManager;
-	
+
 	@Autowired
 	private UserDetailsService userDetailsService;
 
@@ -32,19 +32,21 @@ public class UserLoginService {
 	@Autowired
 	private JwtCookieManager cookieUtil;
 
-	public ResponseEntity<AuthResponse> login(LoginRequest loginRequest, String encryptedAccessToken, String 
-			encryptedRefreshToken) {
-		
+	public ResponseEntity<AuthResponse> login(LoginRequest loginRequest, String encryptedAccessToken,
+			String encryptedRefreshToken) {
+
+		// Use nick instead of username
+		String nick = loginRequest.getNick();
+
 		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+				new UsernamePasswordAuthenticationToken(nick, loginRequest.getPassword()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
 		String accessToken = SecurityCipher.decrypt(encryptedAccessToken);
 		String refreshToken = SecurityCipher.decrypt(encryptedRefreshToken);
-		
-		String username = loginRequest.getUsername();
-		UserDetails user = userDetailsService.loadUserByUsername(username);
+
+		UserDetails user = userDetailsService.loadUserByUsername(nick);
 
 		Boolean accessTokenValid = jwtTokenProvider.validateToken(accessToken);
 		Boolean refreshTokenValid = jwtTokenProvider.validateToken(refreshToken);
@@ -52,19 +54,16 @@ public class UserLoginService {
 		HttpHeaders responseHeaders = new HttpHeaders();
 		Token newAccessToken;
 		Token newRefreshToken;
+
 		if (!accessTokenValid && !refreshTokenValid) {
 			newAccessToken = jwtTokenProvider.generateToken(user);
 			newRefreshToken = jwtTokenProvider.generateRefreshToken(user);
 			addAccessTokenCookie(responseHeaders, newAccessToken);
 			addRefreshTokenCookie(responseHeaders, newRefreshToken);
-		}
-
-		if (!accessTokenValid && refreshTokenValid) {
+		} else if (!accessTokenValid && refreshTokenValid) {
 			newAccessToken = jwtTokenProvider.generateToken(user);
 			addAccessTokenCookie(responseHeaders, newAccessToken);
-		}
-
-		if (accessTokenValid && refreshTokenValid) {
+		} else if (accessTokenValid && refreshTokenValid) {
 			newAccessToken = jwtTokenProvider.generateToken(user);
 			newRefreshToken = jwtTokenProvider.generateRefreshToken(user);
 			addAccessTokenCookie(responseHeaders, newAccessToken);
@@ -77,20 +76,19 @@ public class UserLoginService {
 	}
 
 	public ResponseEntity<AuthResponse> refresh(String encryptedRefreshToken) {
-		
+
 		String refreshToken = SecurityCipher.decrypt(encryptedRefreshToken);
-		
 		Boolean refreshTokenValid = jwtTokenProvider.validateToken(refreshToken);
-		
+
 		if (!refreshTokenValid) {
 			AuthResponse loginResponse = new AuthResponse(AuthResponse.Status.FAILURE,
 					"Invalid refresh token !");
 			return ResponseEntity.ok().body(loginResponse);
 		}
 
-		String username = jwtTokenProvider.getUsername(refreshToken);
-		UserDetails user = userDetailsService.loadUserByUsername(username);
-				
+		String nick = jwtTokenProvider.getUsername(refreshToken);
+		UserDetails user = userDetailsService.loadUserByUsername(nick);
+
 		Token newAccessToken = jwtTokenProvider.generateToken(user);
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.add(HttpHeaders.SET_COOKIE, cookieUtil
@@ -102,17 +100,13 @@ public class UserLoginService {
 	}
 
 	public String getUserName() {
-		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
 		return authentication.getName();
 	}
 
 	public String logout(HttpServletRequest request, HttpServletResponse response) {
-
 		HttpSession session = request.getSession(false);
 		SecurityContextHolder.clearContext();
-		session = request.getSession(false);
 		if (session != null) {
 			session.invalidate();
 		}

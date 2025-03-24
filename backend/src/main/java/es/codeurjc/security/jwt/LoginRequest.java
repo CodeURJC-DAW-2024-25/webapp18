@@ -2,23 +2,23 @@ package es.codeurjc.security.jwt;
 
 public class LoginRequest {
 
-    private String username;
+	private String nick;
 	private String password;
 
 	public LoginRequest() {
 	}
 
-	public LoginRequest(String username, String password) {
-		this.username = username;
+	public LoginRequest(String nick, String password) {
+		this.nick = nick;
 		this.password = password;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getNick() {
+		return nick;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setNick(String nick) {
+		this.nick = nick;
 	}
 
 	public String getPassword() {
@@ -31,7 +31,7 @@ public class LoginRequest {
 
 	@Override
 	public String toString() {
-		return "LoginRequest [username=" + username + ", password=" + password + "]";
+		return "LoginRequest [nick=" + nick + ", password=" + password + "]";
 	}
-    
 }
+

@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +27,9 @@ import org.springframework.web.multipart.MultipartFile;
 import es.codeurjc.dto.UserDTO;
 import es.codeurjc.dto.UserMapper;
 import es.codeurjc.model.UserE;
+import es.codeurjc.security.jwt.JwtCookieManager;
+import es.codeurjc.security.jwt.LoginRequest;
+import es.codeurjc.security.jwt.UserLoginService;
 import es.codeurjc.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
@@ -188,20 +192,16 @@ public class UserRestController {
         }
     }
 
+    @Autowired
+    private UserLoginService userLoginService;
+
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(HttpServletRequest request, @RequestBody UserDTO userDTO) {
-        Optional<UserE> userOpt = userService.findByNick(userDTO.nick());
-
-        if (userOpt.isPresent()) {
-            UserE user = userOpt.get();
-
-            if (passwordEncoder.matches(userDTO.pass(), user.getPass())) {
-                request.getSession().setAttribute("user", user);
-                return ResponseEntity.ok("Login exitoso, sesión iniciada.");
-            }
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest,
+                                    @CookieValue(name = JwtCookieManager.ACCESS_TOKEN_COOKIE_NAME, defaultValue = "") String encryptedAccessToken,
+                                    @CookieValue(name = JwtCookieManager.REFRESH_TOKEN_COOKIE_NAME, defaultValue = "") String encryptedRefreshToken) {
+        return userLoginService.login(loginRequest, encryptedAccessToken, encryptedRefreshToken);
     }
+
 
     //PENDIENTE -> Revisar si esto es necesario
     @Transactional

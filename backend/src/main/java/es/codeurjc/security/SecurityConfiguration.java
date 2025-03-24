@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 import es.codeurjc.security.jwt.JwtRequestFilter;
 import es.codeurjc.security.jwt.UnauthorizedHandlerJwt;
 import es.codeurjc.service.UserSecurityService;
@@ -50,6 +51,7 @@ public class SecurityConfiguration {
                 return authConfig.getAuthenticationManager();
         }
 
+        // API security configuration (JWT-based, stateless, no CSRF)
         @Bean
         @Order(1)
         public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
@@ -57,13 +59,13 @@ public class SecurityConfiguration {
                 http.authenticationProvider(authenticationProvider());
 
                 http
-                                .securityMatcher("/api/")
+                                .securityMatcher("/api/**")
                                 .exceptionHandling(
                                                 handling -> handling.authenticationEntryPoint(unauthorizedHandlerJwt));
 
                 http
                                 .authorizeHttpRequests(auth -> auth
-                                                // public endpoints
+                                                // Public API endpoints
                                                 .requestMatchers(
                                                                 HttpMethod.POST,
                                                                 "/api/v1/users/",
@@ -85,43 +87,43 @@ public class SecurityConfiguration {
                                                                 "/v3/api-docs/**")
                                                 .permitAll()
 
-                                                // Basic client (make reservations)
+                                                // Client: create and view reservations
                                                 .requestMatchers(HttpMethod.POST,
                                                                 "/api/v1/reservations")
                                                 .hasRole("CLIENT")
                                                 .requestMatchers(HttpMethod.GET,
-                                                                "/api/v1/reservations/{id}",
                                                                 "/api/v1/reservations/{id}")
                                                 .hasAnyRole("CLIENT", "ADMIN")
 
-                                                // Manager (apartments)
+                                                // Manager: manage apartments
                                                 .requestMatchers(HttpMethod.GET,
                                                                 "/api/v1/apartments/manager/loadMore/**")
                                                 .hasRole("MANAGER")
                                                 .requestMatchers(HttpMethod.POST,
-                                                "/api/v1/apartments/",
-                                                "/api/v1/rooms")
+                                                                "/api/v1/apartments/",
+                                                                "/api/v1/rooms")
                                                 .hasRole("MANAGER")
                                                 .requestMatchers(HttpMethod.PUT,
-                                                "/api/v1/apartments/{id}",
-                                                "/api/v1/managers/{id}/application",
-                                                "/api/v1/rooms/{id}")
+                                                                "/api/v1/apartments/{id}",
+                                                                "/api/v1/managers/{id}/application",
+                                                                "/api/v1/rooms/{id}")
                                                 .hasRole("MANAGER")
                                                 .requestMatchers(HttpMethod.DELETE,
-                                                "/api/v1/apartments/{id}",
-                                                "/api/v1/rooms/{id}")
+                                                                "/api/v1/apartments/{id}",
+                                                                "/api/v1/rooms/{id}")
                                                 .hasRole("MANAGER")
 
-                                                // Logged user
+                                                // Authenticated user routes
                                                 .requestMatchers(HttpMethod.GET, "/api/v1/users/profile")
                                                 .authenticated()
-                                                .requestMatchers(HttpMethod.PUT, "/api/v1/users/{id}").authenticated()
+                                                .requestMatchers(HttpMethod.PUT, "/api/v1/users/{id}")
+                                                .authenticated()
                                                 .requestMatchers(HttpMethod.PUT, "/api/v1/users/{id}/image1")
                                                 .authenticated()
                                                 .requestMatchers(HttpMethod.PUT, "/api/v1/users/{id}/image2")
                                                 .authenticated()
 
-                                                // 🛑 TODO lo demás, protegido por defecto
+                                                // Everything else requires authentication
                                                 .anyRequest().authenticated());
 
                 http.formLogin(form -> form.disable());
@@ -133,6 +135,7 @@ public class SecurityConfiguration {
                 return http.build();
         }
 
+        // Web (form-based) security configuration (sessions, CSRF enabled)
         @Bean
         @Order(2)
         public SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception {
@@ -140,7 +143,7 @@ public class SecurityConfiguration {
                                 .authenticationProvider(authenticationProvider())
                                 .authorizeHttpRequests(authorize -> authorize
 
-                                                // Rutas públicas adicionales
+                                                // Public web pages
                                                 .requestMatchers(
                                                                 "/apartmentInformation/**",
                                                                 "/apartments/**",
@@ -172,7 +175,7 @@ public class SecurityConfiguration {
                                                                 "/index/*/images/**")
                                                 .permitAll()
 
-                                                // Páginas accesibles para usuarios autenticados
+                                                // Authenticated users
                                                 .requestMatchers(
                                                                 "/addReservation/**",
                                                                 "/profile/**",
@@ -183,7 +186,7 @@ public class SecurityConfiguration {
                                                                 "/replace/**")
                                                 .hasAnyRole("USER")
 
-                                                // Páginas accesibles para clientes
+                                                // Client-only pages
                                                 .requestMatchers(
                                                                 "/addReservation/**",
                                                                 "/clientReservations",
@@ -194,7 +197,7 @@ public class SecurityConfiguration {
                                                                 "/loadMoreReservations/**")
                                                 .hasAnyRole("CLIENT")
 
-                                                // Páginas accesibles para managers
+                                                // Manager-only pages
                                                 .requestMatchers(
                                                                 "/editApartment/**",
                                                                 "/viewApartmentsManager",
@@ -211,7 +214,7 @@ public class SecurityConfiguration {
                                                                 "/loadMoreApartmentsManagerView/**")
                                                 .hasAnyRole("MANAGER")
 
-                                                // Páginas accesibles solo para administradores
+                                                // Admin-only pages
                                                 .requestMatchers(
                                                                 "/managerValidation",
                                                                 "/acceptance/**",
@@ -227,9 +230,9 @@ public class SecurityConfiguration {
                                                 .logoutSuccessUrl("/login")
                                                 .permitAll())
                                 .sessionManagement(session -> session
-                                                // Asegura que la sesión se cree si es necesaria
                                                 .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                                                 .maximumSessions(1));
+                                // CSRF is enabled by default for web routes using forms
 
                 return http.build();
         }
