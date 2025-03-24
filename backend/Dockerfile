@@ -15,7 +15,7 @@ COPY pom.xml .
 COPY src ./src
 
 # Build the project and package it into a JAR file, skipping tests
-RUN mvn clean package -DskipTests
+RUN mvn clean package -DskipTests -Dmaven.wagon.http.timeout=60000
 
 
 # =================================================
