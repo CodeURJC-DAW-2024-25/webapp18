@@ -48,24 +48,24 @@ public class UserController {
     // ADVANCED RECOMMENDATION ALGORITHM
     @GetMapping("/")
     public String index(Model model, HttpServletRequest request) {
-        List<Apartment> recomendedApartments = new ArrayList<>();
+        List<Apartment> recommendedApartments = new ArrayList<>();
         try {
             String nick = request.getUserPrincipal().getName();
             UserE user = userService.findByNick(nick).orElseThrow();
             List<Reservation> userReservations = user.getReservations();
-            recomendedApartments = userService.findRecomendedApartments(6, userReservations, user);
+            recommendedApartments = userService.findRecommendedApartments(6, userReservations, user);
 
         } catch (NullPointerException e) {
             // Handle case when user is not authenticated
         } finally {
-            if (recomendedApartments.size() < 6) {
+            if (recommendedApartments.size() < 6) {
                 // size +1 to avoid looking for id = 0 if size = 0
-                for (int i = recomendedApartments.size() + 1; i < 7; i++) {
+                for (int i = recommendedApartments.size() + 1; i < 7; i++) {
                     try {
                         Apartment apartment = apartmentService.findById((long) i).orElseThrow();
                         // Only add apartments whose managers are validated
                         if (apartment != null && apartment.getManager().getValidated()) {
-                            recomendedApartments.add(apartment);
+                            recommendedApartments.add(apartment);
                         }
                     } catch (Exception ex) {
                         // Skip this apartment if not found
@@ -74,7 +74,7 @@ public class UserController {
                 }
             }
         }
-        model.addAttribute("apartments", recomendedApartments);
+        model.addAttribute("apartments", recommendedApartments);
         return "index";
     }
 

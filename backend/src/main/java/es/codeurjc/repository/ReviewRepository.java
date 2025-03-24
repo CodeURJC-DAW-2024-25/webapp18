@@ -3,6 +3,8 @@ package es.codeurjc.repository;
 import java.sql.Date;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -23,5 +25,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByApartment(Apartment apartment);
 
     List<Review> findByScoreAndApartment(int score, Apartment apartment);
+
+    Page<Review> findByApartment(Long id, Pageable pageable);
 
 }

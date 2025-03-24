@@ -1,12 +1,23 @@
 package es.codeurjc.service;
 
+import java.io.InputStream;
+import java.net.URI;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -92,6 +103,13 @@ public class ApartmentService implements GeneralService<Apartment> {
             String searchValue) {
         return apartmentRepository.findTop6ByManager_ValidatedAndNameContainingIgnoreCaseOrderByNameDesc(validated,
                 searchValue);
+    }
+
+    public List<ApartmentDTO> findTop6ByManager_ValidatedAndNameContainingIgnoreCaseOrderByNameDesc(
+            String searchValue) {
+        return mapper
+                .toDTOs(apartmentRepository.findTop6ByManager_ValidatedAndNameContainingIgnoreCaseOrderByNameDesc(true,
+                        searchValue));
     }
 
     @Override
@@ -191,8 +209,73 @@ public class ApartmentService implements GeneralService<Apartment> {
 
     public ApartmentDTO deleteApartment(Long id) {
         Apartment apartment = apartmentRepository.findById(id).orElseThrow();
-        apartmentRepository.delete(apartment);
+        apartmentRepository.deleteById(id);
         return toDTO(apartment);
+    }
+
+    public Resource getImageFile(Long id) throws SQLException {
+        Apartment apartment = apartmentRepository.findById(id).orElseThrow();
+        if (apartment.getImageFile() != null) {
+            return new InputStreamResource(apartment.getImageFile().getBinaryStream());
+        }
+        throw new NoSuchElementException();
+    }
+
+    public void createImage(Long id, URI location, InputStream inputStream, long size) {
+        Apartment apartment = apartmentRepository.findById(id).orElseThrow();
+
+        apartment.setImagePath(location.toString());
+        apartment.setImage(true);
+
+        apartment.setImageFile(BlobProxy.generateProxy(inputStream, size));
+
+        apartmentRepository.save(apartment);
+    }
+
+    public void editImage(Long id, InputStream inputStream, long size) {
+        Apartment apartment = apartmentRepository.findById(id).orElseThrow();
+        if (apartment.getImageFile() == null) {
+            throw new NoSuchElementException();
+        }
+        apartment.setImageFile(BlobProxy.generateProxy(inputStream, size));
+        apartmentRepository.save(apartment);
+    }
+
+    public void deleteImage(Long id) {
+        Apartment apartment = apartmentRepository.findById(id).orElseThrow();
+
+        if (apartment.getImageFile() == null) {
+            throw new NoSuchElementException();
+        }
+        apartment.setImageFile(null);
+        apartment.setImagePath(null);
+        apartment.setImage(false);
+
+        apartmentRepository.save(apartment);
+    }
+
+    public Page<ApartmentDTO> findByUser(UserE user, Pageable pageable) {
+        return apartmentRepository.findByUser(user, pageable).map(this::toDTO);
+    }
+
+    public Map<Integer, Float> getPercentageOfScores(Apartment apartment) {
+
+        Map<Integer, Float> percentageOfScores = new HashMap<>();
+        List<Review> reviews = apartment.getReviews();
+        int numReviews = reviews.size();
+
+        for (Integer i=1; i<=5; i++){
+
+            long reviewsWithiScore = reviews.stream().filter(review -> review.getScore() == i).count();
+            float percentageOfiScore = ((float) reviewsWithiScore /  numReviews) * 100;
+            
+            percentageOfScores.put(i, percentageOfiScore);
+            
+        }
+
+        return percentageOfScores;
+
+
     }
 
 }

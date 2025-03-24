@@ -113,30 +113,30 @@ public class UserService implements GeneralService<UserE> {
         return user.isPresent();
     }
 
-    public List<Apartment> findRecomendedApartments(int numApartments, List<Reservation> userReservations,
+    public List<Apartment> findRecommendedApartments(int numApartments, List<Reservation> userReservations,
             UserE targetUser) {
-        List<Apartment> recomendedApartments = new ArrayList<>();
-        List<UserE> recomendedUsers = new ArrayList<>();
+        List<Apartment> recommendedApartments = new ArrayList<>();
+        List<UserE> recommendedUsers = new ArrayList<>();
 
         for (Reservation reservation : userReservations) {
             Apartment reservedApartment = reservation.getApartment();
-            recomendedUsers = userRepository.findByApartmentInReservations(reservedApartment);
-            if (recomendedUsers.contains(targetUser)) // removes self from recommendations
-                recomendedUsers.remove(targetUser);
-            for (UserE recommendedUser : recomendedUsers) {
+            recommendedUsers = userRepository.findByApartmentInReservations(reservedApartment);
+            if (recommendedUsers.contains(targetUser)) // removes self from recommendations
+                recommendedUsers.remove(targetUser);
+            for (UserE recommendedUser : recommendedUsers) {
                 for (Reservation recommendedUserReservation : recommendedUser.getReservations()) {
                     Apartment recommendedApartment = recommendedUserReservation.getApartment();
                     Boolean validApartment = recommendedApartment.getManager().getValidated();
 
-                    if ((!recomendedApartments.contains(recommendedApartment)) && validApartment) {
-                        recomendedApartments.add(recommendedApartment);
-                        if (recomendedApartments.size() == (numApartments))
-                            return recomendedApartments;
+                    if ((!recommendedApartments.contains(recommendedApartment)) && validApartment) {
+                        recommendedApartments.add(recommendedApartment);
+                        if (recommendedApartments.size() == (numApartments))
+                            return recommendedApartments;
                     }
                 }
             }
         }
-        return recomendedApartments;
+        return recommendedApartments;
     }
 
     public Resource getImage(Long id) throws SQLException {
