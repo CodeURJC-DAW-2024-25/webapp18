@@ -1,6 +1,5 @@
 package es.codeurjc.service;
 
-import es.codeurjc.dto.ApartmentDTO;
 import es.codeurjc.dto.ReviewBasicDTO;
 import es.codeurjc.dto.ReviewDTO;
 import es.codeurjc.dto.ReviewMapper;
@@ -9,7 +8,6 @@ import es.codeurjc.model.Review;
 import es.codeurjc.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
