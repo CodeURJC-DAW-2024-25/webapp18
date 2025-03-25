@@ -40,4 +40,5 @@ RUN chmod +x /usr/app/wait-for-it.sh
 EXPOSE 8443
 
 # wait point
-CMD ["./wait-for-it.sh", "db", "3306", "--", "java", "-jar", "app.jar"]
+CMD ["java", "-jar", "app.jar"]
+
