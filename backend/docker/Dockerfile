@@ -3,7 +3,6 @@
 #################################################
 FROM maven:3.9.4-eclipse-temurin-21 AS builder
 
-
 # Set working directory inside the container
 WORKDIR /project
 
@@ -30,8 +29,12 @@ WORKDIR /usr/app
 # Copy the built JAR from the builder container
 COPY --from=builder /project/target/*.jar app.jar
 
-# Expose Spring Boot default port
+# Copia el script de espera
+COPY wait-for-it.sh /usr/app/wait-for-it.sh
+RUN chmod +x /usr/app/wait-for-it.sh
+
+# Expose HTTPS port
 EXPOSE 8443
 
-# Run the application when the container starts
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# wait point
+CMD ["./wait-for-it.sh", "db", "3306", "--", "java", "-jar", "app.jar"]
