@@ -119,29 +119,23 @@ public class ApartmentRestController {
 
     }
 
-    // pendiente -> it must auth the user as manager
     @PutMapping("/{id}")
     public ResponseEntity<ApartmentDTO> updateApartment(
-            /* HttpServletRequest request, */
+            HttpServletRequest request,
             @PathVariable Long id,
             @RequestBody ApartmentDTO updatedApartmentDTO) throws IOException {
-
-        /*
-         * UserE manager =
-         * userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
-         */
-
+    
+        UserE manager = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
+    
         if (!apartmentService.exist(id)) {
             return ResponseEntity.notFound().build();
         } else if (apartmentService.findById(id).get().getManager().getId().equals(manager.getId())) {
             return ResponseEntity.ok(apartmentService.updateApartment(updatedApartmentDTO, id));
-            /*
-             * } else {
-             * return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-             */
+        } else {
+            return ResponseEntity.status(403).body(null);
         }
     }
-
+    
     // works?
     // pendiente -> it must auth the user as manager
     @DeleteMapping("/{id}")
