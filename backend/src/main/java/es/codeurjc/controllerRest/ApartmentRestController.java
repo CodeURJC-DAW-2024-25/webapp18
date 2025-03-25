@@ -87,7 +87,7 @@ public class ApartmentRestController {
 
         if (!apartmentService.exist(id)) {
             return ResponseEntity.notFound().build();
-        } else if (manager.getId() == id) {
+        } else if (apartmentService.findById(id).get().getManager().getId().equals(manager.getId())) {
             return ResponseEntity.ok(apartmentService.updateApartment(updatedApartmentDTO, id));
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
@@ -102,7 +102,7 @@ public class ApartmentRestController {
 
         if (!apartmentService.exist(id)) {
             return ResponseEntity.notFound().build();
-        } else if (manager.getId() == id) {
+        } else if(apartmentService.findById(id).get().getManager().getId().equals(manager.getId())) {
             return ResponseEntity.ok(apartmentService.deleteApartment(id));
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);

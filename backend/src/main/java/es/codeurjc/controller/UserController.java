@@ -90,7 +90,7 @@ public class UserController {
 
     @GetMapping("/error")
     public String Error(Model model, HttpServletRequest request) {
-        return "/error";
+        return "error";
 
     }
 
