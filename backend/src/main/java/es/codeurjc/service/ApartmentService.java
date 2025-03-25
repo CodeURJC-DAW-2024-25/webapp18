@@ -286,7 +286,7 @@ public class ApartmentService implements GeneralService<Apartment> {
 
             final Integer iAux = i;
             long reviewsWithiScore = reviews.stream().filter(review -> review.getScore() == iAux).count();
-            float percentageOfiScore = ((float) reviewsWithiScore /  numReviews) * 100;
+            Float percentageOfiScore = ((float) reviewsWithiScore /  Math.max(numReviews, 1)) * 100;
             
             percentageOfScores.put(i, percentageOfiScore);
             
