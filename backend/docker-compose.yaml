@@ -20,7 +20,8 @@ services:
     ports:
       - "443:8443"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/apartamentos_db?useSSL=true
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/ApartmentManagement?useSSL=false&allowPublicKeyRetrieval=true
+
       SPRING_DATASOURCE_USERNAME: user
       SPRING_DATASOURCE_PASSWORD: userpass
     depends_on:
