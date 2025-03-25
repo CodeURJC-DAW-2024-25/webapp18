@@ -31,7 +31,7 @@ WORKDIR /usr/app
 COPY --from=builder /project/target/*.jar app.jar
 
 # Expose Spring Boot default port
-EXPOSE 8080
+EXPOSE 8443
 
 # Run the application when the container starts
 ENTRYPOINT ["java", "-jar", "app.jar"]
