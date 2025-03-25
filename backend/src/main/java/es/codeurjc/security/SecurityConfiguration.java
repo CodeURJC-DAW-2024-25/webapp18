@@ -139,12 +139,12 @@ public class SecurityConfiguration {
                                 .requestMatchers(
                                         HttpMethod.GET,
                                         "/api/v1/apartments/{id}",
+                                        "/api/v1/apartments/{id}/ratings",
+                                        "/api/v1/apartments/search",
                                         "/api/v1/apartments/{id}/images",
                                         "/api/v1/apartments/{id}/info",
-                                        "/api/v1/apartments/loadMore",
                                         "/api/v1/users/{id}/image",
                                         "/api/v1/reviews/{id}",
-                                        "/api/v1/reviews/loadMore/{start}/{end}",
                                         "/api/v1/rooms",
                                         "/api/v1/rooms/{id}",
                                         "/api/v1/rooms/filter")
@@ -163,7 +163,8 @@ public class SecurityConfiguration {
                                 .hasRole("CLIENT")
                                 .requestMatchers(
                                         HttpMethod.GET,
-                                        "/api/v1/reservations/{id}")
+                                        "/api/v1/reservations/{id}",
+                                        "/api/v1/apartments/recommended")
                                 .hasAnyRole("CLIENT", "ADMIN")
                                 .requestMatchers(
                                         HttpMethod.DELETE,
@@ -179,7 +180,7 @@ public class SecurityConfiguration {
                                 // Manager: manage apartments
                                 .requestMatchers(
                                         HttpMethod.GET,
-                                        "/api/v1/apartments/manager/loadMore/**")
+                                        "/api/v1/apartments/yourApartments/**")
                                 .hasRole("MANAGER")
                                 .requestMatchers(
                                         HttpMethod.POST,
