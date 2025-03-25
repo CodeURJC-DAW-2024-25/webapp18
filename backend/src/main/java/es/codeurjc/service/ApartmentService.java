@@ -254,8 +254,8 @@ public class ApartmentService implements GeneralService<Apartment> {
         apartmentRepository.save(apartment);
     }
 
-    public Page<ApartmentDTO> findByUser(UserE user, Pageable pageable) {
-        return apartmentRepository.findByUser(user, pageable).map(this::toDTO);
+    public Page<ApartmentDTO> findByManager(UserE user, Pageable pageable) {
+        return apartmentRepository.findByManager(user, pageable).map(this::toDTO);
     }
 
     public Map<Integer, Float> getPercentageOfScores(Apartment apartment) {

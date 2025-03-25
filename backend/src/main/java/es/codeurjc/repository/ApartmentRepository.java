@@ -23,6 +23,6 @@ public interface ApartmentRepository extends JpaRepository<Apartment, Long> {
     List<Apartment> findTop6ByManager_ValidatedAndNameContainingIgnoreCaseOrderByNameDesc(Boolean validated,
             String searchValue);
 
-    Page<Apartment> findByUser(UserE user, Pageable pageable);
+    Page<Apartment> findByManager(UserE user, Pageable pageable);
 }
 

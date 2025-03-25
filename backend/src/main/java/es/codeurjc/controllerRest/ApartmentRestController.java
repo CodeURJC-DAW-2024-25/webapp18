@@ -71,9 +71,9 @@ public class ApartmentRestController {
         UserE currentUser = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
 
         if (page != null && size != null) {
-            return apartmentService.findByUser(currentUser, PageRequest.of(page, size));
+            return apartmentService.findByManager(currentUser, PageRequest.of(page, size));
         }
-        return apartmentService.findByUser(currentUser, pageable);
+        return apartmentService.findByManager(currentUser, pageable);
     }
 
 
