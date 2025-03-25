@@ -1,134 +1,4 @@
 🏚🏝 dreamLife 
-## PHASE 2: Integration of a REST API, Docker deployment, and remote hosting
-
-## 1. API REST documentation
-###  1.1 OpenAPI <br> https://github.com/CodeURJC-DAW-2024-25/webapp18/blob/main/backend/api-docs/api-docs.yaml
-
-###  1.2 HTML <br> https://github.com/CodeURJC-DAW-2024-25/webapp18/blob/main/backend/api-docs/index.html
- 
-
-## 2. Class and templates diagram
-![CLASSD](https://github.com/user-attachments/assets/e8c5573c-1efa-43b8-a722-7a8d2c2843d5)
-
-## 3. Execution instructions
-
- 1. Clone the repository with
-  ```
-  git clone https://github.com/CodeURJC-DAW-2024-25/webapp18.git
-  ```
-  2. Switch to "docker" directory 
-  ```
-  cd webapp18/docker
-  ```
-  3. Install docker on your system [here](https://docs.docker.com/engine/install/)
-  4. Find the installed docker, and run it
-  5. While being on the directory webapp12/docker, excute on terminal:
-  ```
-  docker-compose up
-  ```
-  6. Once the previous step is finished, open an internet browser, and search for [https://localhost:8443](https://localhost:8443)
-  
-  ## 4. Docker image documentation
-  
-  1. Use a browser to create an account on [Dockerhub](https://hub.docker.com/)
-  2. Clone the repository with
-  ```
-  git clone https://github.com/CodeURJC-DAW-2024-25/webapp18.git
-  ```
-  3. Switch to "docker" directory 
-  ```
-  cd webapp18/docker
-  ```
-  4. Install docker on your system [here](https://docs.docker.com/engine/install/)
-  5. Find the installed docker, and run it
-  6. Connect your account to Docker. You can use:
-  ```
-  docker login
-  ```
-  And then type your credentials   
-  
-  7. While being on the directory webapp12/docker, excute on terminal:
-  ```
-  ./create_image.sh
-  ```
-  
-  ## 5. Virtual Machine deployment
-  
-  ### 5.1. Connect to virtual machine
-  Make sure to have the SSH key on the directory you execute these commands from:
-  ```
-  cp prAppWeb18.key ~/ 
-  chmod 600 ~/prAppWeb18.key
-  ssh -i ~/prAppWeb18.key vmuser@10.100.139.161
-  ```
-
-  ### 5.2 Install Docker
-  ```
-  sudo apt-get update
-  sudo apt-get install ca-certificates curl
-  sudo install -m 0755 -d /etc/apt/keyrings
-  sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-  sudo chmod a+r /etc/apt/keyrings/docker.asc
-  
-  echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-  sudo apt-get update
-  ```
-  
-  ### 5.3 Install Docker-Compose plugin
-  ```
-  sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-  ```
-  
-  ### 5.4 Test Docker is correctly instaled running
-  ```
-  sudo docker run hello-world
-  ```
-
- ### 5.5 Prepare Docker Compose
-  ```
-  sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-  sudo chmod +x /usr/local/bin/docker-compose
-  ```
-
-  ### 5.6 Clone the repository
-  Execute:
-  ```
-  ls
-  ```
-  If you dont see a webapp18 folder, then execute:
-  ```
-  git clone https://github.com/CodeURJC-DAW-2024-25/webapp18.git
-  ```
-
- ### 5.7 Switch to directory and grant premissions
-  ```
-  cd webapp18/docker
-  chmod +x create_image.sh
-  ```
-
- ### 5.8 Execute the script
-  ```
-  ./create_image.sh
-  ```
-
- ### 5.9 Open a browser and access
-  ```
-  https://10.100.139.161:8443/index
-  ```
-
-
-## GROUP MEMBERS PARTICIPATION
-
-| Name                         | Tasks | Most important commits | Most worked on files | 
-|------------------------------|--------|-------------------------|----------------------|
-| Laila El Khattabi El Hassnaoui | I have worked with reservation controller as well as user controller. I have implemented the security part of this phase and tried the endpoints on postman      |  -[Security implementation](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/b1fcb053aa615c236a31a157be095f2b04cdfb1a) <br> -[Added DTOS, controllers and mappers to reservation](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/e1de9d9db211b6316e34098ddf9cd07af324540c) <br> - [User controller rest files](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/93038df265fc3fec2d06dc8ffa9e57c556fee329) <br> -[docker](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/f66e6c5b0110d3b4b323f0faac2fa1e10811e221#diff-e82d83fb2061d91bd2a75743bb98569311d56d8defbc94a7cf1659c007837ce1) <br> -[dto logic](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/7e2e2cc59c201b899628c66fca9893bbd7ee71d0#diff-307d12707b225f9c9f0f92a132f7ee3683e41ec598e78b18c0c21a3d332bf0af)                 | ReservationRestController, UserRestController, mappers and DTOs. Security implemntation and endpoints with postman                     |
-| Carlos Hermán Andrés Andrés    |        |                         |                      |
-| Elena Ceinos Abeijón           | I have worked on the RoomRestController, also checked ReviewRestControllers and some of the UserRestControllers. I have tried endpoints on Postman and also helped with the security config. | - [Added DTOs and MapStruct dependencies, disabled CSRF](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/0b158b87a8e5d13fbf2b0494a7930d3d2dd8d226) <br> - [Modified UserRestController, login and ID. Added @Component in the mappers](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/efe6e12d4ccbec30f3b4cdc07c82be0a89fb36b3) <br> - [Corrected JWT security target errors and fixed some mappers](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/306d403dc619cc0f8d21715667570bb6e3bc9532) <br> - [Added mapping and target to mappers to remove warnings](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/6ddcb5f3bfc1e2ceadd94e8f8a76c711542a9027) | RoomRestController, UserRestController, ReviewRestController, mappers, and DTOs. Also, a lot of endpoint trials with postman |
-
-
 
 
 ## PREPARATION 1
@@ -369,6 +239,136 @@ Laila El Khattabi El Hassnaoui |I have worked on several controllers as well as 
 Carlos Hermán Andrés Andrés | AJAX loading, several controllers, apartment templates, database creation and configuration | - [viewApartmentsManager template working](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/5b9cdb1d85092b36417e56df6661aead08a77745)<br> - [Client reservation template done](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/c5969e07e5e2cc8407499ee615fdf824ab25fae3)<br> - [Index working](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/5fe4738fdea49ab75f4a7bf896253624adfe1c53)<br> - [Security now allows navigation, and the keystores](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/4829c6fbcab1b363debac50b4cacf57e754404a2)<br> - [Generic footer](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/9583b3c7086e53a310c0993438430f71045ecfde) | index.html, Apartment.controller, Security Configuration, viewApartmentsManager, initDatabseService |
 Elena Ceinos Abeijón | Client reservations, apartment addition and edition. Fixed some styler errors and server calls. Add reservation done with data check | - [addReservations done](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/dcdfdad4fb9c8c452c2bed91fcc9550d0c9d2fa3) <br> - [add apartments](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/857bcb34b927ed383e27ff0d58c3334f7b1a4d72) <br> - [Show only validated's manager apts](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/f6259f9dac82ab8b0bf1711b52de421765eb2b3f) | Apartment controller, reservation controller, reviews controller, init app, some errors |
 Daniel Gómez López | I have worken on some controllers, frontend templates as well as security and the graphic | - [Working web commit](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/f28bbcc8c3e2f9f5fa5254aa6fd56b0d8cd14157)<br> - [fixed register controller](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/397797de859c661348497fd7019c99ca5c8a3ce7)<br> - [reservations changes (to be fixed yet)](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/84e254e2e3e6452b678568d685a165b4308de994)<br> - [fixed nav bar](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/beb3f85ceab6e24f3567d0893872f45ace3e2dc4)<br> - [Half Fixed reviews](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/beb3f85ceab6e24f3567d0893872f45ace3e2dc4)<br> | Register, reservation.Controller, Reviews, navegation Bar, ClientReservations, Navegation Diagram|
+
+## PHASE 2: Integration of a REST API, Docker deployment, and remote hosting
+
+## 1. API REST documentation
+###  1.1 OpenAPI <br> https://github.com/CodeURJC-DAW-2024-25/webapp18/blob/main/backend/api-docs/api-docs.yaml
+
+###  1.2 HTML <br> https://github.com/CodeURJC-DAW-2024-25/webapp18/blob/main/backend/api-docs/index.html
+ 
+
+## 2. Class and templates diagram
+![CLASSD](https://github.com/user-attachments/assets/e8c5573c-1efa-43b8-a722-7a8d2c2843d5)
+
+## 3. Execution instructions
+
+ 1. Clone the repository with
+  ```
+  git clone https://github.com/CodeURJC-DAW-2024-25/webapp18.git
+  ```
+  2. Switch to "docker" directory 
+  ```
+  cd webapp18/docker
+  ```
+  3. Install docker on your system [here](https://docs.docker.com/engine/install/)
+  4. Find the installed docker, and run it
+  5. While being on the directory webapp12/docker, excute on terminal:
+  ```
+  docker-compose up
+  ```
+  6. Once the previous step is finished, open an internet browser, and search for [https://localhost:8443](https://localhost:8443)
+  
+  ## 4. Docker image documentation
+  
+  1. Use a browser to create an account on [Dockerhub](https://hub.docker.com/)
+  2. Clone the repository with
+  ```
+  git clone https://github.com/CodeURJC-DAW-2024-25/webapp18.git
+  ```
+  3. Switch to "docker" directory 
+  ```
+  cd webapp18/docker
+  ```
+  4. Install docker on your system [here](https://docs.docker.com/engine/install/)
+  5. Find the installed docker, and run it
+  6. Connect your account to Docker. You can use:
+  ```
+  docker login
+  ```
+  And then type your credentials   
+  
+  7. While being on the directory webapp12/docker, excute on terminal:
+  ```
+  ./create_image.sh
+  ```
+  
+  ## 5. Virtual Machine deployment
+  
+  ### 5.1. Connect to virtual machine
+  Make sure to have the SSH key on the directory you execute these commands from:
+  ```
+  cp prAppWeb18.key ~/ 
+  chmod 600 ~/prAppWeb18.key
+  ssh -i ~/prAppWeb18.key vmuser@10.100.139.161
+  ```
+
+  ### 5.2 Install Docker
+  ```
+  sudo apt-get update
+  sudo apt-get install ca-certificates curl
+  sudo install -m 0755 -d /etc/apt/keyrings
+  sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+  sudo chmod a+r /etc/apt/keyrings/docker.asc
+  
+  echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  sudo apt-get update
+  ```
+  
+  ### 5.3 Install Docker-Compose plugin
+  ```
+  sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+  ```
+  
+  ### 5.4 Test Docker is correctly instaled running
+  ```
+  sudo docker run hello-world
+  ```
+
+ ### 5.5 Prepare Docker Compose
+  ```
+  sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  sudo chmod +x /usr/local/bin/docker-compose
+  ```
+
+  ### 5.6 Clone the repository
+  Execute:
+  ```
+  ls
+  ```
+  If you dont see a webapp18 folder, then execute:
+  ```
+  git clone https://github.com/CodeURJC-DAW-2024-25/webapp18.git
+  ```
+
+ ### 5.7 Switch to directory and grant premissions
+  ```
+  cd webapp18/docker
+  chmod +x create_image.sh
+  ```
+
+ ### 5.8 Execute the script
+  ```
+  ./create_image.sh
+  ```
+
+ ### 5.9 Open a browser and access
+  ```
+  https://10.100.139.161:8443/index
+  ```
+
+
+## GROUP MEMBERS PARTICIPATION
+
+| Name                         | Tasks | Most important commits | Most worked on files | 
+|------------------------------|--------|-------------------------|----------------------|
+| Laila El Khattabi El Hassnaoui | I have worked with reservation controller as well as user controller. I have implemented the security part of this phase and tried the endpoints on postman      |  -[Security implementation](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/b1fcb053aa615c236a31a157be095f2b04cdfb1a) <br> -[Added DTOS, controllers and mappers to reservation](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/e1de9d9db211b6316e34098ddf9cd07af324540c) <br> - [User controller rest files](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/93038df265fc3fec2d06dc8ffa9e57c556fee329) <br> -[docker](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/f66e6c5b0110d3b4b323f0faac2fa1e10811e221#diff-e82d83fb2061d91bd2a75743bb98569311d56d8defbc94a7cf1659c007837ce1) <br> -[dto logic](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/7e2e2cc59c201b899628c66fca9893bbd7ee71d0#diff-307d12707b225f9c9f0f92a132f7ee3683e41ec598e78b18c0c21a3d332bf0af)                 | ReservationRestController, UserRestController, mappers and DTOs. Security implemntation and endpoints with postman                     |
+| Carlos Hermán Andrés Andrés    |    I have made the ApartmentRestController, as well as ReviewRest and some in UserRest. I've directed the implementation of DTOs and mappers in the App, and made PostmanCollections    |  - [Changed several basicDTO and apartmentControllers](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/5cd7528e2db9d3ba497972faba9ee1406b09d846) <br> - [Fixed apartmentRest errors and added logic to ApartmentService](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/a4bbcbc9be9221ba85bea5dd12c6bf54b733e157) <br> - [Adding mappers to all classes](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/8dea30eee3d6be24b882d9aa56e81ff34d908964) - [ApartmentDTO image fixed and postman requests working sometimes](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/eb349ba825bd4526601bfa4a85b6ea01153acbbf) - [Fixed restCOntrollers to reviews, and image controllers to Apartment](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/53def237aa28abc28b0df1ca963c5852fca90cd2) | ApartmentRestController, UserRestController, DTOs, ReviewRestController  | 
+| Elena Ceinos Abeijón           | I have worked on the RoomRestController, also checked ReviewRestControllers and some of the UserRestControllers. I have tried endpoints on Postman and also helped with the security config. | - [Added DTOs and MapStruct dependencies, disabled CSRF](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/0b158b87a8e5d13fbf2b0494a7930d3d2dd8d226) <br> - [Modified UserRestController, login and ID. Added @Component in the mappers](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/efe6e12d4ccbec30f3b4cdc07c82be0a89fb36b3) <br> - [Corrected JWT security target errors and fixed some mappers](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/306d403dc619cc0f8d21715667570bb6e3bc9532) <br> - [Added mapping and target to mappers to remove warnings](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/6ddcb5f3bfc1e2ceadd94e8f8a76c711542a9027) | RoomRestController, UserRestController, ReviewRestController, mappers, and DTOs. Also, a lot of endpoint trials with postman |
+
 
 
 
