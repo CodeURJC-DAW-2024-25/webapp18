@@ -1,13 +1,14 @@
 version: '3.8'
 
 services:
-  mysql:
+  db:
     image: mysql:8
     container_name: db
     environment:
       MYSQL_DATABASE: ApartmentManagement
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_PASSWORD: password
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpass
     ports:
       - "3307:3306"
     restart: always
@@ -15,16 +16,16 @@ services:
       - db_data:/var/lib/mysql
 
   webapp:
-    build: .
+    image: Elenacabe/dreamlife-webapp:latest  #YOUR DOCKERHUB USER
     container_name: webapp
     ports:
       - "8443:8443"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/apartamentos_db?useSSL=true
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/ApartmentManagement?useSSL=true
       SPRING_DATASOURCE_USERNAME: user
       SPRING_DATASOURCE_PASSWORD: userpass
     depends_on:
-      - mysql
+      - db
     restart: always
 
 volumes:

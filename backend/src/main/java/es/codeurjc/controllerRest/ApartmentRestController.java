@@ -132,10 +132,8 @@ public class ApartmentRestController {
          */
 
         if (!apartmentService.exist(id)) {
-            throw new NoSuchElementException();
-
-            /* } else if (manager.getId() == id) { */
-        } else {
+            return ResponseEntity.notFound().build();
+        } else if (apartmentService.findById(id).get().getManager().getId().equals(manager.getId())) {
             return ResponseEntity.ok(apartmentService.updateApartment(updatedApartmentDTO, id));
             /*
              * } else {
@@ -156,7 +154,7 @@ public class ApartmentRestController {
 
         if (!apartmentService.exist(id)) {
             return ResponseEntity.notFound().build();
-        } else /* if user is manager */ {
+        } else if(apartmentService.findById(id).get().getManager().getId().equals(manager.getId())) {
             return ResponseEntity.ok(apartmentService.deleteApartment(id));
         } /*
            * else {

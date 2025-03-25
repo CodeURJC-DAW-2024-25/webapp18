@@ -183,21 +183,39 @@ public class ApartmentService implements GeneralService<Apartment> {
     @Transactional
     public ApartmentDTO createApartment(ApartmentDTO newApartmentDTO) {
         Apartment newApartment = toDomain(newApartmentDTO);
-
+        
+        // Inicializar listas si son nulas
+        if (newApartment.getRooms() == null) {
+            newApartment.setRooms(new ArrayList<>());
+        }
+        if (newApartment.getReservations() == null) {
+            newApartment.setReservations(new ArrayList<>());
+        }
+        if (newApartment.getReviews() == null) {
+            newApartment.setReviews(new ArrayList<>());
+        }
+        
+        // Establecer la relación bidireccional para cada habitación
         for (Room room : newApartment.getRooms()) {
             room.setApartment(newApartment);
         }
+        
+        // Establecer la relación bidireccional para cada reserva
         for (Reservation reservation : newApartment.getReservations()) {
             reservation.setApartment(newApartment);
         }
+        
+        // Establecer la relación bidireccional para cada reseña
         for (Review review : newApartment.getReviews()) {
             review.setApartment(newApartment);
         }
-
+    
+        // Guardar el apartamento en la base de datos
         apartmentRepository.save(newApartment);
+        
+        // Convertir y devolver el DTO
         return toDTO(newApartment);
     }
-
     public ApartmentDTO updateApartment(ApartmentDTO updatedApartmentDTO, Long id) {
 
         Apartment updatedApartment = toDomain(updatedApartmentDTO);

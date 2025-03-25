@@ -65,7 +65,7 @@ public class SecurityConfiguration {
 
                 http
                                 .authorizeHttpRequests(auth -> auth
-                                                // Public API endpoints
+                                                /*  Public API endpoints
                                                 .requestMatchers(
                                                                 HttpMethod.POST,
                                                                 "/api/v1/users/",
@@ -92,7 +92,7 @@ public class SecurityConfiguration {
                                                                 "/api/v1/reservations")
                                                 .hasRole("CLIENT")
                                                 .requestMatchers(HttpMethod.GET,
-                                                                "/api/v1/reservations/{id}")
+                                                                "/api/v1/reservations/{id}","/api/v1/apartments/")
                                                 .hasAnyRole("CLIENT", "ADMIN")
 
                                                 // Manager: manage apartments
@@ -124,7 +124,121 @@ public class SecurityConfiguration {
                                                 .authenticated()
 
                                                 // Everything else requires authentication
-                                                .anyRequest().authenticated());
+                                                .anyRequest().authenticated()); */
+
+
+                                               
+                                // Public API endpoints
+                                .requestMatchers(
+                                        HttpMethod.POST,
+                                        "/api/v1/users/",
+                                        "/api/v1/users/login")
+                                .permitAll()
+                                
+                                // Rutas GET públicas
+                                .requestMatchers(
+                                        HttpMethod.GET,
+                                        "/api/v1/apartments/{id}",
+                                        "/api/v1/apartments/{id}/images",
+                                        "/api/v1/apartments/{id}/info",
+                                        "/api/v1/apartments/loadMore",
+                                        "/api/v1/users/{id}/image",
+                                        "/api/v1/reviews/{id}",
+                                        "/api/v1/reviews/loadMore/{start}/{end}",
+                                        "/api/v1/rooms",
+                                        "/api/v1/rooms/{id}",
+                                        "/api/v1/rooms/filter")
+                                .permitAll()
+                                
+                                // Rutas POST permitidas
+                                .requestMatchers(
+                                        HttpMethod.POST,
+                                        "/api/v1/reviews/post/{id}")
+                                .permitAll()
+                                
+                                // Client: create and view reservations
+                                .requestMatchers(
+                                        HttpMethod.POST,
+                                        "/api/v1/reservations")
+                                .hasRole("CLIENT")
+                                .requestMatchers(
+                                        HttpMethod.GET,
+                                        "/api/v1/reservations/{id}")
+                                .hasAnyRole("CLIENT", "ADMIN")
+                                .requestMatchers(
+                                        HttpMethod.DELETE,
+                                        "/api/v1/reservations/{id}")
+                                .hasAnyRole("CLIENT", "ADMIN")
+                                
+                                // Apartments: lista principal accesible para usuarios autenticados
+                                .requestMatchers(
+                                        HttpMethod.GET,
+                                        "/api/v1/apartments/")
+                                .hasAnyRole("MANAGER", "CLIENT", "ADMIN")
+                                
+                                // Manager: manage apartments
+                                .requestMatchers(
+                                        HttpMethod.GET,
+                                        "/api/v1/apartments/manager/loadMore/**")
+                                .hasRole("MANAGER")
+                                .requestMatchers(
+                                        HttpMethod.POST,
+                                        "/api/v1/apartments/",
+                                        "/api/v1/rooms")
+                                .hasRole("MANAGER")
+                                .requestMatchers(
+                                        HttpMethod.PUT,
+                                        "/api/v1/apartments/{id}",
+                                        "/api/v1/managers/{id}/application",
+                                        "/api/v1/rooms/{id}")
+                                .hasRole("MANAGER")
+                                .requestMatchers(
+                                        HttpMethod.DELETE,
+                                        "/api/v1/apartments/{id}",
+                                        "/api/v1/rooms/{id}")
+                                .hasRole("MANAGER")
+                                
+                                // User management API
+                                .requestMatchers(
+                                        HttpMethod.GET,
+                                        "/api/v1/users/all")
+                                .hasRole("ADMIN")
+                                .requestMatchers(
+                                        HttpMethod.GET,
+                                        "/api/v1/users/")
+                                .hasRole("ADMIN")
+                                .requestMatchers(
+                                        HttpMethod.GET,
+                                        "/api/v1/users/{id}")
+                                .authenticated()
+                                
+                                // Authenticated user routes
+                                .requestMatchers(
+                                        HttpMethod.GET, 
+                                        "/api/v1/users/profile")
+                                .authenticated()
+                                .requestMatchers(
+                                        HttpMethod.PUT, 
+                                        "/api/v1/users/{id}")
+                                .authenticated()
+                                .requestMatchers(
+                                        HttpMethod.PUT, 
+                                        "/api/v1/users/{id}/application")
+                                .authenticated()
+                                .requestMatchers(
+                                        HttpMethod.PUT, 
+                                        "/api/v1/users/{id}/image1",
+                                        "/api/v1/users/{id}/image2")
+                                .authenticated()
+                                
+                                // Swagger/OpenAPI docs
+                                .requestMatchers(
+                                        "/swagger-ui/**",
+                                        "/v3/api-docs/**")
+                                .permitAll()
+                                
+                                // Everything else requires authentication
+                                .anyRequest().authenticated());
 
                 http.formLogin(form -> form.disable());
                 http.csrf(csrf -> csrf.disable());
@@ -221,6 +335,7 @@ public class SecurityConfiguration {
                                                                 "/rejection/**")
                                                 .hasAnyRole("ADMIN"))
                                 .formLogin(formLogin -> formLogin
+                                .usernameParameter("nick")
                                                 .loginPage("/login")
                                                 .failureUrl("/loginError")
                                                 .defaultSuccessUrl("/profile", true)

@@ -1,1724 +1,1351 @@
-{
-  "openapi": "3.1.0",
-  "info": {
-    "title": "OpenAPI definition",
-    "version": "v0"
-  },
-  "servers": [
-    {
-      "url": "https://localhost:8443",
-      "description": "Generated server url"
-    }
-  ],
-  "paths": {
-    "/api/v1/users/{id}": {
-      "get": {
-        "tags": [
-          "user-rest-controller"
-        ],
-        "operationId": "getUserById",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserDTO"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "user-rest-controller"
-        ],
-        "operationId": "updateUser",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          },
-          {
-            "name": "rejected",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "validated",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserDTO"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserDTO"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/users/{id}/image2": {
-      "put": {
-        "tags": [
-          "user-rest-controller"
-        ],
-        "operationId": "updateProfileImage",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "imageFile": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                },
-                "required": [
-                  "imageFile"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/users/{id}/image1": {
-      "put": {
-        "tags": [
-          "user-rest-controller"
-        ],
-        "operationId": "replaceUserImage",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "imageFile": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                },
-                "required": [
-                  "imageFile"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/users/{id}/application": {
-      "put": {
-        "tags": [
-          "user-rest-controller"
-        ],
-        "operationId": "managerApplication",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/rooms/{id}": {
-      "get": {
-        "tags": [
-          "room-rest-controller"
-        ],
-        "operationId": "getRoomById",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/RoomDTO"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "room-rest-controller"
-        ],
-        "operationId": "updateRoom",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RoomDTO"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/RoomDTO"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "room-rest-controller"
-        ],
-        "operationId": "deleteRoom",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/v1/apartments/{id}": {
-      "get": {
-        "tags": [
-          "apartment-rest-controller"
-        ],
-        "operationId": "getApartment",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApartmentDTO"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "apartment-rest-controller"
-        ],
-        "operationId": "updateApartment",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ApartmentDTO"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApartmentDTO"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "apartment-rest-controller"
-        ],
-        "operationId": "createApartment",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ApartmentDTO"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "apartment-rest-controller"
-        ],
-        "operationId": "deleteApartment",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApartmentDTO"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/users/login": {
-      "post": {
-        "tags": [
-          "user-rest-controller"
-        ],
-        "operationId": "loginUser",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserDTO"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/users/": {
-      "get": {
-        "tags": [
-          "user-rest-controller"
-        ],
-        "operationId": "managerValidation",
-        "parameters": [
-          {
-            "name": "validated",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": false
-            }
-          },
-          {
-            "name": "rejected",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": false
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/UserDTO"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "user-rest-controller"
-        ],
-        "operationId": "registerUser",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserDTO"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/rooms": {
-      "get": {
-        "tags": [
-          "room-rest-controller"
-        ],
-        "operationId": "getAllRooms",
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RoomDTO"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "room-rest-controller"
-        ],
-        "operationId": "createRoom",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RoomDTO"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "201": {
-            "description": "Created",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/RoomDTO"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/reviews/post/{id}": {
-      "post": {
-        "tags": [
-          "review-rest-controller"
-        ],
-        "operationId": "postReview",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Review"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReviewDTO"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/reservations": {
-      "post": {
-        "tags": [
-          "reservation-rest-controller"
-        ],
-        "operationId": "createReservation",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ReservationDTO"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReservationDTO"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/users/{id}/image": {
-      "get": {
-        "tags": [
-          "user-rest-controller"
-        ],
-        "operationId": "downloadImage",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/users/profile": {
-      "get": {
-        "tags": [
-          "user-rest-controller"
-        ],
-        "operationId": "getCurrentUser",
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserDTO"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/users/all": {
-      "get": {
-        "tags": [
-          "user-rest-controller"
-        ],
-        "operationId": "getAllUsers",
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/UserDTO"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/rooms/filter": {
-      "get": {
-        "tags": [
-          "room-rest-controller"
-        ],
-        "operationId": "getRoomsByMaxClients",
-        "parameters": [
-          {
-            "name": "maxClients",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RoomDTO"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/reviews/{id}": {
-      "get": {
-        "tags": [
-          "review-rest-controller"
-        ],
-        "operationId": "getReview",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReviewDTO"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/reviews/loadMore/{start}/{end}": {
-      "get": {
-        "tags": [
-          "review-rest-controller"
-        ],
-        "operationId": "loadMoreReviews",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          },
-          {
-            "name": "start",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "end",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Review"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/reservations/{id}": {
-      "get": {
-        "tags": [
-          "reservation-rest-controller"
-        ],
-        "operationId": "getReservation",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReservationDTO"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "reservation-rest-controller"
-        ],
-        "operationId": "deleteReservation",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/v1/apartments/{id}/info": {
-      "get": {
-        "tags": [
-          "apartment-rest-controller"
-        ],
-        "operationId": "apartmentInformation",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Apartment"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/apartments/{id}/images": {
-      "get": {
-        "tags": [
-          "apartment-rest-controller"
-        ],
-        "operationId": "downloadImage_1",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/apartments/manager/loadMore/{start}/{end}": {
-      "get": {
-        "tags": [
-          "apartment-rest-controller"
-        ],
-        "operationId": "loadMoreApartmentsManagerView",
-        "parameters": [
-          {
-            "name": "start",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "end",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Apartment"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/apartments/loadMore": {
-      "get": {
-        "tags": [
-          "apartment-rest-controller"
-        ],
-        "operationId": "loadMoreApartments",
-        "parameters": [
-          {
-            "name": "pageable",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/Pageable"
-            }
-          },
-          {
-            "name": "numPage",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 0
-            }
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 6
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/PagedModelApartmentDTO"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/apartments/": {
-      "get": {
-        "tags": [
-          "apartment-rest-controller"
-        ],
-        "operationId": "getApartments",
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ApartmentDTO"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "ApartmentBasicDTO": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "location": {
-            "type": "string"
-          },
-          "rating": {
-            "type": "number",
-            "format": "float"
-          },
-          "imagePath": {
-            "type": "string"
-          },
-          "image": {
-            "type": "boolean"
-          }
-        }
-      },
-      "ReservationBasicDTO": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "checkIn": {
-            "type": "string",
-            "format": "date"
-          },
-          "checkOut": {
-            "type": "string",
-            "format": "date"
-          },
-          "numPeople": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "ReviewBasicDTO": {
-        "type": "object",
-        "properties": {
-          "reviewId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "score": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "date": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "comment": {
-            "type": "string"
-          }
-        }
-      },
-      "UserDTO": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
-          },
-          "lastname": {
-            "type": "string"
-          },
-          "bio": {
-            "type": "string"
-          },
-          "location": {
-            "type": "string"
-          },
-          "language": {
-            "type": "string"
-          },
-          "phone": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "image": {
-            "type": "boolean"
-          },
-          "imagePath": {
-            "type": "string"
-          },
-          "organization": {
-            "type": "string"
-          },
-          "validated": {
-            "type": "boolean"
-          },
-          "rejected": {
-            "type": "boolean"
-          },
-          "rols": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "nick": {
-            "type": "string"
-          },
-          "pass": {
-            "type": "string"
-          },
-          "apartments": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ApartmentBasicDTO"
-            }
-          },
-          "reservations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ReservationBasicDTO"
-            }
-          },
-          "reviews": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ReviewBasicDTO"
-            }
-          }
-        }
-      },
-      "RoomDTO": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "maxClients": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "cost": {
-            "type": "number",
-            "format": "float"
-          },
-          "reservations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ReservationBasicDTO"
-            }
-          },
-          "apartment": {
-            "$ref": "#/components/schemas/ApartmentBasicDTO"
-          }
-        }
-      },
-      "ApartmentDTO": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "location": {
-            "type": "string"
-          },
-          "rating": {
-            "type": "number",
-            "format": "float"
-          },
-          "imagePath": {
-            "type": "string"
-          },
-          "image": {
-            "type": "boolean"
-          },
-          "manager": {
-            "$ref": "#/components/schemas/UserBasicDTO"
-          },
-          "rooms": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/RoomBasicDTO"
-            }
-          },
-          "reservations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ReservationBasicDTO"
-            }
-          },
-          "reviews": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ReviewBasicDTO"
-            }
-          }
-        }
-      },
-      "RoomBasicDTO": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "maxClients": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "cost": {
-            "type": "number",
-            "format": "float"
-          }
-        }
-      },
-      "UserBasicDTO": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "image": {
-            "type": "boolean"
-          },
-          "imagePath": {
-            "type": "string"
-          },
-          "rols": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "nick": {
-            "type": "string"
-          }
-        }
-      },
-      "Apartment": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "location": {
-            "type": "string"
-          },
-          "rating": {
-            "type": "number",
-            "format": "float"
-          },
-          "imageFile": {
-            "type": "object",
-            "properties": {
-              "binaryStream": {
-                "type": "object"
-              }
-            }
-          },
-          "image": {
-            "type": "boolean"
-          },
-          "imagePath": {
-            "type": "string"
-          },
-          "manager": {
-            "$ref": "#/components/schemas/UserE"
-          },
-          "numRooms": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "averageRating": {
-            "type": "number",
-            "format": "float"
-          }
-        }
-      },
-      "Review": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "score": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "comment": {
-            "type": "string"
-          },
-          "date": {
-            "type": "string",
-            "format": "date"
-          },
-          "apartment": {
-            "$ref": "#/components/schemas/Apartment"
-          },
-          "user": {
-            "$ref": "#/components/schemas/UserE"
-          }
-        }
-      },
-      "UserE": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
-          },
-          "lastname": {
-            "type": "string"
-          },
-          "bio": {
-            "type": "string"
-          },
-          "location": {
-            "type": "string"
-          },
-          "language": {
-            "type": "string"
-          },
-          "phone": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "imageFile": {
-            "type": "object",
-            "properties": {
-              "binaryStream": {
-                "type": "object"
-              }
-            }
-          },
-          "image": {
-            "type": "boolean"
-          },
-          "imagePath": {
-            "type": "string"
-          },
-          "organization": {
-            "type": "string"
-          },
-          "validated": {
-            "type": "boolean"
-          },
-          "rejected": {
-            "type": "boolean"
-          },
-          "rols": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "nick": {
-            "type": "string"
-          },
-          "pass": {
-            "type": "string"
-          },
-          "apartment": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Apartment"
-            }
-          }
-        }
-      },
-      "ReviewDTO": {
-        "type": "object",
-        "properties": {
-          "reviewId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "user": {
-            "$ref": "#/components/schemas/UserBasicDTO"
-          },
-          "apartment": {
-            "$ref": "#/components/schemas/ApartmentBasicDTO"
-          },
-          "score": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "date": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "comment": {
-            "type": "string"
-          }
-        }
-      },
-      "ReservationDTO": {
-        "type": "object",
-        "properties": {
-          "idReservation": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "checkIn": {
-            "type": "string",
-            "format": "date"
-          },
-          "checkOut": {
-            "type": "string",
-            "format": "date"
-          },
-          "numPeople": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "apartmentId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "roomId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "userId": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
-      "Pageable": {
-        "type": "object",
-        "properties": {
-          "page": {
-            "type": "integer",
-            "format": "int32",
-            "minimum": 0
-          },
-          "size": {
-            "type": "integer",
-            "format": "int32",
-            "minimum": 1
-          },
-          "sort": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "PageMetadata": {
-        "type": "object",
-        "properties": {
-          "size": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "number": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "totalElements": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "totalPages": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
-      "PagedModelApartmentDTO": {
-        "type": "object",
-        "properties": {
-          "content": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ApartmentDTO"
-            }
-          },
-          "page": {
-            "$ref": "#/components/schemas/PageMetadata"
-          }
-        }
-      }
-    }
-  }
-}
+openapi: 3.0.3
+info:
+  title: DreamLife Apartments API
+  description: REST API for managing apartments, reservations, reviews, and users in the DreamLife platform
+  version: 1.0.0
+servers:
+  - url: 'https://localhost:8443'
+    description: Development server
+tags:
+  - name: apartments
+    description: Operations about apartments
+  - name: users
+    description: Operations about users
+  - name: reservations
+    description: Operations about reservations
+  - name: rooms
+    description: Operations about rooms
+  - name: reviews
+    description: Operations about reviews
+paths:
+  /api/v1/apartments/:
+    get:
+      tags:
+        - apartments
+      summary: Get all apartments
+      description: Returns a list of all available apartments (requires authentication)
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of apartments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApartmentDTO'
+        '401':
+          description: Unauthorized
+    post:
+      tags:
+        - apartments
+      summary: Create a new apartment
+      description: Creates a new apartment with the provided information (requires MANAGER role)
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApartmentDTO'
+        required: true
+      responses:
+        '201':
+          description: Apartment created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApartmentDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden - requires MANAGER role
+
+  /api/v1/apartments/{id}:
+    get:
+      tags:
+        - apartments
+      summary: Get apartment by ID
+      description: Returns a single apartment by its ID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the apartment to fetch
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Apartment details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApartmentDTO'
+        '404':
+          description: Apartment not found
+    put:
+      tags:
+        - apartments
+      summary: Update apartment
+      description: Updates an existing apartment (requires MANAGER role)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID of the apartment to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApartmentDTO'
+        required: true
+      responses:
+        '200':
+          description: Apartment updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApartmentDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden - requires MANAGER role
+        '404':
+          description: Apartment not found
+    post:
+      tags:
+        - apartments
+      summary: Create apartment with specific ID
+      description: Creates a new apartment with a specific ID (requires MANAGER role)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID for the new apartment
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApartmentDTO'
+        required: true
+      responses:
+        '200':
+          description: Apartment created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden - requires MANAGER role
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - apartments
+      summary: Delete apartment
+      description: Deletes an apartment (requires MANAGER role)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID of the apartment to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Apartment deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApartmentDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden - requires MANAGER role
+        '404':
+          description: Apartment not found
+
+  /api/v1/apartments/{id}/info:
+    get:
+      tags:
+        - apartments
+      summary: Get apartment information
+      description: Returns detailed information about an apartment
+      parameters:
+        - name: id
+          in: path
+          description: ID of the apartment
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Apartment information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Apartment'
+        '403':
+          description: Forbidden - apartment's manager is not validated
+        '404':
+          description: Apartment not found
+
+  /api/v1/apartments/{id}/images:
+    get:
+      tags:
+        - apartments
+      summary: Get apartment image
+      description: Returns the image of an apartment
+      parameters:
+        - name: id
+          in: path
+          description: ID of the apartment
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Apartment image
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Apartment or image not found
+
+  /api/v1/apartments/loadMore:
+    get:
+      tags:
+        - apartments
+      summary: Load more apartments
+      description: Returns a paginated list of apartments
+      parameters:
+        - name: pageable
+          in: query
+          description: Pagination information
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
+        - name: numPage
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: pageSize
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 6
+      responses:
+        '200':
+          description: Paginated list of apartments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedModelApartmentDTO'
+        '404':
+          description: Not Found
+
+  /api/v1/apartments/manager/loadMore/{start}/{end}:
+    get:
+      tags:
+        - apartments
+      summary: Load more apartments for manager
+      description: Returns a paginated list of apartments for the current manager (requires MANAGER role)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: start
+          in: path
+          description: Start index
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: end
+          in: path
+          description: End index
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: List of apartments for manager
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Apartment'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden - requires MANAGER role
+        '404':
+          description: Not Found
+
+  /api/v1/users/:
+    get:
+      tags:
+        - users
+      summary: Get unvalidated managers
+      description: Returns a list of unvalidated managers (requires ADMIN role)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: validated
+          in: query
+          description: Filter by validation status
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: rejected
+          in: query
+          description: Filter by rejection status
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: List of unvalidated managers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserDTO'
+        '204':
+          description: No Content - no managers found
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden - requires ADMIN role
+    post:
+      tags:
+        - users
+      summary: Register new user
+      description: Registers a new user in the system
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+        required: true
+      responses:
+        '200':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+        '409':
+          description: Conflict - nickname already exists
+
+  /api/v1/users/all:
+    get:
+      tags:
+        - users
+      summary: Get all users
+      description: Returns a list of all users (requires ADMIN role)
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of all users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden - requires ADMIN role
+
+  /api/v1/users/{id}:
+    get:
+      tags:
+        - users
+      summary: Get user by ID
+      description: Returns a user by their ID (requires authentication)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+        '401':
+          description: Unauthorized
+        '404':
+          description: User not found
+    put:
+      tags:
+        - users
+      summary: Update user
+      description: Updates a user's information (requires authentication)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID of the user to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rejected
+          in: query
+          description: Set rejection status (ADMIN only)
+          required: false
+          schema:
+            type: boolean
+        - name: validated
+          in: query
+          description: Set validation status (ADMIN only)
+          required: false
+          schema:
+            type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+        required: true
+      responses:
+        '200':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden - cannot update validation or rejection status without ADMIN role
+        '404':
+          description: User not found
+
+  /api/v1/users/{id}/application:
+    put:
+      tags:
+        - users
+      summary: Update manager application
+      description: Updates the application status of a manager (requires authentication)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID of the manager
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Application updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden - you are not the user that you think you are
+        '404':
+          description: User not found
+
+  /api/v1/users/{id}/image:
+    get:
+      tags:
+        - users
+      summary: Get user image
+      description: Returns the image of a user
+      parameters:
+        - name: id
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: User image
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: User or image not found
+
+  /api/v1/users/{id}/image1:
+    put:
+      tags:
+        - users
+      summary: Replace user image (method 1)
+      description: Replaces a user's image using method 1 (requires authentication)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                imageFile:
+                  type: string
+                  format: binary
+      responses:
+        '204':
+          description: No Content - image replaced successfully
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden - you are trying to change the image of another user
+        '404':
+          description: User not found
+
+  /api/v1/users/{id}/image2:
+    put:
+      tags:
+        - users
+      summary: Replace user image (method 2)
+      description: Replaces a user's image using method 2 (requires authentication)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                imageFile:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Image updated successfully
+        '400':
+          description: Bad Request - the image file is empty
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden - you are trying to change the image of another user
+        '404':
+          description: User not found
+
+  /api/v1/users/login:
+    post:
+      tags:
+        - users
+      summary: User login
+      description: Authenticates a user and returns JWT tokens
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: Unauthorized - invalid credentials
+
+  /api/v1/users/profile:
+    get:
+      tags:
+        - users
+      summary: Get current user profile
+      description: Returns the profile of the currently authenticated user
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+        '401':
+          description: Unauthorized
+
+  /api/v1/rooms:
+    get:
+      tags:
+        - rooms
+      summary: Get all rooms
+      description: Returns a list of all rooms
+      responses:
+        '200':
+          description: List of all rooms
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoomDTO'
+        '404':
+          description: Not Found
+    post:
+      tags:
+        - rooms
+      summary: Create a new room
+      description: Creates a new room (requires MANAGER role)
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoomDTO'
+        required: true
+      responses:
+        '201':
+          description: Room created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden - requires MANAGER role
+        '404':
+          description: Not Found
+
+  /api/v1/rooms/{id}:
+    get:
+      tags:
+        - rooms
+      summary: Get room by ID
+      description: Returns a room by its ID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the room
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Room details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomDTO'
+        '404':
+          description: Room not found
+    put:
+      tags:
+        - rooms
+      summary: Update room
+      description: Updates a room (requires MANAGER role)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID of the room to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoomDTO'
+        required: true
+      responses:
+        '200':
+          description: Room updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden - requires MANAGER role
+        '404':
+          description: Room not found
+    delete:
+      tags:
+        - rooms
+      summary: Delete room
+      description: Deletes a room (requires MANAGER role)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID of the room to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: No Content - room deleted successfully
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden - requires MANAGER role
+        '404':
+          description: Room not found
+
+  /api/v1/rooms/filter:
+    get:
+      tags:
+        - rooms
+      summary: Filter rooms by maximum capacity
+      description: Returns rooms filtered by maximum client capacity
+      parameters:
+        - name: maxClients
+          in: query
+          description: Maximum number of clients
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Filtered list of rooms
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoomDTO'
+        '404':
+          description: Not Found
+
+  /api/v1/reservations:
+    post:
+      tags:
+        - reservations
+      summary: Create a new reservation
+      description: Creates a new reservation (requires CLIENT role)
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservationDTO'
+        required: true
+      responses:
+        '200':
+          description: Reservation created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservationDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden - requires CLIENT role
+        '404':
+          description: Not Found
+
+  /api/v1/reservations/{id}:
+    get:
+      tags:
+        - reservations
+      summary: Get reservation by ID
+      description: Returns a reservation by its ID (requires CLIENT or ADMIN role)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID of the reservation
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Reservation details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservationDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden - requires CLIENT or ADMIN role
+        '404':
+          description: Reservation not found
+    delete:
+      tags:
+        - reservations
+      summary: Delete reservation
+      description: Deletes a reservation (requires CLIENT or ADMIN role)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID of the reservation to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Reservation deleted successfully
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden - requires CLIENT or ADMIN role
+        '404':
+          description: Reservation not found
+
+  /api/v1/reviews/{id}:
+    get:
+      tags:
+        - reviews
+      summary: Get review by ID
+      description: Returns a review by its ID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the review
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Review details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewDTO'
+        '404':
+          description: Review not found
+
+  /api/v1/reviews/post/{id}:
+    post:
+      tags:
+        - reviews
+      summary: Post a review
+      description: Posts a review for an apartment
+      parameters:
+        - name: id
+          in: path
+          description: ID of the apartment
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
+        required: true
+      responses:
+        '200':
+          description: Review posted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewDTO'
+        '404':
+          description: Apartment not found
+
+  /api/v1/reviews/loadMore/{start}/{end}:
+    get:
+      tags:
+        - reviews
+      summary: Load more reviews
+      description: Returns a paginated list of reviews for an apartment
+      parameters:
+        - name: id
+          in: query
+          description: ID of the apartment
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: start
+          in: path
+          description: Start index
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: end
+          in: path
+          description: End index
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: List of reviews
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Review'
+        '404':
+          description: Not Found
+
+components:
+  schemas:
+    UserDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        lastname:
+          type: string
+        bio:
+          type: string
+        location:
+          type: string
+        language:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        image:
+          type: boolean
+        imagePath:
+          type: string
+        organization:
+          type: string
+        validated:
+          type: boolean
+        rejected:
+          type: boolean
+        rols:
+          type: array
+          items:
+            type: string
+        nick:
+          type: string
+        pass:
+          type: string
+        apartments:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApartmentBasicDTO'
+        reservations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReservationBasicDTO'
+        reviews:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReviewBasicDTO'
+
+    UserBasicDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        image:
+          type: boolean
+        imagePath:
+          type: string
+        rols:
+          type: array
+          items:
+            type: string
+        nick:
+          type: string
+
+    UserE:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        lastname:
+          type: string
+        bio:
+          type: string
+        location:
+          type: string
+        language:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        image:
+          type: boolean
+        imagePath:
+          type: string
+        organization:
+          type: string
+        validated:
+          type: boolean
+        rejected:
+          type: boolean
+        rols:
+          type: array
+          items:
+            type: string
+        nick:
+          type: string
+        pass:
+          type: string
+        apartment:
+          type: array
+          items:
+            $ref: '#/components/schemas/Apartment'
+
+    LoginRequest:
+      type: object
+      properties:
+        nick:
+          type: string
+        password:
+          type: string
+      required:
+        - nick
+        - password
+
+    AuthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [SUCCESS, FAILURE]
+        message:
+          type: string
+
+    ApartmentDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        location:
+          type: string
+        rating:
+          type: number
+          format: float
+        imagePath:
+          type: string
+        image:
+          type: boolean
+        manager:
+          $ref: '#/components/schemas/UserBasicDTO'
+        rooms:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoomBasicDTO'
+        reservations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReservationBasicDTO'
+        reviews:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReviewBasicDTO'
+
+    ApartmentBasicDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        location:
+          type: string
+        rating:
+          type: number
+          format: float
+        imagePath:
+          type: string
+        image:
+          type: boolean
+
+    Apartment:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        location:
+          type: string
+        rating:
+          type: number
+          format: float
+        image:
+          type: boolean
+        imagePath:
+          type: string
+        manager:
+          $ref: '#/components/schemas/UserE'
+        numRooms:
+          type: integer
+          format: int32
+        averageRating:
+          type: number
+          format: float
+
+    RoomDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        maxClients:
+          type: integer
+          format: int32
+        cost:
+          type: number
+          format: float
+        reservations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReservationBasicDTO'
+        apartment:
+          $ref: '#/components/schemas/ApartmentBasicDTO'
+
+    RoomBasicDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        maxClients:
+          type: integer
+          format: int32
+        cost:
+          type: number
+          format: float
+
+    ReservationDTO:
+      type: object
+      properties:
+        idReservation:
+          type: integer
+          format: int64
+        checkIn:
+          type: string
+          format: date
+        checkOut:
+          type: string
+          format: date
+        numPeople:
+          type: integer
+          format: int32
+        apartmentId:
+          type: integer
+          format: int64
+        roomId:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+
+    ReservationBasicDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        checkIn:
+          type: string
+          format: date
+        checkOut:
+          type: string
+          format: date
+        numPeople:
+          type: integer
+          format: int32
+
+    ReviewDTO:
+      type: object
+      properties:
+        reviewId:
+          type: integer
+          format: int64
+        user:
+          $ref: '#/components/schemas/UserBasicDTO'
+        apartment:
+          $ref: '#/components/schemas/ApartmentBasicDTO'
+        score:
+          type: integer
+          format: int32
+        date:
+          type: string
+          format: date-time
+        comment:
+          type: string
+
+    ReviewBasicDTO:
+      type: object
+      properties:
+        reviewId:
+          type: integer
+          format: int64
+        score:
+          type: integer
+          format: int32
+        date:
+          type: string
+          format: date-time
+        comment:
+          type: string
+
+    Review:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        score:
+          type: integer
+          format: int32
+        comment:
+          type: string
+        date:
+          type: string
+          format: date
+        apartment:
+          $ref: '#/components/schemas/Apartment'
+        user:
+          $ref: '#/components/schemas/UserE'
+
+    Pageable:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int32
+          minimum: 0
+        size:
+          type: integer
+          format: int32
+          minimum: 1
+        sort:
+          type: array
+          items:
+            type: string
+
+    PageMetadata:
+      type: object
+      properties:
+        size:
+          type: integer
+          format: int64
+        number:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+
+    PagedModelApartmentDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApartmentDTO'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
