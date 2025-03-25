@@ -16,7 +16,7 @@ services:
       - db_data:/var/lib/mysql
 
   webapp:
-    build:
+    build: .
     container_name: webapp
     ports:
       - "8443:8443"
