@@ -191,11 +191,21 @@ public class ApartmentRestController {
     }
 
     // works? pendiente -> only the manager of the apartment
-    @DeleteMapping("/{id}/image")
-    public ResponseEntity<Object> deleteApartmentImage(@PathVariable Long id) throws IOException {
-        apartmentService.deleteImage(id);
-        return ResponseEntity.noContent().build();
+   @DeleteMapping("/{id}")
+public ResponseEntity<ApartmentDTO> deleteApartment(
+        HttpServletRequest request, @PathVariable Long id) {
+
+    UserE manager = userService.findByNick(request.getUserPrincipal().getName()).orElseThrow();
+
+    if (!apartmentService.exist(id)) {
+        return ResponseEntity.notFound().build();
+    } else if(apartmentService.findById(id).get().getManager().getId().equals(manager.getId())) {
+        return ResponseEntity.ok(apartmentService.deleteApartment(id));
+    } else {
+        return ResponseEntity.status(403).body(null);
     }
+}
+
   
 
 }
