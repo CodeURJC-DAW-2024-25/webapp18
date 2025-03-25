@@ -2,8 +2,10 @@
 ## PHASE 2: Integration of a REST API, Docker deployment, and remote hosting
 
 ## 1. API REST documentation
-###  1.1 OpenAPI
-###  1.2 HTML
+###  1.1 OpenAPI <br> https://github.com/CodeURJC-DAW-2024-25/webapp18/blob/main/backend/api-docs/api-docs.yaml
+
+###  1.2 HTML <br> https://github.com/CodeURJC-DAW-2024-25/webapp18/blob/main/backend/api-docs/index.html
+ 
 
 ## 2. Class and templates diagram
 ![CLASSD](https://github.com/user-attachments/assets/e8c5573c-1efa-43b8-a722-7a8d2c2843d5)
