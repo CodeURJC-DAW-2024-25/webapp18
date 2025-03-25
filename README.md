@@ -118,14 +118,14 @@
   ```
 
 
-# GROUP MEMBERS PARTICIPATION
+## GROUP MEMBERS PARTICIPATION
 
 | Name                         | Tasks | Most important commits | Most worked on files | 
 |------------------------------|--------|-------------------------|----------------------|
-| Laila El Khattabi El Hassnaoui |        |                         |                      |
+| Laila El Khattabi El Hassnaoui | I have worked with reservation controller as well as user controller. I have implemented the security part of this phase and tried the endpoints on postman      |  -[Security implementation](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/b1fcb053aa615c236a31a157be095f2b04cdfb1a) <br> -[Added DTOS, controllers and mappers to reservation](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/e1de9d9db211b6316e34098ddf9cd07af324540c) <br> - [User controller rest files](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/93038df265fc3fec2d06dc8ffa9e57c556fee329) <br> -[docker](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/f66e6c5b0110d3b4b323f0faac2fa1e10811e221#diff-e82d83fb2061d91bd2a75743bb98569311d56d8defbc94a7cf1659c007837ce1) <br> -[dto logic](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/7e2e2cc59c201b899628c66fca9893bbd7ee71d0#diff-307d12707b225f9c9f0f92a132f7ee3683e41ec598e78b18c0c21a3d332bf0af)                 | ReservationRestController, UserRestController, mappers and DTOs. Security implemntation and endpoints with postman                     |
 | Carlos Hermán Andrés Andrés    |        |                         |                      |
 | Elena Ceinos Abeijón           | I have worked on the RoomRestController, also checked ReviewRestControllers and some of the UserRestControllers. I have tried endpoints on Postman and also helped with the security config. | - [Added DTOs and MapStruct dependencies, disabled CSRF](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/0b158b87a8e5d13fbf2b0494a7930d3d2dd8d226) <br> - [Modified UserRestController, login and ID. Added @Component in the mappers](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/efe6e12d4ccbec30f3b4cdc07c82be0a89fb36b3) <br> - [Corrected JWT security target errors and fixed some mappers](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/306d403dc619cc0f8d21715667570bb6e3bc9532) <br> - [Added mapping and target to mappers to remove warnings](https://github.com/CodeURJC-DAW-2024-25/webapp18/commit/6ddcb5f3bfc1e2ceadd94e8f8a76c711542a9027) | RoomRestController, UserRestController, ReviewRestController, mappers, and DTOs. Also, a lot of endpoint trials with postman |
-| Daniel Gómez López             |        |                         |                      |
+
 
 
 
