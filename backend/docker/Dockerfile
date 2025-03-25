@@ -3,7 +3,6 @@
 #################################################
 FROM maven:3.9.4-eclipse-temurin-21 AS builder
 
-
 # Set working directory inside the container
 WORKDIR /project
 
@@ -30,8 +29,9 @@ WORKDIR /usr/app
 # Copy the built JAR from the builder container
 COPY --from=builder /project/target/*.jar app.jar
 
-# Expose Spring Boot default port
+# Expose Spring Boot SSL port
 EXPOSE 8443
 
-# Run the application when the container starts
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Delay to allow DB to become ready before starting Spring Boot
+CMD ["sh", "-c", "sleep 15 && java -jar app.jar"]
+
